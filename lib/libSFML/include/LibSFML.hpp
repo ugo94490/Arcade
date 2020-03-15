@@ -10,14 +10,14 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/System.hpp"
 #include "IGraphicLib.hpp"
-#include "print_appearance.hpp"
 
 class LibSFML : public IGraphicLib {
     public:
-        LibSFML(const std::string &name = "Arcade");
+        LibSFML();
         ~LibSFML();
         char getEvent();
-        void draw(std::list<std::shared_ptr<IGameObject>> objects);
+        void draw(std::shared_ptr<IGame> game);
+        void loadGame(const std::string &path);
 
     protected:
         sf::RenderWindow window;
@@ -25,3 +25,9 @@ class LibSFML : public IGraphicLib {
         sf::Sprite sprite;
     private:
 };
+
+extern "C" {
+    IGraphicLib *maker() {
+        return new LibSFML();
+    }
+}

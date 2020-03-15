@@ -10,11 +10,12 @@
 #include <string>
 #include <list>
 #include <memory>
-#include "IGameObject.hpp"
+#include "IGame.hpp"
 
 class IGraphicLib {
     public:
         virtual ~IGraphicLib() = default;
         virtual char getEvent() = 0;
-        virtual void draw(std::list<std::shared_ptr<IGameObject>> objects) = 0;
+        virtual void draw(std::shared_ptr<IGame> game) = 0;
+        virtual void loadGame(const std::string &gamename) = 0;
 };

@@ -8,21 +8,24 @@
 #pragma once
 
 #include <ctime>
-#include "Sokoban.hpp"
-#include "LibSFML.hpp"
-#include "LibNcurses.hpp"
+#include <dlfcn.h>
+#include "IGame.hpp"
+#include "IGraphicLib.hpp"
 
 class Arcade {
     public:
         Arcade(const std::string &baselib);
         ~Arcade();
         int loop();
+        void loadlib(const std::string &lib);
+        void loadgame(const std::string &game);
         void switchlib();
 
     protected:
     private:
-        Sokoban game;
+        std::shared_ptr<IGame> game;
         std::shared_ptr<IGraphicLib> lib;
         std::list<std::shared_ptr<IGameObject>> objects;
         std::string libname;
+        std::string gamename;
 };

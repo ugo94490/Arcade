@@ -7,16 +7,22 @@
 
 #include "LibSFML.hpp"
 
-LibSFML::LibSFML(const std::string &gamename)
+LibSFML::LibSFML()
 {
-    window.create(sf::VideoMode(1280, 720), gamename, sf::Style::Close);
-    texture.loadFromFile("game/sokoban_sprites.png");
-    sprite.setTexture(texture);
+    window.create(sf::VideoMode(1280, 720), "Arcade", sf::Style::Close);
 }
 
 LibSFML::~LibSFML()
 {
     window.close();
+}
+
+void LibSFML::loadGame(const std::string &gamename)
+{
+    std::string spritesheetname = "games/" + gamename + "/spritesheet.png";
+
+    texture.loadFromFile(spritesheetname.c_str());
+    sprite.setTexture(texture);
 }
 
 char LibSFML::getEvent()
@@ -37,11 +43,17 @@ char LibSFML::getEvent()
     return (0);
 }
 
-void LibSFML::draw(std::list<std::shared_ptr<IGameObject>> objects)
+void LibSFML::draw(std::shared_ptr<IGame> game)
 {
+    std::list<std::shared_ptr<IGameObject>> objects = game->getObjects();
+    Rect rect;
+    sf::IntRect intrect;
+
     window.clear(sf::Color::Black);
     for (auto it = objects.begin(); it != objects.end(); ++it) {
-        sprite.setTextureRect(sokoRects[it->get()->getAppearance()]);
+        rect = game->getAppearanceRectIdx(it->get()->getAppearance());
+        intrect = {rect.left, rect.top, rect.width, rect.height};
+        sprite.setTextureRect(intrect);
         sprite.setPosition(sf::Vector2f(it->get()->getPos().first, it->get()->getPos().second));
         window.draw(sprite);
     }

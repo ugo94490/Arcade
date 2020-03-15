@@ -22,6 +22,10 @@ LibNcurses::~LibNcurses()
     endwin();
 }
 
+void LibNcurses::loadGame(const std::string &gamename)
+{
+}
+
 char LibNcurses::getEvent()
 {
     int ch = getch();
@@ -41,8 +45,9 @@ char LibNcurses::getEvent()
     return (0);
 }
 
-void LibNcurses::draw(std::list<std::shared_ptr<IGameObject>> objects)
+void LibNcurses::draw(std::shared_ptr<IGame> game)
 {
+    std::list<std::shared_ptr<IGameObject>> objects = game->getObjects();
     std::pair<float, float> pos;
     erase();
 
@@ -50,7 +55,7 @@ void LibNcurses::draw(std::list<std::shared_ptr<IGameObject>> objects)
         pos = it->get()->getPos();
         if (int(pos.first/64.0) < COLS && int(pos.second/64.0) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
             move(int(pos.second/64.0), int(pos.first/64.0));
-            printw("%c", sokoChars[it->get()->getAppearance()]);
+            printw("%c", game->getAppearanceCharIdx(it->get()->getAppearance()));
         }
     }
 }

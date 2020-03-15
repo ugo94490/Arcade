@@ -11,6 +11,15 @@
 
 using namespace std;
 
+static const Rect sokoRects[4] = {
+    {192, 0, 64, 64},
+    {128, 0, 64, 64},
+    {256, 0, 64, 64},
+    {64, 0, 64, 64}
+};
+
+static const char sokoChars[5] = "PXO#";
+
 Sokoban::Sokoban()
 {
     objects = initGame();
@@ -35,10 +44,10 @@ std::list<std::shared_ptr<SokoObject>> Sokoban::initGame(void) const
     std::list<std::shared_ptr<SokoObject>> list;
     std::shared_ptr<SokoObject> ptr;
     string line;
-    ifstream myfile ("./game/map");
+    ifstream myfile ("./games/sokoban/map");
 
     if (!myfile.is_open())
-        return list;
+        throw(std::string("Could not open sokoban map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
@@ -64,7 +73,7 @@ void Sokoban::handleEvents(const unsigned char &c)
         }
     }
     if (!player)
-        return;
+        throw("Player does not exist");
     move_object(player, c);
 }
 
@@ -124,4 +133,18 @@ int Sokoban::move_object(std::shared_ptr<SokoObject> obj, int direction)
         return (0);
     }
     return (0);
+}
+
+char Sokoban::getAppearanceCharIdx(int idx)
+{
+    if (idx > 4 || idx < 0)
+        return ' ';
+    return sokoChars[idx];
+}
+
+Rect Sokoban::getAppearanceRectIdx(int idx)
+{
+    if (idx > 4 || idx < 0)
+        return {0, 0, 0, 0};
+    return sokoRects[idx];
 }
