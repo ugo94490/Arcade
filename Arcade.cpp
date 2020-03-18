@@ -12,7 +12,7 @@ Arcade::Arcade(const std::string &baselib)
 {
     gamename = "Arcade";
     loadlib(baselib);
-    loadgame("sokoban");
+    loadgame("pacman");
 }
 
 Arcade::~Arcade()

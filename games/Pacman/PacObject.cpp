@@ -2,42 +2,41 @@
 ** EPITECH PROJECT, 2020
 ** OOP_arcade_2019
 ** File description:
-** SokoObject
+** PacObject
 */
 
 #include <iostream>
-#include "SokoObject.hpp"
+#include "PacObject.hpp"
 
-SokoObject::SokoObject(float posx, float posy, char c)
+PacObject::PacObject(float posx, float posy, char c)
 {
     pos = std::pair<float, float>(posx, posy);
-    c == 'P' ? type = PLAYER : 0;
-    c == 'X' ? type = CRATE : 0;
-    c == 'O' ? type = DEST : 0;
-    c == '#' ? type = WALL : 0;
+    c == '0' ? type = PLAYER : 0;
+    c == '1' ? type = CRATE : 0;
+    c == '2' ? type = DEST : 0;
     appearance = type;
 }
 
-SokoObject::~SokoObject()
+PacObject::~PacObject()
 {
 }
 
-char SokoObject::getAppearance(void) const
+char PacObject::getAppearance(void) const
 {
     return appearance;
 }
 
-char SokoObject::getType(void) const
+char PacObject::getType(void) const
 {
     return type;
 }
 
-std::pair<float, float> SokoObject::getPos(void) const
+std::pair<float, float> PacObject::getPos(void) const
 {
     return pos;
 }
 
-void SokoObject::setPos(std::pair<float, float> pos)
+void PacObject::setPos(std::pair<float, float> pos)
 {
     this->pos = pos;
 }

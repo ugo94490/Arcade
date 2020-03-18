@@ -1,12 +1,12 @@
 ##
 ## EPITECH PROJECT, 2020
-## sokoban
+## pacman
 ## File description:
 ## Makefile
 ##
 
-SRC		=	Sokoban.cpp		\
-			SokoObject.cpp
+SRC		=	Pacman.cpp		\
+			PacObject.cpp
 
 SRC_T		=
 
@@ -14,7 +14,7 @@ OBJ		=	$(SRC:.cpp=.o)
 
 OBJ_T	=	$(SRC_T:.cpp=.o)
 
-NAME	=	../game_sokoban.so
+NAME	=	../game_pacman.so
 
 NAME_T	=	unit_tests
 

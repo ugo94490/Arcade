@@ -7,15 +7,19 @@
 
 all:
 	make -C sokoban
+	make -C Pacman
 
 $(NAME):
 	make -C sokoban
+	make -C Pacman
 
 clean:
 	make -C sokoban clean
+	make -C Pacman clean
 
 fclean: clean
 	make -C sokoban fclean
+	make -C Pacman fclean
 
 re:	fclean all
 
