@@ -9,7 +9,7 @@ SRC	=	Arcade.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	arcade_soko
+NAME	=	arcade
 
 LDFLAGS		=	-lsfml-window -lsfml-graphics -lsfml-system -lncurses -ldl `sdl-config --libs --cflags` -lSDL_image
 
