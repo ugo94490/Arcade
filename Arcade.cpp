@@ -78,6 +78,8 @@ void Arcade::switchlib()
     if (libname == "ncurses")
         loadlib("sfml");
     else if (libname == "sfml")
+        loadlib("sdl");
+    else if (libname == "sdl")
         loadlib("ncurses");
 }
 

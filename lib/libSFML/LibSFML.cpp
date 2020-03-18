@@ -9,7 +9,7 @@
 
 LibSFML::LibSFML()
 {
-    window.create(sf::VideoMode(1280, 720), "Arcade", sf::Style::Close);
+    window.create(sf::VideoMode(1280, 720), "Arcade SFML", sf::Style::Close);
 }
 
 LibSFML::~LibSFML()
@@ -21,6 +21,7 @@ void LibSFML::loadGame(const std::string &gamename)
 {
     std::string spritesheetname = "games/" + gamename + "/spritesheet.png";
 
+    window.setTitle(gamename + " SFML");
     texture.loadFromFile(spritesheetname.c_str());
     sprite.setTexture(texture);
 }
@@ -32,12 +33,14 @@ char LibSFML::getEvent()
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 return (-2);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) return (-2);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) return (-1);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) return (1);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) return (2);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) return (3);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) return (4);
+            if (event.type == sf::Event::KeyPressed) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) return (-2);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) return (-1);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) return (1);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) return (2);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) return (3);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) return (4);
+            }
         }
     }
     return (0);

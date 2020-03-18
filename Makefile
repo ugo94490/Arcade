@@ -11,6 +11,8 @@ OBJ	=	$(SRC:.cpp=.o)
 
 NAME	=	arcade_soko
 
+LDFLAGS		=	-lsfml-window -lsfml-graphics -lsfml-system -lncurses -ldl `sdl-config --libs --cflags` -lSDL_image
+
 CPPFLAGS	=	-I./include
 
 $(NAME):	games graphicals core
@@ -18,7 +20,7 @@ $(NAME):	games graphicals core
 all:	$(NAME)
 
 core:	$(OBJ)
-	g++ -o $(NAME) $(OBJ) $(CPPFLAGS) -lsfml-window -lsfml-graphics -lsfml-system -lncurses -ldl
+	g++ -o $(NAME) $(OBJ) $(CPPFLAGS) $(LDFLAGS)
 
 graphicals:
 	make -C lib
