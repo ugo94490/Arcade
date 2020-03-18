@@ -19,6 +19,7 @@ class Arcade {
         int loop();
         void loadlib(const std::string &lib);
         void loadgame(const std::string &game);
+        void switchgame();
         void switchlib();
 
     protected:

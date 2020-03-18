@@ -56,11 +56,12 @@ int Arcade::loop()
     std::list<std::shared_ptr<IGameObject>> objects;
     if (!lib)
         return(84);
-
     while (on) {
         if ((clock() - timer) > (1000000 / 60)) {
             timer = clock();
             input = lib->getEvent();
+            if (input == -3)
+                switchgame();
             if (input == -2)
                 return (0);
             if (input == -1)
@@ -71,6 +72,14 @@ int Arcade::loop()
         }
     }
     return (0);
+}
+
+void Arcade::switchgame()
+{
+    if (gamename == "sokoban")
+        loadgame("nibbler");
+    if (gamename == "nibbler");
+        loadgame("sokoban");
 }
 
 void Arcade::switchlib()

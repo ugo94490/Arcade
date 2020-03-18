@@ -30,6 +30,8 @@ char LibNcurses::getEvent()
 {
     int ch = getch();
 
+    if (ch == 10)
+        return (-3);
     if (ch == 27)
         return (-2);
     if (ch == 10)
