@@ -18,7 +18,7 @@ static const Rect sokoRects[4] = {
     {64, 0, 64, 64}
 };
 
-static const char pacFlags[4] = "012";
+static const char pacFlags[5] = "012P";
 
 Pacman::Pacman()
 {
@@ -79,7 +79,7 @@ void Pacman::handleEvents(const unsigned char &c)
 
 std::shared_ptr<PacObject> Pacman::createObject(float posx, float posy, char c) const
 {
-    if (c != '0' && c != '1' && c != '2')
+    if (c != '0' && c != '1' && c != '2' && c != 'P')
         return NULL;
     std::shared_ptr<PacObject> ptr(new PacObject(posx, posy, c));
     return (ptr);
