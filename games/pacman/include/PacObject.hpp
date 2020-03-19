@@ -17,11 +17,13 @@ class PacObject : public IGameObject {
             STAR,
             DOOR,
             GDOOR,
+            SPACE,
         };
         PacObject(float posx, float posy, char c);
         ~PacObject();
         std::pair<float, float> getPos() const;
         void setPos(std::pair<float, float> pos);
+        void setType(char newType);
         char getAppearance() const;
         char getType() const;
 

@@ -26,6 +26,8 @@ class Pacman : public IGame {
         std::shared_ptr<PacObject> createObject(float posx, float posy, char c) const;
         std::shared_ptr<PacObject> check_free(std::pair<float, float> pos) const;
         int move_object(std::shared_ptr<PacObject> obj, int direction);
+        bool checkColision(std::pair<float, float> pos);
+        bool checkStar(std::pair<float, float> pos);
 
     protected:
         std::list<std::shared_ptr<PacObject>> objects;

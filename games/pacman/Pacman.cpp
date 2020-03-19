@@ -18,7 +18,7 @@ static const Rect sokoRects[4] = {
     {64, 0, 64, 64}
 };
 
-static const char pacFlags[6] = "PX*OQ";
+static const char pacFlags[7] = "PX*OQ ";
 
 Pacman::Pacman()
 {
@@ -79,39 +79,73 @@ void Pacman::handleEvents(const unsigned char &c)
 
 std::shared_ptr<PacObject> Pacman::createObject(float posx, float posy, char c) const
 {
-    if (c != 'P' && c != 'X' && c != '*' && c != 'O' && c != 'Q')
+    if (c != 'P' && c != 'X' && c != '*' && c != 'O' && c != 'Q' && c != ' ')
         return NULL;
     std::shared_ptr<PacObject> ptr(new PacObject(posx, posy, c));
     return (ptr);
 }
 
-std::shared_ptr<PacObject> Pacman::check_free(std::pair<float, float> pos) const
+bool Pacman::checkColision(std::pair<float, float> pos)
 {
     int type;
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         if (it->get()->getPos() == pos) {
             type = it->get()->getType();
+            if (type == PacObject::WALL || type == PacObject::GDOOR)
+                return true;
         }
     }
-    return (NULL);
+    return false;
 }
+
+bool Pacman::checkStar(std::pair<float, float> pos)
+{
+    int type;
+
+    for (auto it = objects.begin(); it != objects.end(); ++it) {
+        if (it->get()->getPos() == pos) {
+            type = it->get()->getType();
+            if (type == PacObject::STAR)
+                return true;
+        }
+    }
+    return false;
+}
+
 
 int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
 {
+    std::shared_ptr<PacObject> blocking;
+    std::pair<float, float> pos;
 
+    if (!obj)
+        return (0);
+    if (direction == 1)
+        pos = std::pair<float, float>(obj->getPos().first - 64.0, obj->getPos().second);
+    if (direction == 2)
+        pos = std::pair<float, float>(obj->getPos().first + 64.0, obj->getPos().second);
+    if (direction == 3)
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 64.0);
+    if (direction == 4)
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 64.0);
+
+    if (checkColision(pos) == true)
+        return (1);
+    if (checkStar(pos) == true)
+        obj->setType(PacObject::SPACE);
+    obj->setPos(pos);
+    return (0);
 }
 
 char Pacman::getAppearanceCharIdx(int idx)
 {
-    if (idx > 4 || idx < 0)
-        return ' ';
     return pacFlags[idx];
 }
 
 Rect Pacman::getAppearanceRectIdx(int idx)
 {
-    if (idx > 4 || idx < 0)
+    if (idx > 7 || idx < 0)
         return {0, 0, 0, 0};
     return sokoRects[idx];
 }
