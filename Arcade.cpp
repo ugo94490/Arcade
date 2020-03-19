@@ -76,8 +76,10 @@ int Arcade::loop()
 
 void Arcade::switchgame()
 {
-    if (gamename == "sokoban")
+    if (gamename == "sokoban") {
+        std::cout << "coucou" << std::endl;
         loadgame("nibbler");
+    }
     if (gamename == "nibbler");
         loadgame("sokoban");
 }

@@ -2,34 +2,32 @@
 ** EPITECH PROJECT, 2020
 ** OOP_arcade_2019
 ** File description:
-** Sokoban
+** Nibbler
 */
 
 #include <fstream>
 #include <string>
-#include "Sokoban.hpp"
+#include "nibbler.hpp"
 
 using namespace std;
 
-static const Rect sokoRects[4] = {
+static const Rect NibRects[2] = {
     {192, 0, 64, 64},
-    {128, 0, 64, 64},
-    {256, 0, 64, 64},
     {64, 0, 64, 64}
 };
 
-static const char sokoChars[5] = "PXO#";
+static const char NibChars[3] = "P#";
 
-Sokoban::Sokoban()
+Nibbler::Nibbler()
 {
     objects = initGame();
 }
 
-Sokoban::~Sokoban()
+Nibbler::~Nibbler()
 {
 }
 
-std::list<std::shared_ptr<IGameObject>> Sokoban::getObjects(void) const
+std::list<std::shared_ptr<IGameObject>> Nibbler::getObjects(void) const
 {
     std::list<std::shared_ptr<IGameObject>> list;
 
@@ -39,15 +37,15 @@ std::list<std::shared_ptr<IGameObject>> Sokoban::getObjects(void) const
     return (list);
 }
 
-std::list<std::shared_ptr<SokoObject>> Sokoban::initGame(void) const
+std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void) const
 {
-    std::list<std::shared_ptr<SokoObject>> list;
-    std::shared_ptr<SokoObject> ptr;
+    std::list<std::shared_ptr<NibObject>> list;
+    std::shared_ptr<NibObject> ptr;
     string line;
-    ifstream myfile ("./games/sokoban/map");
+    ifstream myfile ("./games/nibbler/map/map.txt");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open sokoban map"));
+        throw(std::string("Could not open Nibbler map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
@@ -60,14 +58,14 @@ std::list<std::shared_ptr<SokoObject>> Sokoban::initGame(void) const
     return list;
 }
 
-void Sokoban::handleEvents(const unsigned char &c)
+void Nibbler::handleEvents(const unsigned char &c)
 {
-    std::shared_ptr<SokoObject> player = NULL;
+    std::shared_ptr<NibObject> player = NULL;
 
     if (c < 1 || c > 4)
         return;
     for (auto it = objects.begin(); it != objects.end(); ++it) {
-        if (it->get()->getType() == SokoObject::PLAYER) {
+        if (it->get()->getType() == NibObject::PLAYER) {
             player = *it;
             break;
         }
@@ -77,31 +75,31 @@ void Sokoban::handleEvents(const unsigned char &c)
     move_object(player, c);
 }
 
-std::shared_ptr<SokoObject> Sokoban::createObject(float posx, float posy, char c) const
+std::shared_ptr<NibObject> Nibbler::createObject(float posx, float posy, char c) const
 {
-    if (c != '#' && c != 'O' && c != 'X' && c != 'P')
+    if (c != '#' && c != 'P')
         return NULL;
-    std::shared_ptr<SokoObject> ptr(new SokoObject(posx, posy, c));
+    std::shared_ptr<NibObject> ptr(new NibObject(posx, posy, c));
     return (ptr);
 }
 
-std::shared_ptr<SokoObject> Sokoban::check_free(std::pair<float, float> pos) const
+std::shared_ptr<NibObject> Nibbler::check_free(std::pair<float, float> pos) const
 {
     int type;
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         if (it->get()->getPos() == pos) {
             type = it->get()->getType();
-            if (type == SokoObject::CRATE || type == SokoObject::WALL)
+            if (type == NibObject::WALL)
                 return (*it);
         }
     }
     return (NULL);
 }
 
-int Sokoban::move_object(std::shared_ptr<SokoObject> obj, int direction)
+int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
 {
-    std::shared_ptr<SokoObject> blocking;
+    std::shared_ptr<NibObject> blocking;
     std::pair<float, float> pos;
 
     if (direction == 1)
@@ -114,14 +112,7 @@ int Sokoban::move_object(std::shared_ptr<SokoObject> obj, int direction)
         pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 64.0);
     if (!obj)
         return (0);
-    if (obj->getType() == SokoObject::CRATE) {
-        if ((blocking = check_free(pos)) == NULL) {
-            obj->setPos(pos);
-            return (1);
-        }
-        return (0);
-    }
-    if (obj->getType() == SokoObject::PLAYER) {
+    if (obj->getType() == NibObject::PLAYER) {
         if ((blocking = check_free(pos)) == NULL) {
             obj->setPos(pos);
             return (1);
@@ -135,16 +126,16 @@ int Sokoban::move_object(std::shared_ptr<SokoObject> obj, int direction)
     return (0);
 }
 
-char Sokoban::getAppearanceCharIdx(int idx)
+char Nibbler::getAppearanceCharIdx(int idx)
 {
-    if (idx > 4 || idx < 0)
+    if (idx > 1 || idx < 0)
         return ' ';
-    return sokoChars[idx];
+    return NibChars[idx];
 }
 
-Rect Sokoban::getAppearanceRectIdx(int idx)
+Rect Nibbler::getAppearanceRectIdx(int idx)
 {
-    if (idx > 4 || idx < 0)
+    if (idx > 1 || idx < 0)
         return {0, 0, 0, 0};
-    return sokoRects[idx];
+    return NibRects[idx];
 }
