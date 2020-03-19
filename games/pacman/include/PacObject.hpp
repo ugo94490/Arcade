@@ -12,13 +12,12 @@
 class PacObject : public IGameObject {
     public:
         enum objtypes {
-            PLAYER,
+            PLAYER = 0,
             WALL,
             STAR,
             DOOR,
             GDOOR,
             SPACE,
-            GHOST,
         };
         PacObject(float posx, float posy, char c);
         ~PacObject();
@@ -26,6 +25,7 @@ class PacObject : public IGameObject {
         void setPos(std::pair<float, float> pos);
         char getAppearance() const;
         char getType() const;
+        void setType();
 
     private:
         std::pair<float, float> pos;

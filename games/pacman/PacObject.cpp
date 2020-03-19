@@ -17,7 +17,6 @@ PacObject::PacObject(float posx, float posy, char c)
     c == 'O' ? type = DOOR : 0;
     c == 'Q' ? type = GDOOR : 0;
     c == ' ' ? type = SPACE : 0;
-    c == 'G' ? type = GHOST : 0;
     appearance = type;
 }
 
@@ -38,6 +37,11 @@ char PacObject::getType(void) const
 std::pair<float, float> PacObject::getPos(void) const
 {
     return pos;
+}
+
+void PacObject::setType()
+{
+    this->type = ' ';
 }
 
 void PacObject::setPos(std::pair<float, float> pos)

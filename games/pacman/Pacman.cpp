@@ -16,7 +16,7 @@ static const Rect pacRects[2] = {
     {64, 0, 64, 64}
 };
 
-static const char pacFlags[8] = "PX*OQG ";
+static const char pacFlags[7] = "PX*OQ ";
 
 Pacman::Pacman()
 {
@@ -79,7 +79,7 @@ std::shared_ptr<PacObject> Pacman::createObject(float posx, float posy, char c) 
 {
     if (c != 'P' && c != 'X' && c != '*' && c != 'O' && c != 'Q' && c != ' ')
         return NULL;
-    std::shared_ptr<PacObject> ptr(new PacObject(posx, posy, c));
+    auto ptr = std::make_shared<PacObject>(PacObject(posx, posy, c));
     return (ptr);
 }
 
@@ -106,6 +106,7 @@ void Pacman::checkStar(std::pair<float, float> pos)
             type = it->get()->getType();
             if (type == PacObject::STAR) {
                 *it = createObject(pos.first, pos.second, ' ');
+                it->get()->setType();
                 break;
             }
         }
@@ -137,14 +138,14 @@ int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
 
 char Pacman::getAppearanceCharIdx(int idx)
 {
-    /* if (idx > 1 || idx < 0)
-        return ' '; */
+    if (idx > 7 || idx < 0)
+        return ' ';
     return pacFlags[idx];
 }
 
 Rect Pacman::getAppearanceRectIdx(int idx)
 {
-    /* if (idx > 7 || idx < 0)
-        return {0, 0, 0, 0}; */
+    if (idx > 7 || idx < 0)
+        return {0, 0, 0, 0};
     return pacRects[idx];
 }
