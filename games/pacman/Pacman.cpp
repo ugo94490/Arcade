@@ -133,12 +133,13 @@ int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
         return (1);
     checkStar(pos);
     obj->setPos(pos);
+    std::cout << "x = " << pos.first << "y = " << pos.second << std::endl;
     return (0);
 }
 
 char Pacman::getAppearanceCharIdx(int idx)
 {
-    if (idx > 7 || idx < 0)
+    if (idx > 6 || idx < 0)
         return ' ';
     return pacFlags[idx];
 }
