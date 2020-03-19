@@ -18,7 +18,7 @@ static const Rect sokoRects[4] = {
     {64, 0, 64, 64}
 };
 
-static const char pacFlags[5] = "012P";
+static const char pacFlags[6] = "PX*OQ";
 
 Pacman::Pacman()
 {
@@ -44,10 +44,10 @@ std::list<std::shared_ptr<PacObject>> Pacman::initGame(void) const
     std::list<std::shared_ptr<PacObject>> list;
     std::shared_ptr<PacObject> ptr;
     string line;
-    ifstream myfile ("./games/Pacman/map");
+    ifstream myfile ("./games/pacman/map");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open Pacman map"));
+        throw(std::string("Could not open pacman map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
@@ -55,7 +55,7 @@ std::list<std::shared_ptr<PacObject>> Pacman::initGame(void) const
             if (ptr)
                 list.push_front(ptr);
         }
-        }
+    }
     myfile.close();
     return list;
 }
@@ -79,7 +79,7 @@ void Pacman::handleEvents(const unsigned char &c)
 
 std::shared_ptr<PacObject> Pacman::createObject(float posx, float posy, char c) const
 {
-    if (c != '0' && c != '1' && c != '2' && c != 'P')
+    if (c != 'P' && c != 'X' && c != '*' && c != 'O' && c != 'Q')
         return NULL;
     std::shared_ptr<PacObject> ptr(new PacObject(posx, posy, c));
     return (ptr);
@@ -92,8 +92,6 @@ std::shared_ptr<PacObject> Pacman::check_free(std::pair<float, float> pos) const
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         if (it->get()->getPos() == pos) {
             type = it->get()->getType();
-            if (type == PacObject::CRATE)
-                return (*it);
         }
     }
     return (NULL);

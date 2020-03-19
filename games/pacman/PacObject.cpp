@@ -11,9 +11,11 @@
 PacObject::PacObject(float posx, float posy, char c)
 {
     pos = std::pair<float, float>(posx, posy);
-    c == '0' ? type = PLAYER : 0;
-    c == '1' ? type = CRATE : 0;
-    c == '2' ? type = DEST : 0;
+    c == 'P' ? type = PLAYER : 0;
+    c == 'X' ? type = WALL : 0;
+    c == '*' ? type = STAR : 0;
+    c == 'O' ? type = DOOR : 0;
+    c == 'Q' ? type = GDOOR : 0;
     appearance = type;
 }
 

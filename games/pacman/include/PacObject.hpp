@@ -12,9 +12,11 @@
 class PacObject : public IGameObject {
     public:
         enum objtypes {
-            PLAYER = 0,
-            CRATE,
-            DEST,
+            PLAYER,
+            WALL,
+            STAR,
+            DOOR,
+            GDOOR,
         };
         PacObject(float posx, float posy, char c);
         ~PacObject();
