@@ -106,13 +106,14 @@ bool Pacman::checkStar(std::pair<float, float> pos)
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         if (it->get()->getPos() == pos) {
             type = it->get()->getType();
-            if (type == PacObject::STAR)
+            if (type == PacObject::STAR) {
+                it->get()->setType(' ');
                 return true;
+            }
         }
     }
     return false;
 }
-
 
 int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
 {
@@ -132,8 +133,7 @@ int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
 
     if (checkColision(pos) == true)
         return (1);
-    if (checkStar(pos) == true)
-        obj->setType(PacObject::SPACE);
+    checkStar(pos);
     obj->setPos(pos);
     return (0);
 }
