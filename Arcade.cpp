@@ -45,6 +45,7 @@ void Arcade::loadgame(const std::string &gamestr)
     if (!mkr)
         throw(std::string("Game " + gamename + " constructor not found"));
     game = std::shared_ptr<IGame>((mkr)());
+    std::cout << gamename << std::endl;
     lib->loadGame(gamename);
 }
 
@@ -60,8 +61,10 @@ int Arcade::loop()
         if ((clock() - timer) > (1000000 / 60)) {
             timer = clock();
             input = lib->getEvent();
-            if (input == -3)
+            if (input == -3) {
                 switchgame();
+                input = 0;
+            }
             if (input == -2)
                 return (0);
             if (input == -1)
@@ -77,10 +80,12 @@ int Arcade::loop()
 void Arcade::switchgame()
 {
     if (gamename == "sokoban") {
-        loadgame("nibbler");
+        gamename = "nibbler";
+        loadgame(gamename);
+    } else if (gamename == "nibbler") {
+        gamename = "sokoban";
+        loadgame(gamename);
     }
-    if (gamename == "nibbler");
-        loadgame("sokoban");
 }
 
 void Arcade::switchlib()
