@@ -13,9 +13,13 @@ PacObject::PacObject(float posx, float posy, char c)
     pos = std::pair<float, float>(posx, posy);
     c == 'P' ? type = PLAYER : 0;
     c == 'X' ? type = WALL : 0;
+    c == '-' ? type = GDOOR : 0;
+    c == 'R' ? type = RED : 0;
+    c == 'B' ? type = BLUE : 0;
+    c == 'O' ? type = ORANGE : 0;
+    c == 'Y' ? type = YELLOW : 0;
     c == '*' ? type = STAR : 0;
-    c == 'O' ? type = DOOR : 0;
-    c == 'Q' ? type = GDOOR : 0;
+    c == 'G' ? type = GOLD : 0;
     c == ' ' ? type = SPACE : 0;
     appearance = type;
 }
@@ -42,6 +46,16 @@ std::pair<float, float> PacObject::getPos(void) const
 void PacObject::setType()
 {
     this->type = ' ';
+}
+
+void PacObject::setStar()
+{
+    this->star -= 1;
+}
+
+size_t PacObject::getStar(void) const
+{
+    return star;
 }
 
 void PacObject::setPos(std::pair<float, float> pos)

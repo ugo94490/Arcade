@@ -27,10 +27,26 @@ class Pacman : public IGame {
         int move_object(std::shared_ptr<PacObject> obj, int direction);
         bool checkColision(std::pair<float, float> pos);
         void checkStar(std::pair<float, float> pos);
+        std::pair<float, float> checkDoor(std::pair<float, float> pos);
 
+        std::pair<float, float> findDirection(std::shared_ptr<PacObject> obj, int dir, int index);
+        std::list<std::shared_ptr<PacObject>> filleObj();
+        void ctr_ghost(std::list<std::shared_ptr<PacObject>> obj);
+        std::pair<float, float> move_gRed(std::shared_ptr<PacObject> obj);
+        std::pair<float, float> move_gBlue(std::shared_ptr<PacObject> obj);
+        std::pair<float, float> move_gOrange(std::shared_ptr<PacObject> obj);
+        std::pair<float, float> move_gYellow(std::shared_ptr<PacObject> obj);
+        bool checkColisionGhost(std::pair<float, float> pos);
+        bool gameOver();
+        bool isPriority(std::shared_ptr<PacObject> tmpObj);
+
+        void animPacman();
     protected:
         std::list<std::shared_ptr<PacObject>> objects;
     private:
+        bool _lost = false;
+        size_t _dir = 1;
+        size_t idxAnimPac = 0;
 };
 
 extern "C" {
