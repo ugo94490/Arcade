@@ -13,7 +13,7 @@ Arcade::Arcade(const std::string &baselib)
     std::srand(std::time(nullptr));
     gamename = "Arcade";
     loadlib(baselib);
-    loadgame("nibbler");
+    loadgame("pacman");
 }
 
 Arcade::~Arcade()
@@ -79,11 +79,11 @@ int Arcade::loop()
 
 void Arcade::switchgame()
 {
-    if (gamename == "sokoban") {
+    if (gamename == "pacman") {
         gamename = "nibbler";
         loadgame(gamename);
     } else if (gamename == "nibbler") {
-        gamename = "sokoban";
+        gamename = "pacman";
         loadgame(gamename);
     }
 }

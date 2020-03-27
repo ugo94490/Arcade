@@ -14,7 +14,7 @@
 using namespace std;
 
 static Rect pacRects[11] = {
-    {50, 72, 22, 22}, //playerfront
+    {50, 72, 25, 25}, //playerfront
     {30, 95, 22, 22}, //maze
     {0, 0, 0, 0}, // qdoor
     {144, 144, 25, 25}, // ghost1up
@@ -27,14 +27,14 @@ static Rect pacRects[11] = {
 };
 
 static Rect pacAnim[9] = {
-    {50, 72, 22, 22}, //left1
-    {2, 72, 22, 22}, //left2
-    {95, 72, 22, 22}, //right1
-    {144, 72, 22, 22}, //right2
-    {24, 74, 22, 22}, //up1
-    {72, 74, 22, 22}, //up2
-    {120, 72, 22, 22}, //down1
-    {168, 72, 22, 22} //down2
+    {50, 72, 25, 25}, //left1
+    {2, 72, 25, 25}, //left2
+    {95, 72, 25, 25}, //right1
+    {144, 72, 25, 25}, //right2
+    {24, 74, 25, 25}, //up1
+    {72, 74, 25, 25}, //up2
+    {120, 72, 25, 25}, //down1
+    {168, 72, 25, 25} //down2
 };
 
 static const Rect rightAnim[5] = {
@@ -173,7 +173,7 @@ void Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    usleep(900000);
+    usleep(90000);
     ctr_ghost(obj);
     if (c < 1 || c > 4)
         tmpDir = _dir;
