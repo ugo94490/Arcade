@@ -79,11 +79,14 @@ int Arcade::loop()
 
 void Arcade::switchgame()
 {
-    if (gamename == "pacman") {
-        gamename = "nibbler";
+    if (gamename == "nibbler") {
+        gamename = "sokoban";
         loadgame(gamename);
-    } else if (gamename == "nibbler") {
+    } else if (gamename == "sokoban") {
         gamename = "pacman";
+        loadgame(gamename);
+    } else if (gamename == "pacman") {
+        gamename = "nibbler";
         loadgame(gamename);
     }
 }
