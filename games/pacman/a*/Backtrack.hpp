@@ -27,7 +27,7 @@ class Backtrack {
         int checkPosX();
         int checkPosY();
         bool checkMazePos(int x, int y);
-        void checkOtherWay();
+        int checkOtherWay(int y, int x);
         void assignPath(int x, int y);
         void newWay();
         void cleanFinalPath();
@@ -48,7 +48,6 @@ class Backtrack {
         std::vector<std::string> _tmpMaze;
         int _sizeX = 21;
         int _sizeY = 26;
-        int _nbWay;
 };
 
 #endif /* !BACKTRACK_HPP_ */
