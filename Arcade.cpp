@@ -10,9 +10,10 @@
 
 Arcade::Arcade(const std::string &baselib)
 {
+    std::srand(std::time(nullptr));
     gamename = "Arcade";
     loadlib(baselib);
-    loadgame("sokoban");
+    loadgame("pacman");
 }
 
 Arcade::~Arcade()
@@ -56,11 +57,14 @@ int Arcade::loop()
     std::list<std::shared_ptr<IGameObject>> objects;
     if (!lib)
         return(84);
-
     while (on) {
         if ((clock() - timer) > (1000000 / 60)) {
             timer = clock();
             input = lib->getEvent();
+            if (input == -3) {
+                switchgame();
+                input = 0;
+            }
             if (input == -2)
                 return (0);
             if (input == -1)
@@ -71,6 +75,20 @@ int Arcade::loop()
         }
     }
     return (0);
+}
+
+void Arcade::switchgame()
+{
+    if (gamename == "nibbler") {
+        gamename = "sokoban";
+        loadgame(gamename);
+    } else if (gamename == "sokoban") {
+        gamename = "pacman";
+        loadgame(gamename);
+    } else if (gamename == "pacman") {
+        gamename = "nibbler";
+        loadgame(gamename);
+    }
 }
 
 void Arcade::switchlib()

@@ -34,6 +34,7 @@ char LibSFML::getEvent()
             if (event.type == sf::Event::Closed)
                 return (-2);
             if (event.type == sf::Event::KeyPressed) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) return (-3);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) return (-2);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) return (-1);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) return (1);
@@ -58,6 +59,7 @@ void LibSFML::draw(std::shared_ptr<IGame> game)
         intrect = {rect.left, rect.top, rect.width, rect.height};
         sprite.setTextureRect(intrect);
         sprite.setPosition(sf::Vector2f(it->get()->getPos().first, it->get()->getPos().second));
+        sprite.setScale(0.5, 0.5);
         window.draw(sprite);
     }
     window.display();
