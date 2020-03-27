@@ -7,10 +7,10 @@
 
 #include "Backtrack.hpp"
 
-Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze)
+Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest)
 {
     _gPos = gPos;
-    _dest = std::make_pair(10, 11);
+    _dest = dest;
     _stack.push(gPos);
     _cPos = gPos;
     _maze = maze;
@@ -71,13 +71,13 @@ void Backtrack::assignPath(int y, int x)
 
 //first = y; second = x
 
-void Backtrack::editWay()
+/* void Backtrack::editWay()
 {
     if (_cPos.first == _dest.first && _cPos.second == _dest.second) {
         _dest.first = 13;
         _dest.second = 11;
     }
-}
+} */
 
 void Backtrack::deblock()
 {
@@ -103,7 +103,7 @@ void Backtrack::recBacktracking()
 {
     int nbWay = checkOtherWay(_cPos.first, _cPos.second);
 
-    editWay();
+    /* editWay(); */
     if (_cPos.first < _dest.first && checkMazePos(_cPos.first + 1, _cPos.second)) {
             assignPath(_cPos.first + 1, _cPos.second);
             return recBacktracking();
@@ -181,16 +181,17 @@ void Backtrack::ctrBacktracking()
         /* display(); */
     }
     cleanFinalPath();
-    displayTmp();
+    /* displayTmp(); */
 }
 
 Backtrack::~Backtrack()
 {
 }
-/* 
-int main(void)
+
+/* int main(void)
 {
-    std::pair<int, int> pos = std::pair<int, int>(18, 12);
+    std::pair<int, int> dest = std::make_pair(13, 11);
+    std::pair<int, int> pos = std::make_pair(18, 12);
     std::ifstream myfile ("map.txt");
     std::vector<std::string> maze;
     std::string line;
@@ -202,6 +203,6 @@ int main(void)
         maze.push_back(line + '\n');
     }
     myfile.close();
-    Backtrack p(pos, maze);
+    Backtrack p(pos, maze, dest);
     return 0;
 } */

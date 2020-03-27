@@ -18,7 +18,7 @@
 
 class Backtrack {
     public:
-        Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze);
+        Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest);
         void createMaze();
         void recBacktracking();
         void ctrBacktracking();
