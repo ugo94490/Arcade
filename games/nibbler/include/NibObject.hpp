@@ -13,7 +13,10 @@ class NibObject : public IGameObject {
     public:
         enum objtypes {
             PLAYER = 0,
-            WALL
+            WALL,
+            STAR,
+            FLOOR,
+            TAIL
         };
         NibObject(float posx, float posy, char c);
         ~NibObject();
@@ -21,6 +24,8 @@ class NibObject : public IGameObject {
         void setPos(std::pair<float, float> pos);
         char getAppearance() const;
         char getType() const;
+        void setType(char);
+        void setAppearance(char);
 
     private:
         std::pair<float, float> pos;

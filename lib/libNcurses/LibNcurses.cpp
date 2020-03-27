@@ -30,7 +30,7 @@ char LibNcurses::getEvent()
 {
     int ch = getch();
 
-    if (ch == 10)
+    if (ch == 110)
         return (-3);
     if (ch == 27)
         return (-2);
@@ -55,8 +55,8 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         pos = it->get()->getPos();
-        if (int(pos.first/64.0) < COLS && int(pos.second/64.0) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
-            move(int(pos.second/64.0), int(pos.first/64.0));
+        if (int(pos.first/32.0) < COLS && int(pos.second/32.0) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
+            move(int(pos.second/32.0), int(pos.first/32.0));
             printw("%c", game->getAppearanceCharIdx(it->get()->getAppearance()));
         }
     }

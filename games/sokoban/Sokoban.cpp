@@ -51,7 +51,7 @@ std::list<std::shared_ptr<SokoObject>> Sokoban::initGame(void) const
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
-            ptr = createObject(float(j) * 64.0, float(i) * 64.0, line[j]);
+            ptr = createObject(float(j) * 32.0, float(i) * 32.0, line[j]);
             if (ptr)
                 list.push_front(ptr);
         }
@@ -105,13 +105,13 @@ int Sokoban::move_object(std::shared_ptr<SokoObject> obj, int direction)
     std::pair<float, float> pos;
 
     if (direction == 1)
-        pos = std::pair<float, float>(obj->getPos().first - 64.0, obj->getPos().second);
+        pos = std::pair<float, float>(obj->getPos().first - 32.0, obj->getPos().second);
     if (direction == 2)
-        pos = std::pair<float, float>(obj->getPos().first + 64.0, obj->getPos().second);
+        pos = std::pair<float, float>(obj->getPos().first + 32.0, obj->getPos().second);
     if (direction == 3)
-        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 64.0);
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 32.0);
     if (direction == 4)
-        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 64.0);
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
     if (!obj)
         return (0);
     if (obj->getType() == SokoObject::CRATE) {

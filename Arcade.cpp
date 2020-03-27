@@ -10,6 +10,7 @@
 
 Arcade::Arcade(const std::string &baselib)
 {
+    std::srand(std::time(nullptr));
     gamename = "Arcade";
     loadlib(baselib);
     loadgame("nibbler");
@@ -45,7 +46,6 @@ void Arcade::loadgame(const std::string &gamestr)
     if (!mkr)
         throw(std::string("Game " + gamename + " constructor not found"));
     game = std::shared_ptr<IGame>((mkr)());
-    std::cout << gamename << std::endl;
     lib->loadGame(gamename);
 }
 

@@ -59,6 +59,7 @@ void LibSFML::draw(std::shared_ptr<IGame> game)
         intrect = {rect.left, rect.top, rect.width, rect.height};
         sprite.setTextureRect(intrect);
         sprite.setPosition(sf::Vector2f(it->get()->getPos().first, it->get()->getPos().second));
+        sprite.setScale(0.5, 0.5);
         window.draw(sprite);
     }
     window.display();
