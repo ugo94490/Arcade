@@ -11,7 +11,7 @@ OBJ	=	$(SRC:.cpp=.o)
 
 NAME	=	arcade
 
-LDFLAGS		=	-lsfml-window -lsfml-graphics -lsfml-system -lncurses -ldl `sdl-config --libs --cflags` -lSDL_image
+LDFLAGS		=	-ldl
 
 CPPFLAGS	=	-I./include
 
