@@ -95,6 +95,8 @@ Pacman::Pacman()
     _ghostPath[3].push_back(_curPos[3]);
 }
 
+
+
 Pacman::~Pacman()
 {
 }
@@ -104,6 +106,14 @@ int randPos()
     return std::rand() % 4 + 1;
 }
 
+int inc(int var)
+{
+    static clock_t timer = 0;
+
+    if ((clock() - timer) > 1000000)
+        var++;
+    return (var);
+}
 
 std::list<std::shared_ptr<IGameObject>> Pacman::getObjects(void) const
 {
@@ -202,7 +212,8 @@ void Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    //usleep(10000);
+    usleep(1000000);
+    //_timerPath = inc(_timerPath);
     moveGhost(obj);
     if (c < 1 || c > 4)
         tmpDir = _dir;
@@ -334,6 +345,7 @@ void Pacman::setPath(int gh)
     std::pair<float, float> curPos;
     std::pair<float, float> dest;
 
+    std::cout << "fuck" << std::endl;
     curPos.first = _curPos[gh].first / 32;
     curPos.second = _curPos[gh].second / 32;
     if (_isJail[gh] == false) {
@@ -344,8 +356,13 @@ void Pacman::setPath(int gh)
         dest.first = _jailPos.first / 32;
         dest.first = _jailPos.second / 32;
     }
+    std::cout << "before" << std::endl;
     Backtrack g(curPos, _maze, dest);
-    tmp = g.getPath();
+/*     tmp = g.getPath();
+    _curPos[gh] = tmp[0];
+    _ghostPath[gh] = tmp; */
+/*     _ghostPath[gh] = tmp;
+    _curPos[gh] = _ghostPath[gh][0]; */
 /*     _curPos[gh] = tmp[0];
     _ghostPath[gh] = tmp;
     _curPos[gh] = _ghostPath[gh][0]; */
@@ -378,7 +395,7 @@ void Pacman::setGhostPos(std::list<std::shared_ptr<PacObject>> obj)
 
     for (size_t gh = 0; gh != 4; gh++) {
         tmp = *it;
-        setGhostAnim(gh + 1);
+        /* setGhostAnim(gh + 1); */
         tmp->setPos(_ghostPath[gh][0]);
         _curPos[gh] = _ghostPath[gh][0];
         _ghostPath[gh].erase(_ghostPath[gh].begin());
@@ -427,8 +444,10 @@ void Pacman::jailGhost()
 
 void Pacman::checkTimers()
 {
-/*     if (_timerPath >=3)
+/*     if (_timerPath >= 3) {
+        std::cout << _timerPath << std::endl;
         _timerPath = 0;
+    }
     for (size_t i = 0; i != 4; i++) {
         if (_timerJail[gh] >= 10) {
             _timerJail[gh] = 0;
@@ -440,12 +459,17 @@ void Pacman::checkTimers()
 
 void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
 {
-    //if (_timerPath >= 3)
-    isNewGhostPath();           //get Path
-/*     setGhostPos(obj);           //set Path
-    isGhMeetPac();              //checkJail
-    jailGhost();                //behavior in jail */
-    //checkTimers();            //restar clock
+    static bool enc = true;
+/*     std::cout << _timerPath << std::endl; */
+/*     if (_timerPath >= 3) */
+    if (enc) {
+        isNewGhostPath();           //get Path
+        enc = false;
+    }
+    setGhostPos(obj);           //set Path
+/*     isGhMeetPac();              //checkJail
+    jailGhost();                //behavior in jail
+    checkTimers();            //restar clock */
 }
 
 

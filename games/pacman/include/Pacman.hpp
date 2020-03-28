@@ -59,9 +59,9 @@ class Pacman : public IGame {
         std::vector<std::vector<std::pair<float, float>>> _ghostPath;
         std::vector<std::pair<float, float>> _curPos;
         std::vector<std::string> _maze;
-        clock_t _timerPath = 0;
+        size_t _timerPath = 0;
         std::vector<bool> _isJail = {false, false, false, false};
-        std::vector<clock_t> _timerJail = {0, 0, 0, 0};
+        std::vector<size_t> _timerJail = {0, 0, 0, 0};
         std::pair<float, float> _pacPos;
         std::pair<float, float> _jailPos;
 };

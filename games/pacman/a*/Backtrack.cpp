@@ -145,12 +145,9 @@ void Backtrack::cleanFinalPath()
 {
     std::pair<int, int> pos;
 
-    if (_finalPath.empty())
-        return;
-    pos = _finalPath.top();
-    _tmpMaze[pos.first][pos.second] = 'W';
-    _finalPath.pop();
-    cleanFinalPath();
+    for (size_t i = 0; i != _finalPos.size(); i++) {
+        _tmpMaze[_finalPos[i].first][_finalPos[i].second];
+    }
 }
 
 void Backtrack::displayTmp()
@@ -173,30 +170,38 @@ bool Backtrack::stopLoop()
 
 void Backtrack::reverseFinalPath()
 {
-    std::vector<std::pair<float, float>> tmp;
-
-    while (_finalPath.size() != 0) {
-        tmp.push_back(_finalPath.top());
+    std::stack<std::pair<float, float>> tmp;
+    std::cout << "A" << std::endl;
+    while (!_finalPath.empty()) {
+        tmp.push(_finalPath.top());
         _finalPath.pop();
     }
-    auto it = tmp.end();
-    it--;
-    for (;it != tmp.begin(); --it) {
-        _finalPos.push_back(*it);
+    std::cout << "B" << std::endl;
+    while (!tmp.empty()) {
+        _finalPos.push_back(tmp.top());
+        tmp.pop();
     }
+    std::cout << "C" << std::endl;
+    for (size_t idx = 0; idx != _finalPos.size(); idx++) {
+        _finalPos[idx].first *= 32;
+        _finalPos[idx].second *= 32;
+    }
+    std::cout << "D" << std::endl;
 }
 
 void Backtrack::ctrBacktracking()
 {
     while (stopLoop()) {
-        /* usleep(100000); */
+        /* usleep(1000000); */
         newWay();
         recBacktracking();
         /* display(); */
     }
-    /* cleanFinalPath();
-    displayTmp(); */
+    std::cout << "finish1" << std::endl;
     reverseFinalPath();
+/*     cleanFinalPath();
+    displayTmp(); */
+    std::cout << "finish2" << std::endl;
 }
 
 std::vector<std::pair<float, float>> Backtrack::getPath() const
@@ -224,11 +229,13 @@ Backtrack::~Backtrack()
     }
     myfile.close();
     Backtrack p(pos, maze, dest);
-
+    std::vector<std::vector<std::pair<float, float>>> tmpTmp;
     std::vector<std::pair<float, float>> tmp = p.getPath();
 
     for (size_t i = 0; i != tmp.size(); i++) {
         std::cout << tmp[i].first << " ; " << tmp[i].second << std::endl;
     }
+    tmpTmp.resize(1);
+    tmpTmp[0] = tmp;
     return 0;
 } */
