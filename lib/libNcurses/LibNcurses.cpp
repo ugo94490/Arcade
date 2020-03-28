@@ -44,6 +44,8 @@ char LibNcurses::getEvent()
         return (3);
     if (ch == KEY_DOWN)
         return (4);
+    if (ch == 32)
+        return (5);
     return (0);
 }
 

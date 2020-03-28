@@ -61,6 +61,9 @@ char LibSDL::getEvent()
                 case SDLK_DOWN: // Flèche bas
                     return (4);
                     break;
+                case SDLK_SPACE:
+                    return (5);
+                    break;
             }
             break;
     }

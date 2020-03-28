@@ -69,7 +69,8 @@ int Arcade::loop()
                 return (0);
             if (input == -1)
                 switchlib();
-            game->handleEvents(input);
+            if (game->handleEvents(input) == 84)
+                return (84);
             game->updateGame();
             lib->draw(game);
         }
