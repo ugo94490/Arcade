@@ -6,7 +6,8 @@
 ##
 
 SRC		=	Pacman.cpp		\
-			PacObject.cpp
+			PacObject.cpp	\
+			Backtrack.cpp	\
 
 SRC_T		=
 
@@ -27,8 +28,8 @@ TESTS_FLAGS	=	--coverage -lcriterion
 RM		=	rm -f
 
 $(NAME) 	: 	$(OBJ)
-			$(CC) $(CPPFLAGS) -c -fpic $(SRC)
-			$(CC) $(CPPFLAGS) -shared -o $(NAME) $(OBJ)
+			$(CC) $(CPPFLAGS) -c -fpic $(SRC) -Wall -Wextra -g3
+			$(CC) $(CPPFLAGS) -shared -o $(NAME) $(OBJ) -Wall -Wextra -g3
 
 all		:	$(NAME)
 

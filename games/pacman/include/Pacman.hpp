@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2020
-** OOP_arcade_2019
+** undefined
 ** File description:
-** Pacman
+** CorePacman
 */
 
 #pragma once
@@ -10,14 +10,16 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <vector>
 #include "PacObject.hpp"
 #include "IGame.hpp"
+
 
 class Pacman : public IGame {
     public:
         Pacman();
         ~Pacman();
-        std::list<std::shared_ptr<PacObject>> initGame(void) const;
+        std::list<std::shared_ptr<PacObject>> initGame(void);
         void handleEvents(const unsigned char &c);
         void updateGame(void) {}
         Rect getAppearanceRectIdx(int idx);
@@ -28,25 +30,40 @@ class Pacman : public IGame {
         bool checkColision(std::pair<float, float> pos);
         void checkStar(std::pair<float, float> pos);
         std::pair<float, float> checkDoor(std::pair<float, float> pos);
-
-        std::pair<float, float> findDirection(std::shared_ptr<PacObject> obj, int dir, int index);
         std::list<std::shared_ptr<PacObject>> filleObj();
-        void ctr_ghost(std::list<std::shared_ptr<PacObject>> obj);
-        std::pair<float, float> move_gRed(std::shared_ptr<PacObject> obj);
-        std::pair<float, float> move_gBlue(std::shared_ptr<PacObject> obj);
-        std::pair<float, float> move_gOrange(std::shared_ptr<PacObject> obj);
-        std::pair<float, float> move_gYellow(std::shared_ptr<PacObject> obj);
-        bool checkColisionGhost(std::pair<float, float> pos);
         bool gameOver();
         bool isPriority(std::shared_ptr<PacObject> tmpObj);
-
         void animPacman();
+
+        //GHOST
+        void moveGhost(std::list<std::shared_ptr<PacObject>> obj);
+        void setPath(int gh);
+        void setGhostPos(std::list<std::shared_ptr<PacObject>> obj);
+        bool ghColisionPac(int gh);
+        void jailGhost();
+        void checkTimers();
+        void setGhostAnim(int gh);
+        void isGhMeetPac();
+        void isNewGhostPath();
+        //FIN GHOST
+
     protected:
         std::list<std::shared_ptr<PacObject>> objects;
     private:
         bool _lost = false;
         size_t _dir = 1;
         size_t idxAnimPac = 0;
+        bool _pacgum = false;
+
+        //GHOST
+        std::vector<std::vector<std::pair<float, float>>> _ghostPath;
+        std::vector<std::pair<float, float>> _curPos;
+        std::vector<std::string> _maze;
+        clock_t _timerPath = 0;
+        std::vector<bool> _isJail = {false, false, false, false};
+        std::vector<clock_t> _timerJail = {0, 0, 0, 0};
+        std::pair<float, float> _pacPos;
+        std::pair<float, float> _jailPos;
 };
 
 extern "C" {

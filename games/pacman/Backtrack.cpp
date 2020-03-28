@@ -184,18 +184,23 @@ void Backtrack::reverseFinalPath()
     for (;it != tmp.begin(); --it) {
         _finalPos.push_back(*it);
     }
+    for (size_t idx = 0; idx != _finalPos.size(); idx++) {
+        _finalPos[idx].first *= 32;
+        _finalPos[idx].second *= 32;
+    }
 }
 
 void Backtrack::ctrBacktracking()
 {
     while (stopLoop()) {
-        /* usleep(100000); */
+        /* usleep(1000000); */
         newWay();
         recBacktracking();
         /* display(); */
     }
-    /* cleanFinalPath();
-    displayTmp(); */
+    cleanFinalPath();
+    displayTmp();
+    /* std::cout << "finish" << std::endl; */
     reverseFinalPath();
 }
 
