@@ -7,21 +7,13 @@
 
 SRC		=	LibNcurses.cpp
 
-SRC_T		=
-
 OBJ		=	$(SRC:.cpp=.o)
-
-OBJ_T	=	$(SRC_T:.cpp=.o)
 
 NAME	=	../lib_arcade_ncurses.so
 
-NAME_T	=	unit_tests
-
 CC		=	g++
 
-CPPFLAGS = -I./include -I../../include
-
-TESTS_FLAGS	=	--coverage -lcriterion
+CPPFLAGS = -I./include -I../../include -lncurses
 
 RM		=	rm -f
 
