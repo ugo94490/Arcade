@@ -183,7 +183,6 @@ int Nibbler::handleEvents(const unsigned char &c)
 {
     static clock_t timer = 0;
     static float mult = 1;
-    int ret = 0;
     std::shared_ptr<NibObject> player = NULL;
 
     printf("%f\n", mult);
