@@ -18,7 +18,7 @@ class Sokoban : public IGame {
         Sokoban();
         ~Sokoban();
         std::list<std::shared_ptr<SokoObject>> initGame(void) const;
-        void handleEvents(const unsigned char &c);
+        int handleEvents(const unsigned char &c);
         void updateGame(void) {}
         Rect getAppearanceRectIdx(int idx);
         char getAppearanceCharIdx(int idx);

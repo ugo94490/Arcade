@@ -167,7 +167,7 @@ void Pacman::animPacman()
     }
 }
 
-void Pacman::handleEvents(const unsigned char &c)
+int Pacman::handleEvents(const unsigned char &c)
 {
     size_t tmpDir = 0;
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
@@ -189,6 +189,7 @@ void Pacman::handleEvents(const unsigned char &c)
         throw("Player does not exist");
     move_object(player, tmpDir);
     gameOver();
+    return (0);
 }
 
 bool Pacman::gameOver()

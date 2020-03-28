@@ -62,14 +62,26 @@ std::vector<std::pair<float, float>> Nibbler::check_dispo(std::vector<std::pair<
 {
     std::vector<std::pair<float, float>> dispo;
     int j = 0;
+    int tab[4] = {0, 0, 0, 0};
 
     for (auto i = obj.begin(); i != obj.end(); i++, j++) {
-        if ((i->get()->getPos() == pos[0] && i->get()->getType() == NibObject::FLOOR) ||
-        (i->get()->getPos() == pos[1] && i->get()->getType() == NibObject::FLOOR) ||
-        (i->get()->getPos() == pos[2] && i->get()->getType() == NibObject::FLOOR) ||
-        (i->get()->getPos() == pos[3] && i->get()->getType() == NibObject::FLOOR))
-            dispo.push_back(i->get()->getPos());
+        if (i->get()->getPos() == pos[0] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[0]++;
+        if (i->get()->getPos() == pos[1] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[1]++;
+        if (i->get()->getPos() == pos[2] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[2]++;
+        if (i->get()->getPos() == pos[3] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[3]++;
     }
+    if (tab[0] == 1)
+        dispo.push_back(pos[0]);
+    if (tab[1] == 1)
+        dispo.push_back(pos[1]);
+    if (tab[2] == 1)
+        dispo.push_back(pos[2]);
+    if (tab[3] == 1)
+        dispo.push_back(pos[3]);
     return (dispo);
 }
 
@@ -80,43 +92,69 @@ std::list<std::shared_ptr<NibObject>> Nibbler::new_body(std::shared_ptr<NibObjec
     std::shared_ptr<NibObject> new_ptr;
     int idx = 0;
 
-    if (dispo.size() == 0) {
-        std::cerr << "Pas assez de place pour créer le serpent" << std::endl;
-        return (obj);
-    }
-    idx = rand() % (dispo.size() - 1);
-    /*printf("%ld\n", dispo.size());
-    for (size_t i = 0; i < dispo.size(); i++)
-        printf("dispo[%ld].x = %f dispo[%ld].y = %f\n", i, dispo[i].first, i, dispo[i].second);*/
+    if (dispo.size() == 0)
+        throw("Pas assez de place pour créer le serpent");
+    if (dispo.size() != 1)
+        idx = rand() % (dispo.size() - 1);
+    else
+        idx = 0;
     new_ptr = createObject(float(dispo[idx].first), float(dispo[idx].second), 'T');
     obj.push_back(new_ptr);
     count++;
-    if (count != 2)
+    if (count != 3)
         obj = new_body(new_ptr, obj, count);
     return (obj);
 }
 
-std::list<std::shared_ptr<NibObject>> Nibbler::generatePlayer(std::list<std::shared_ptr<NibObject>> obj) const
+int Nibbler::getDir(std::shared_ptr<NibObject> player, std::list<std::shared_ptr<NibObject>> obj) const
 {
-    size_t idx = rand() % (obj.size() - 1);
+    std::vector<std::pair<float, float>> pos;
+    int j = 0;
+    int tab[4] = {0, 0, 0, 0};
+
+    if (!player)
+        throw("Player does not exist");
+    pos = fill_pair(player);
+    for (auto i = obj.begin(); i != obj.end(); i++, j++) {
+        if (i->get()->getPos() == pos[0] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[0]++;
+        if (i->get()->getPos() == pos[1] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[1]++;
+        if (i->get()->getPos() == pos[2] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[2]++;
+        if (i->get()->getPos() == pos[3] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
+            tab[3]++;
+    }
+    if (tab[0] == 1)
+        return (1);
+    if (tab[1] == 1)
+        return (2);
+    if (tab[2] == 1)
+        return (3);
+    if (tab[3] == 1)
+        return (4);
+    return (0);
+}
+
+std::list<std::shared_ptr<NibObject>> Nibbler::generatePlayer(std::list<std::shared_ptr<NibObject>> obj)
+{
     std::list<std::shared_ptr<NibObject>>::iterator it = obj.begin();
     std::shared_ptr<NibObject> ptr;
+    std::shared_ptr<NibObject> player;
     std::pair<float, float> pos;
-    
-    std::advance(it, idx);
-    while (it->get()->getType() == NibObject::PLAYER || it->get()->getType() == NibObject::WALL) {
-        idx = rand() % (obj.size() - 1);
-        it = obj.begin();
-        std::advance(it, idx);
-    }
+
+    std::advance(it, (obj.size() - 1) / 2);
     pos = it->get()->getPos();
     ptr = createObject(float(pos.first), float(pos.second), 'P');
+    player = ptr;
     obj.push_back(ptr);
     obj = new_body(ptr, obj, 0);
+    direction = getDir(ptr, obj);
+    prev_dir = direction;
     return (obj);
 }
 
-std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void) const
+std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void)
 {
     std::list<std::shared_ptr<NibObject>> list;
     std::shared_ptr<NibObject> ptr;
@@ -134,17 +172,26 @@ std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void) const
                 list.push_front(ptr);
         }
     }
+    if (list.size() == 0)
+        throw(std::string("Map is empty"));
     list = generatePlayer(list);
     myfile.close();
     return list;
 }
 
-void Nibbler::handleEvents(const unsigned char &c)
+int Nibbler::handleEvents(const unsigned char &c)
 {
+    static clock_t timer = 0;
+    static float mult = 1;
+    int ret = 0;
     std::shared_ptr<NibObject> player = NULL;
 
-    if (c < 1 || c > 4)
-        return;
+    printf("%f\n", mult);
+    if (c == 5) {
+        if (mult >= 0.2)
+            mult -= 0.10;
+        return (0);
+    }
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         if (it->get()->getType() == NibObject::PLAYER) {
             player = *it;
@@ -153,7 +200,17 @@ void Nibbler::handleEvents(const unsigned char &c)
     }
     if (!player)
         throw("Player does not exist");
-    move_object(player, c);
+    if ((clock() - timer) > (1000000 * mult)) {
+        timer = clock();
+        return (move_object(player, direction));
+    } else if (!(c < 1 || c > 4)) {
+        direction = c;
+        /* if (check_dir(c) == 0)
+            prev_dir = direction;
+            direction = c;*/
+        return (0);
+    }
+    return (0);
 }
 
 void Nibbler::SetRandItems(void)
@@ -229,7 +286,7 @@ int Nibbler::moveAdd_snake(std::shared_ptr<NibObject> obj, std::pair<float, floa
     }
     new_ptr = createObject(float(prev.first), float(prev.second), 'T');
     objects.push_back(new_ptr);
-    return (1);
+    return (0);
 }
 
 int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
@@ -247,21 +304,25 @@ int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
     if (direction == 4)
         pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
     if (!obj)
-        return (0);
+        return (84);
     if (obj->getType() == NibObject::PLAYER) {
         if ((blocking = check_free(pos)) == NULL)
             return (move_snake(obj, pos));
+        else if (blocking->getType() == NibObject::TAIL) {
+            printf("ICI\n");
+            return (0);
+        }
         else if (blocking->getType() == NibObject::STAR) {
             nb_fruit -= 1;
             ptr = createObject(blocking->getPos().first, blocking->getPos().second, ' ');
             moveAdd_snake(obj, pos);
             objects.remove(blocking);
             objects.push_front(ptr);
-            
+            return (0);
         }
-        return (0);
+        return (84);
     }
-    return (0);
+    return (84);
 }
 
 char Nibbler::getAppearanceCharIdx(int idx)

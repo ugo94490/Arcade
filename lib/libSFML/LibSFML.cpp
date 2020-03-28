@@ -41,6 +41,7 @@ char LibSFML::getEvent()
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) return (2);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) return (3);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) return (4);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) return (5);
             }
         }
     }
