@@ -212,7 +212,7 @@ void Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    usleep(1000000);
+    usleep(100000);
     //_timerPath = inc(_timerPath);
     moveGhost(obj);
     if (c < 1 || c > 4)
@@ -353,11 +353,11 @@ void Pacman::setPath(int gh)
         dest.second = _pacPos.second / 32;
     }
     else {
-        dest.first = _jailPos.first / 32;
-        dest.first = _jailPos.second / 32;
+        dest = std::pair<float, float>(11, 12);
     }
     std::cout << "before" << std::endl;
     Backtrack g(curPos, _maze, dest);
+    std::cout << "after" << std::endl;
     tmp = g.getPath();
     _curPos[gh] = tmp[0];
     _ghostPath[gh] = tmp;
@@ -390,7 +390,8 @@ void Pacman::setGhostPos(std::list<std::shared_ptr<PacObject>> obj)
 
     for (auto it = obj.begin(); gh != 4; ++it) {
         tmp = *it;
-        setGhostAnim(gh);
+        if (_isJail[gh] == false)
+            setGhostAnim(gh);
         tmp->setPos(_ghostPath[gh][0]);
         _curPos[gh] = _ghostPath[gh][0];
         _ghostPath[gh].erase(_ghostPath[gh].begin());
@@ -417,7 +418,7 @@ void Pacman::isGhMeetPac()
         }
         else if (_pacgum == true && ghColisionPac(gh)) {
             _isJail[gh] = true;
-            pacRects[gh+3] = deadAnim[gh];
+            pacRects[gh+3] = deadAnim[0];
             setPath(gh);
         }
     }

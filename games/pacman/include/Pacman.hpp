@@ -54,7 +54,7 @@ class Pacman : public IGame {
         bool _lost = false;
         size_t _dir = 1;
         size_t idxAnimPac = 0;
-        bool _pacgum = false;
+        bool _pacgum = true;
 
         //GHOST
         std::vector<std::vector<std::pair<float, float>>> _ghostPath;

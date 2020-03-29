@@ -37,9 +37,11 @@ class Backtrack {
         void deblock();
         void reverseFinalPath();
         std::vector<std::pair<float, float>> getPath() const;
+        void convertForDisplay();
         ~Backtrack();
 
     private:
+        std::stack<std::pair<float, float>> _finalPosTmp;
         std::vector<std::pair<float, float>> _finalPos;
         std::stack<std::pair<int, int>> _finalPath;
         std::pair<int, int> _gPos;
@@ -50,6 +52,8 @@ class Backtrack {
         std::vector<std::string> _tmpMaze;
         int _sizeX = 21;
         int _sizeY = 26;
+
+        bool _pacDest = true;
 };
 
 #endif /* !BACKTRACK_HPP_ */

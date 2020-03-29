@@ -9,17 +9,19 @@
 
 Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest)
 {
+    if (dest.first == 11 && dest.second == 12)
+        _pacDest = false;
     _gPos.first = gPos.second;
     _gPos.second = gPos.first;
-    _dest = dest;
     _dest.first = dest.second;
     _dest.second = dest.first;
     _stack.push(_gPos);
-    _finalPath.push(_gPos);
     _cPos = _gPos;
     _maze = maze;
     _tmpMaze = maze;
+    std::cout << "put W" << std::endl;
     _maze[_cPos.first][_cPos.second] = 'W';
+    std::cout << "put W" << std::endl;
     ctrBacktracking();
 }
 
@@ -136,7 +138,7 @@ void Backtrack::recBacktracking()
 void Backtrack::newWay()
 {
     _cPos = _stack.top();
-    if (_finalPath.size() != 1) {
+    if (_finalPath.size() > 1) {
         while (_finalPath.size() > 1 && _finalPath.top() != _stack.top())
             _finalPath.pop();
     }
@@ -149,7 +151,8 @@ void Backtrack::cleanFinalPath()
     std::pair<int, int> pos;
 
     for (size_t i = 0; i != _finalPos.size(); i++) {
-        _tmpMaze[_finalPos[i].first][_finalPos[i].second];
+        _tmpMaze[_finalPos[i].first][_finalPos[i].second] = 'W';
+        std::cout << "coucou";
     }
 }
 
@@ -165,17 +168,21 @@ void Backtrack::displayTmp()
 
 bool Backtrack::stopLoop()
 {
-    if (_cPos.first >= 12 && _cPos.first <= 13
-    &&_cPos.second >= 9 && _cPos.second <= 11)
-        return false;
+    if (_pacDest == false) {
+        if (_cPos.first >= 12 && _cPos.first <= 13
+        &&_cPos.second >= 9 && _cPos.second <= 11)
+            return false;
+    }
+    else if (_pacDest == true)
+        if (_cPos == _dest)
+            return false;
     return true;
 }
 
 void Backtrack::reverseFinalPath()
 {
     std::stack<std::pair<float, float>> tmp;
-    std::pair<float, float> tmpReverse;
-    std::pair<float, float> tmpPair;
+
     std::cout << "A" << std::endl;
     while (!_finalPath.empty()) {
         tmp.push(_finalPath.top());
@@ -183,32 +190,42 @@ void Backtrack::reverseFinalPath()
     }
     std::cout << "B" << std::endl;
     while (!tmp.empty()) {
-        tmpPair = tmp.top();
-        tmpReverse.first = tmpPair.second;
-        tmpReverse.second = tmpPair.first;
-        _finalPos.push_back(tmpReverse);
+        _finalPos.push_back(tmp.top());
         tmp.pop();
     }
+}
+
+void Backtrack::convertForDisplay()
+{
+    std::pair<float, float> tmpReverse;
     std::cout << "C" << std::endl;
+
     for (size_t idx = 0; idx != _finalPos.size(); idx++) {
-        _finalPos[idx].first *= 32;
-        _finalPos[idx].second *= 32;
+        tmpReverse.first = _finalPos[idx].second * 32;
+        tmpReverse.second = _finalPos[idx].first * 32;
+        _finalPos[idx].first = tmpReverse.first;
+        _finalPos[idx].second = tmpReverse.second;
     }
     std::cout << "D" << std::endl;
 }
 
 void Backtrack::ctrBacktracking()
 {
+    std::cout << "loop " << std::endl;
     while (stopLoop()) {
-        /* usleep(1000000); */
+        std::cout << " IN loop " << std::endl;
+        /* if (_pacDest == false)
+            usleep(1000000); */
         newWay();
         recBacktracking();
-        /* display(); */
+        /* if (_pacDest == false)
+            display(); */
     }
     std::cout << "finish1" << std::endl;
     reverseFinalPath();
-/*     cleanFinalPath();
+   /*  cleanFinalPath();
     displayTmp(); */
+    convertForDisplay();
     std::cout << "finish2" << std::endl;
 }
 
