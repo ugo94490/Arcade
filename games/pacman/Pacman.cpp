@@ -373,6 +373,8 @@ void Pacman::isNewGhostPath()
 
 void Pacman::setGhostAnim(int gh)
 {
+    if (_isJail[gh])
+        return;
     if (_curPos[gh].first < _ghostPath[gh][0].first)
         pacRects[gh+3] = leftAnim[gh];
     if (_curPos[gh].first > _ghostPath[gh][0].first)
@@ -385,16 +387,21 @@ void Pacman::setGhostAnim(int gh)
 
 void Pacman::setGhostPos(std::list<std::shared_ptr<PacObject>> obj)
 {
+    std::pair<float, float> newPos;
     std::shared_ptr<PacObject> tmp;
     size_t gh = 0;
 
     for (auto it = obj.begin(); gh != 4; ++it) {
         tmp = *it;
-        if (_isJail[gh] == false)
+        if (_isJail[gh] == true && inJail(gh))
+            newPos = randMoveJail(*it);
+        else {
             setGhostAnim(gh);
-        tmp->setPos(_ghostPath[gh][0]);
-        _curPos[gh] = _ghostPath[gh][0];
-        _ghostPath[gh].erase(_ghostPath[gh].begin());
+            newPos = _ghostPath[gh][0];
+            _ghostPath[gh].erase(_ghostPath[gh].begin());
+        }
+        tmp->setPos(newPos);
+        _curPos[gh] = newPos;
         gh++;
     }
 }
@@ -428,13 +435,47 @@ void Pacman::isGhMeetPac()
 {
 
 } */
-
+//x 9 et 12 y 12 et 13
 bool Pacman::inJail(int gh)
 {
     if (_curPos[gh].second >= 12 * 32 && _curPos[gh].second <= 13 * 32
-    && _curPos[gh].first >= 9 * 32 && _curPos[gh].first <= 11 * 32)
-        return false;
-    return true;
+    && _curPos[gh].first >= 9 * 32 && _curPos[gh].first <= 12 * 32)
+        return true;
+    return false;
+}
+
+bool Pacman::checkColisionJail(std::pair<float, float> pos)
+{
+    int type;
+
+    for (auto it = objects.begin(); it != objects.end(); ++it) {
+        if (it->get()->getPos() == pos) {
+            type = it->get()->getType();
+            if (type == PacObject::WALL || type == PacObject::GDOOR)
+                return true;
+            break;
+        }
+    }
+    return false;
+}
+
+std::pair<float, float> Pacman::randMoveJail(std::shared_ptr<PacObject> obj)
+{
+    int dir = randPos();
+    std::pair<float, float> pos;
+
+    if (dir == 1)
+        pos = std::pair<float, float>(obj->getPos().first - 32.0, obj->getPos().second);
+    if (dir == 2)
+        pos = std::pair<float, float>(obj->getPos().first + 32.0, obj->getPos().second);
+    if (dir == 3)
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 32.0);
+    if (dir == 4)
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
+    if (checkColisionJail(pos))
+        return randMoveJail(obj);
+    else
+        return pos;
 }
 
 void Pacman::jailGhost()

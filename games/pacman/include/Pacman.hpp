@@ -46,6 +46,8 @@ class Pacman : public IGame {
         void isGhMeetPac();
         void isNewGhostPath();
         bool inJail(int gh);
+        std::pair<float, float> randMoveJail(std::shared_ptr<PacObject> obj);
+        bool checkColisionJail(std::pair<float, float> pos);
         //FIN GHOST
 
     protected:
