@@ -9,11 +9,14 @@
 
 Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest)
 {
-    _gPos = gPos;
+    _gPos.first = gPos.second;
+    _gPos.second = gPos.first;
     _dest = dest;
-    _stack.push(gPos);
-    _finalPath.push(gPos);
-    _cPos = gPos;
+    _dest.first = dest.second;
+    _dest.second = dest.first;
+    _stack.push(_gPos);
+    _finalPath.push(_gPos);
+    _cPos = _gPos;
     _maze = maze;
     _tmpMaze = maze;
     _maze[_cPos.first][_cPos.second] = 'W';
@@ -171,6 +174,8 @@ bool Backtrack::stopLoop()
 void Backtrack::reverseFinalPath()
 {
     std::stack<std::pair<float, float>> tmp;
+    std::pair<float, float> tmpReverse;
+    std::pair<float, float> tmpPair;
     std::cout << "A" << std::endl;
     while (!_finalPath.empty()) {
         tmp.push(_finalPath.top());
@@ -178,7 +183,10 @@ void Backtrack::reverseFinalPath()
     }
     std::cout << "B" << std::endl;
     while (!tmp.empty()) {
-        _finalPos.push_back(tmp.top());
+        tmpPair = tmp.top();
+        tmpReverse.first = tmpPair.second;
+        tmpReverse.second = tmpPair.first;
+        _finalPos.push_back(tmpReverse);
         tmp.pop();
     }
     std::cout << "C" << std::endl;

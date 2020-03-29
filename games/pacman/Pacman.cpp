@@ -83,12 +83,12 @@ Pacman::Pacman()
     std::srand(std::time(nullptr));
     objects = initGame();
     _curPos.push_back(std::pair<float, float>(10.0 * 32, 10.0 * 32));
-    _curPos.push_back(std::pair<float, float>(13.0 * 32, 9.0 * 32));
-    _curPos.push_back(std::pair<float, float>(13.0 * 32, 10.0 * 32));
-    _curPos.push_back(std::pair<float, float>(13.0 * 32, 11.0 * 32));
-    _pacPos = std::pair<float, float>(20.0 * 32, 10.0 * 32);
-    _jailPos = std::pair<float, float>(12.0 * 32, 11.0 * 32);
-    _ghostPath.resize(5);
+    _curPos.push_back(std::pair<float, float>(9.0 * 32, 13.0 * 32));
+    _curPos.push_back(std::pair<float, float>(10.0 * 32, 13.0 * 32));
+    _curPos.push_back(std::pair<float, float>(11.0 * 32, 13.0 * 32));
+    _pacPos = std::pair<float, float>(10.0 * 32, 20.0 * 32);
+    _jailPos = std::pair<float, float>(11.0 * 32, 12.0 * 32);
+    _ghostPath.resize(4);
     _ghostPath[0].push_back(_curPos[0]);
     _ghostPath[1].push_back(_curPos[1]);
     _ghostPath[2].push_back(_curPos[2]);
@@ -358,14 +358,9 @@ void Pacman::setPath(int gh)
     }
     std::cout << "before" << std::endl;
     Backtrack g(curPos, _maze, dest);
-/*     tmp = g.getPath();
+    tmp = g.getPath();
     _curPos[gh] = tmp[0];
-    _ghostPath[gh] = tmp; */
-/*     _ghostPath[gh] = tmp;
-    _curPos[gh] = _ghostPath[gh][0]; */
-/*     _curPos[gh] = tmp[0];
     _ghostPath[gh] = tmp;
-    _curPos[gh] = _ghostPath[gh][0]; */
 }
 
 void Pacman::isNewGhostPath()
@@ -379,34 +374,34 @@ void Pacman::isNewGhostPath()
 void Pacman::setGhostAnim(int gh)
 {
     if (_curPos[gh].first < _ghostPath[gh][0].first)
-        pacRects[gh+3] = downAnim[gh];
-    if (_curPos[gh].first > _ghostPath[gh][0].first)
-        pacRects[gh+3] = upAnim[gh];
-    if (_curPos[gh].second < _ghostPath[gh][0].second)
-        pacRects[gh+3] = rightAnim[gh];
-    if (_curPos[gh].second > _ghostPath[gh][0].second)
         pacRects[gh+3] = leftAnim[gh];
+    if (_curPos[gh].first > _ghostPath[gh][0].first)
+        pacRects[gh+3] = rightAnim[gh];
+    if (_curPos[gh].second < _ghostPath[gh][0].second)
+        pacRects[gh+3] = downAnim[gh];
+    if (_curPos[gh].second > _ghostPath[gh][0].second)
+        pacRects[gh+3] = upAnim[gh];
 }
 
 void Pacman::setGhostPos(std::list<std::shared_ptr<PacObject>> obj)
 {
     std::shared_ptr<PacObject> tmp;
-    auto it = obj.begin();
+    size_t gh = 0;
 
-    for (size_t gh = 0; gh != 4; gh++) {
+    for (auto it = obj.begin(); gh != 4; ++it) {
         tmp = *it;
-        /* setGhostAnim(gh + 1); */
+        setGhostAnim(gh);
         tmp->setPos(_ghostPath[gh][0]);
         _curPos[gh] = _ghostPath[gh][0];
         _ghostPath[gh].erase(_ghostPath[gh].begin());
-        ++it;
+        gh++;
     }
 }
 
 bool Pacman::ghColisionPac(int gh)
 {
-    if (_curPos[0].first == _pacPos.first
-    && _curPos[0].second == _pacPos.second)
+    if (_curPos[gh].first == _pacPos.first
+    && _curPos[gh].second == _pacPos.second)
         return true;
     return false;
 }
@@ -433,10 +428,18 @@ void Pacman::isGhMeetPac()
 
 } */
 
+bool Pacman::inJail(int gh)
+{
+    if (_curPos[gh].second >= 12 * 32 && _curPos[gh].second <= 13 * 32
+    && _curPos[gh].first >= 9 * 32 && _curPos[gh].first <= 11 * 32)
+        return false;
+    return true;
+}
+
 void Pacman::jailGhost()
 {
     for (size_t gh = 0; gh != 4; gh++) {
-        if (_isJail[gh] == true) {
+        if (_isJail[gh] == true && inJail(gh)) {
             return;
         }
     }
@@ -461,15 +464,15 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
 {
     static bool enc = true;
 /*     std::cout << _timerPath << std::endl; */
-/*     if (_timerPath >= 3) */
+    /* if (_timerPath >= 3) */
     if (enc) {
         isNewGhostPath();           //get Path
         enc = false;
     }
     setGhostPos(obj);           //set Path
-/*     isGhMeetPac();              //checkJail
+    isGhMeetPac();              //checkJail
     jailGhost();                //behavior in jail
-    checkTimers();            //restar clock */
+    /* checkTimers();            //restar clock */
 }
 
 

@@ -45,6 +45,7 @@ class Pacman : public IGame {
         void setGhostAnim(int gh);
         void isGhMeetPac();
         void isNewGhostPath();
+        bool inJail(int gh);
         //FIN GHOST
 
     protected:
