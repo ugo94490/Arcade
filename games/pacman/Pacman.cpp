@@ -212,7 +212,10 @@ void Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    usleep(100000);
+    int var = 0;
+    /* usleep(100000); */
+    while (var != 10)
+        var = inc(var);
     //_timerPath = inc(_timerPath);
     moveGhost(obj);
     if (c < 1 || c > 4)
