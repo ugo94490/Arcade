@@ -53,6 +53,7 @@ class Pacman : public IGame {
         std::pair<float, float> randMoveJail(std::shared_ptr<PacObject> obj);
         bool checkColisionJail(std::pair<float, float> pos);
         void setFirstPath();
+        void PathAgain(std::pair<float, float> curPos, std::pair<float, float> dest, int gh);
         //FIN GHOST
 
     protected:
@@ -63,6 +64,8 @@ class Pacman : public IGame {
         size_t idxAnimPac = 0;
         bool _pacgum = true;
         clock_t _timerGum = 0;
+        size_t _star = 188;
+        size_t _nbPacgum = 4;
 
         //GHOST
         std::vector<std::vector<std::pair<float, float>>> _ghostPath;

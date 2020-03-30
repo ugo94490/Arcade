@@ -15,7 +15,7 @@
 using namespace std;
 
 static Rect pacRects[11] = {
-    {50, 72, 25, 25}, //playerfront
+    {95, 72, 25, 25}, //playerfront
     {30, 95, 22, 22}, //maze
     {0, 0, 0, 0}, // qdoor
     {144, 144, 25, 25}, // ghost1up
@@ -76,18 +76,22 @@ static const Rect deadAnim[2] = {
     {144, 96, 25, 25}
 };
 
+
+
 static const char pacFlags[12] = "PX-RBOY*G ";
+
+
 
 Pacman::Pacman()
 {
     std::srand(std::time(nullptr));
     objects = initGame();
-    _curPos.push_back(std::pair<float, float>(10.0 * 32, 10.0 * 32));
-    _curPos.push_back(std::pair<float, float>(9.0 * 32, 13.0 * 32));
-    _curPos.push_back(std::pair<float, float>(10.0 * 32, 13.0 * 32));
-    _curPos.push_back(std::pair<float, float>(11.0 * 32, 13.0 * 32));
-    _pacPos = std::pair<float, float>(10.0 * 32, 20.0 * 32);
-    _jailPos = std::pair<float, float>(11.0 * 32, 12.0 * 32);
+    _curPos.push_back(std::pair<float, float>(10.0 * 16, 10.0 * 16));
+    _curPos.push_back(std::pair<float, float>(9.0 * 16, 13.0 * 16));
+    _curPos.push_back(std::pair<float, float>(10.0 * 16, 13.0 * 16));
+    _curPos.push_back(std::pair<float, float>(11.0 * 16, 13.0 * 16));
+    _pacPos = std::pair<float, float>(10.0 * 16, 20.0 * 16);
+    _jailPos = std::pair<float, float>(11.0 * 16, 12.0 * 16);
     _ghostPath.resize(4);
     _ghostPath[0].push_back(_curPos[0]);
     _ghostPath[1].push_back(_curPos[1]);
@@ -137,7 +141,7 @@ std::list<std::shared_ptr<PacObject>> Pacman::initGame(void)
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
-            ptr = createObject(float(j) * 32.0, float(i) * 32.0, line[j]);
+            ptr = createObject(float(j) * 16.0, float(i) * 16.0, line[j]);
             if (ptr != NULL && (ptr->getType() == PacObject::PLAYER || ptr->getType() == PacObject::RED ||
             ptr->getType() == PacObject::BLUE || ptr->getType() == PacObject::ORANGE ||
             ptr->getType() == PacObject::YELLOW))
@@ -198,17 +202,13 @@ void Pacman::animPacman()
 
 void Pacman::handleEvents(const unsigned char &c)
 {
-    size_t tmpDir = 2;
+    static size_t tmpDir = 2;
     static clock_t start = 0;
     static clock_t timer = 0;
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    if (clock() - start > 10000000) {
-        if (c < 1 || c > 4)
-            tmpDir = _dir;
-        else
-            tmpDir = c;
+    /* if (clock() - start > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
                 _pacgum = false;
@@ -220,20 +220,28 @@ void Pacman::handleEvents(const unsigned char &c)
         }
         if (!player)
             throw("Player does not exist");
-        if (clock() - timer > 150000) {
-            timer = clock();
-            moveGhost(obj);
-            move_object(player, tmpDir);
+        if (c < 1 || c > 4)
+            tmpDir = _dir;
+        else {
+            tmpDir = c;
+            if (tmpDir != _dir)
+                move_object(player, tmpDir);
         }
-        gameOver();
-        start = 0;
-    }
+        if (clock() - timer > 165000) {
+            timer = clock();
+            move_object(player, tmpDir);
+            moveGhost(obj);
+        }
+        if (gameOver())
+            exit(84);
+        /* start = 0;
+    } */
 }
 
 bool Pacman::gameOver()
 {
-    /* if (PacObject::getStar() == 0)
-        return false; */
+    if (_star == 0)
+        return false;
     return _lost;
 }
 
@@ -270,12 +278,14 @@ void Pacman::checkStar(std::pair<float, float> pos)
             type = it->get()->getType();
             if (type == PacObject::STAR) {
                 *it = createObject(pos.first, pos.second, ' ');
+                _star--;
                 break;
             }
             if (type == PacObject::GOLD) {
                 *it = createObject(pos.first, pos.second, ' ');
                 _pacgum = true;
                 _timerGum = clock();
+                _nbPacgum--;
                 break;
             }
         }
@@ -300,22 +310,22 @@ int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
     std::pair<float, float> pos;
 
     if (direction == 1) {
-        pos = std::pair<float, float>(obj->getPos().first - 32.0, obj->getPos().second);
+        pos = std::pair<float, float>(obj->getPos().first - 16.0, obj->getPos().second);
         if (oldDir != direction)
             idxAnimPac = 0;
     }
     if (direction == 2) {
-        pos = std::pair<float, float>(obj->getPos().first + 32.0, obj->getPos().second);
+        pos = std::pair<float, float>(obj->getPos().first + 16.0, obj->getPos().second);
         if (oldDir != direction)
             idxAnimPac = 2;
     }
     if (direction == 3) {
-        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 32.0);
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 16.0);
         if (oldDir != direction)
             idxAnimPac = 4;
     }
     if (direction == 4) {
-        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 16.0);
         if (oldDir != direction)
             idxAnimPac = 6;
     }
@@ -350,9 +360,9 @@ void Pacman::setFirstPath()
     dest.push_back(std::pair<float, float>(5, 13));
     dest.push_back(std::pair<float, float>(19, 4));
     for (size_t gh = 0; gh != 4; gh++) {
-        curPos.first = _curPos[gh].first / 32;
-        curPos.second = _curPos[gh].second / 32;
-        Backtrack g(curPos, _maze, dest[gh]);
+        curPos.first = _curPos[gh].first / 16;
+        curPos.second = _curPos[gh].second / 16;
+        Backtrack g(curPos, _maze, dest[gh], false);
         tmp = g.getPath();
         _curPos[gh] = tmp[0];
         _ghostPath[gh] = tmp;
@@ -361,19 +371,21 @@ void Pacman::setFirstPath()
 
 void Pacman::setPath(int gh)
 {
+    bool pacDest = false;
     std::vector<std::pair<float, float>> tmp;
     std::pair<float, float> curPos;
     std::pair<float, float> dest;
 
-    curPos.first = _curPos[gh].first / 32;
-    curPos.second = _curPos[gh].second / 32;
+    curPos.first = _curPos[gh].first / 16;
+    curPos.second = _curPos[gh].second / 16;
     if (_isJail[gh] == false) {
-        dest.first = _pacPos.first / 32;
-        dest.second = _pacPos.second / 32;
+        dest.first = _pacPos.first / 16;
+        dest.second = _pacPos.second / 16;
+        pacDest = true;
     }
     else
         dest = std::pair<float, float>(11, 12);
-    Backtrack g(curPos, _maze, dest);
+    Backtrack g(curPos, _maze, dest, pacDest);
     tmp = g.getPath();
     _curPos[gh] = tmp[0];
     _ghostPath[gh] = tmp;
@@ -454,8 +466,8 @@ void Pacman::isGhMeetPac()
 //x 9 et 12 y 12 et 13
 bool Pacman::inJail(int gh)
 {
-    if (_curPos[gh].second >= 12 * 32 && _curPos[gh].second <= 13 * 32
-    && _curPos[gh].first >= 9 * 32 && _curPos[gh].first <= 12 * 32)
+    if (_curPos[gh].second >= 12 * 16 && _curPos[gh].second <= 13 * 16
+    && _curPos[gh].first >= 9 * 16 && _curPos[gh].first <= 12 * 16)
         return true;
     return false;
 }
@@ -481,13 +493,13 @@ std::pair<float, float> Pacman::randMoveJail(std::shared_ptr<PacObject> obj)
     std::pair<float, float> pos;
 
     if (dir == 1)
-        pos = std::pair<float, float>(obj->getPos().first - 32.0, obj->getPos().second);
+        pos = std::pair<float, float>(obj->getPos().first - 16.0, obj->getPos().second);
     if (dir == 2)
-        pos = std::pair<float, float>(obj->getPos().first + 32.0, obj->getPos().second);
+        pos = std::pair<float, float>(obj->getPos().first + 16.0, obj->getPos().second);
     if (dir == 3)
-        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 32.0);
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second - 16.0);
     if (dir == 4)
-        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
+        pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 16.0);
     if (checkColisionJail(pos))
         return randMoveJail(obj);
     else
@@ -522,20 +534,22 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
 {
     static clock_t timer = 0;
     static bool first = true;
-/*     std::cout << _timerPath << std::endl; */
-    /* if (_timerPath >= 3) */
-    isGhMeetPac();              //checkJail
+
     if (first) {
         setFirstPath();
         first = false;
     }
-    if (clock() - timer >= 7000000) {
+    if (clock() - timer >= 2000000) {
         isNewGhostPath();
-        std::cout << "COUCOU" << std::endl;
         timer = clock();
+    }
+    for (size_t gh = 0; gh != 4; gh++) {
+        if (_ghostPath[gh].empty())
+            setPath(gh);
     }
     setGhostPos(obj);           //set Path
     jailGhost();                //behavior in jail
+    isGhMeetPac();              //checkJail
     /* checkTimers();            //restar clock */
 }
 

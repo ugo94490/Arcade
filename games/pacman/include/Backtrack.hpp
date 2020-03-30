@@ -18,7 +18,7 @@
 
 class Backtrack {
     public:
-        Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest);
+        Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest, bool pacDest);
         void createMaze();
         void recBacktracking();
         void ctrBacktracking();
@@ -53,7 +53,7 @@ class Backtrack {
         int _sizeX = 21;
         int _sizeY = 26;
 
-        bool _pacDest = true;
+        bool _pacDest;
 };
 
 #endif /* !BACKTRACK_HPP_ */

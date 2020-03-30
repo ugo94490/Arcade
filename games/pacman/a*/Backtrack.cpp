@@ -194,8 +194,8 @@ void Backtrack::convertForDisplay()
     std::cout << "C" << std::endl;
 
     for (size_t idx = 0; idx != _finalPos.size(); idx++) {
-        tmpReverse.first = _finalPos[idx].second * 32;
-        tmpReverse.second = _finalPos[idx].first * 32;
+        tmpReverse.first = _finalPos[idx].second * 16;
+        tmpReverse.second = _finalPos[idx].first * 16;
         _finalPos[idx].first = tmpReverse.first;
         _finalPos[idx].second = tmpReverse.second;
     }
