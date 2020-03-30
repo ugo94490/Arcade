@@ -19,6 +19,7 @@ Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze
     _maze = maze;
     _tmpMaze = maze;
     _maze[_cPos.first][_cPos.second] = 'W';
+    std::cout << _dest.first  << " ; " << _dest.second << std::endl;
     ctrBacktracking();
 }
 

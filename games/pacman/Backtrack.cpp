@@ -19,9 +19,8 @@ Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze
     _cPos = _gPos;
     _maze = maze;
     _tmpMaze = maze;
-    std::cout << "put W" << std::endl;
+    _maze[_dest.first][_dest.second] = 'T';
     _maze[_cPos.first][_cPos.second] = 'W';
-    std::cout << "put W" << std::endl;
     ctrBacktracking();
 }
 
@@ -45,6 +44,8 @@ bool Backtrack::checkMazePos(int y, int x)
     if (x <= 0 || y <= 0)
         return false;
     if (_maze[y][x] != 'X' && _maze[y][x] != 'W')
+        return true;
+    if (_pacDest == false && _maze[y][x] != '-')
         return true;
     return false;
 }
@@ -74,16 +75,6 @@ void Backtrack::assignPath(int y, int x)
     _finalPath.push(_cPos);
 }
 
-//first = y; second = x
-
-/* void Backtrack::editWay()
-{
-    if (_cPos.first == _dest.first && _cPos.second == _dest.second) {
-        _dest.first = 13;
-        _dest.second = 11;
-    }
-} */
-
 void Backtrack::deblock()
 {
     if (checkMazePos(_cPos.first, _cPos.second + 1)) {
@@ -108,7 +99,8 @@ void Backtrack::recBacktracking()
 {
     int nbWay = checkOtherWay(_cPos.first, _cPos.second);
 
-    /* editWay(); */
+    if (!stopLoop())
+        return;
     if (_cPos.first < _dest.first && checkMazePos(_cPos.first + 1, _cPos.second)) {
             assignPath(_cPos.first + 1, _cPos.second);
             return recBacktracking();
@@ -173,9 +165,10 @@ bool Backtrack::stopLoop()
         &&_cPos.second >= 9 && _cPos.second <= 11)
             return false;
     }
-    else if (_pacDest == true)
+    else if (_pacDest == true) {
         if (_cPos == _dest)
             return false;
+    }
     return true;
 }
 
@@ -183,12 +176,10 @@ void Backtrack::reverseFinalPath()
 {
     std::stack<std::pair<float, float>> tmp;
 
-    std::cout << "A" << std::endl;
     while (!_finalPath.empty()) {
         tmp.push(_finalPath.top());
         _finalPath.pop();
     }
-    std::cout << "B" << std::endl;
     while (!tmp.empty()) {
         _finalPos.push_back(tmp.top());
         tmp.pop();
@@ -198,7 +189,6 @@ void Backtrack::reverseFinalPath()
 void Backtrack::convertForDisplay()
 {
     std::pair<float, float> tmpReverse;
-    std::cout << "C" << std::endl;
 
     for (size_t idx = 0; idx != _finalPos.size(); idx++) {
         tmpReverse.first = _finalPos[idx].second * 32;
@@ -206,27 +196,22 @@ void Backtrack::convertForDisplay()
         _finalPos[idx].first = tmpReverse.first;
         _finalPos[idx].second = tmpReverse.second;
     }
-    std::cout << "D" << std::endl;
 }
 
 void Backtrack::ctrBacktracking()
 {
-    std::cout << "loop " << std::endl;
     while (stopLoop()) {
-        std::cout << " IN loop " << std::endl;
-        /* if (_pacDest == false)
+        /* if (_pacDest == true)
             usleep(1000000); */
         newWay();
         recBacktracking();
-        /* if (_pacDest == false)
+        /* if (_pacDest == true)
             display(); */
     }
-    std::cout << "finish1" << std::endl;
     reverseFinalPath();
    /*  cleanFinalPath();
     displayTmp(); */
     convertForDisplay();
-    std::cout << "finish2" << std::endl;
 }
 
 std::vector<std::pair<float, float>> Backtrack::getPath() const
@@ -237,30 +222,3 @@ std::vector<std::pair<float, float>> Backtrack::getPath() const
 Backtrack::~Backtrack()
 {
 }
-
-/* int main(void)
-{
-    std::pair<int, int> pos = std::make_pair(1, 1);
-    std::pair<int, int> dest = std::make_pair(12, 11);
-    std::ifstream myfile ("map.txt");
-    std::vector<std::string> maze;
-    std::string line;
-
-    if (!myfile.is_open())
-        throw(std::string("Could not open pacman map"));
-    for (int i = 0; !myfile.eof(); i++) {
-        getline (myfile, line);
-        maze.push_back(line + '\n');
-    }
-    myfile.close();
-    Backtrack p(pos, maze, dest);
-    std::vector<std::vector<std::pair<float, float>>> tmpTmp;
-    std::vector<std::pair<float, float>> tmp = p.getPath();
-
-    for (size_t i = 0; i != tmp.size(); i++) {
-        std::cout << tmp[i].first << " ; " << tmp[i].second << std::endl;
-    }
-    tmpTmp.resize(1);
-    tmpTmp[0] = tmp;
-    return 0;
-} */

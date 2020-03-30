@@ -52,15 +52,17 @@ class Pacman : public IGame {
         bool inJail(int gh);
         std::pair<float, float> randMoveJail(std::shared_ptr<PacObject> obj);
         bool checkColisionJail(std::pair<float, float> pos);
+        void setFirstPath();
         //FIN GHOST
 
     protected:
         std::list<std::shared_ptr<PacObject>> objects;
     private:
         bool _lost = false;
-        size_t _dir = 1;
+        size_t _dir = 2;
         size_t idxAnimPac = 0;
         bool _pacgum = true;
+        clock_t _timerGum = 0;
 
         //GHOST
         std::vector<std::vector<std::pair<float, float>>> _ghostPath;
