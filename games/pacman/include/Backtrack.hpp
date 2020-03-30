@@ -26,7 +26,7 @@ class Backtrack {
         void display();
         int checkPosX();
         int checkPosY();
-        bool checkMazePos(int x, int y);
+        bool checkMazePos(size_t x, size_t y);
         int checkOtherWay(int y, int x);
         void assignPath(int x, int y);
         void newWay();

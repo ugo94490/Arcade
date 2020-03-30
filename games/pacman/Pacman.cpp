@@ -232,6 +232,7 @@ void Pacman::handleEvents(const unsigned char &c)
             move_object(player, tmpDir);
             moveGhost(obj);
         }
+        /* gameOver(); */
         if (gameOver())
             exit(84);
         /* start = 0;

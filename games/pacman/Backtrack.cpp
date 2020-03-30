@@ -36,9 +36,10 @@ void Backtrack::display()
 //0 = egal ; 1 = toLow ; 2 = toHigh
 //0 = egal ; 1 = toRight ; 2 = toLeft
 
-bool Backtrack::checkMazePos(int y, int x)
+bool Backtrack::checkMazePos(size_t y, size_t x)
 {
-    if (x >= _sizeX || y >= _sizeY)
+    std::cout << " maze x: " << _maze[y].size() << " maze y:" << _maze.size() << std::endl;
+    if (x >= _maze[y].size() || y >= _maze.size())
         return false;
     if (x <= 0 || y <= 0)
         return false;
