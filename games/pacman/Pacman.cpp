@@ -205,7 +205,7 @@ void Pacman::animPacman()
     }
 }
 
-void Pacman::handleEvents(const unsigned char &c)
+int Pacman::handleEvents(const unsigned char &c)
 {
     static size_t tmpDir = 2;
     static clock_t start = 0;
@@ -243,6 +243,7 @@ void Pacman::handleEvents(const unsigned char &c)
             exit(84);
         /* start = 0;
     } */
+    return 0;
 }
 
 bool Pacman::gameOver()

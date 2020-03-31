@@ -24,7 +24,7 @@ class Pacman : public IGame {
         Pacman();
         ~Pacman();
         std::list<std::shared_ptr<PacObject>> initGame(void);
-        void handleEvents(const unsigned char &c);
+        int handleEvents(const unsigned char &c);
         void updateGame(void) {}
         Rect getAppearanceRectIdx(int idx);
         char getAppearanceCharIdx(int idx);
