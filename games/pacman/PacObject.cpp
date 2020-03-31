@@ -48,16 +48,6 @@ void PacObject::setType()
     this->type = ' ';
 }
 
-void PacObject::setStar()
-{
-    this->star -= 1;
-}
-
-size_t PacObject::getStar(void) const
-{
-    return star;
-}
-
 void PacObject::setPos(std::pair<float, float> pos)
 {
     this->pos = pos;
