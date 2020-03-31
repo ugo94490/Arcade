@@ -54,6 +54,7 @@ class Pacman : public IGame {
         bool checkColisionJail(std::pair<float, float> pos);
         void setFirstPath();
         void PathAgain(std::pair<float, float> curPos, std::pair<float, float> dest, int gh);
+        void setFirst(int gh);
         //FIN GHOST
 
     protected:
@@ -62,7 +63,7 @@ class Pacman : public IGame {
         bool _lost = false;
         size_t _dir = 2;
         size_t idxAnimPac = 0;
-        bool _pacgum = true;
+        bool _pacgum = false;
         clock_t _timerGum = 0;
         size_t _star = 188;
         size_t _nbPacgum = 4;
@@ -73,7 +74,7 @@ class Pacman : public IGame {
         std::vector<std::string> _maze;
         size_t _timerPath = 0;
         std::vector<bool> _isJail = {false, false, false, false};
-        std::vector<size_t> _timerJail = {0, 0, 0, 0};
+        std::vector<clock_t> _timerJail = {0, 0, 0, 0};
         std::pair<float, float> _pacPos;
         std::pair<float, float> _jailPos;
 };

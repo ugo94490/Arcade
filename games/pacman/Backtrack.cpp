@@ -9,6 +9,8 @@
 
 Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest, bool pacDest)
 {
+    std::cout << "pos :" << gPos.first << " ; " << gPos.second << std::endl;
+    std::cout << "pos :" << dest.first << " ; " << dest.second << std::endl;
     _pacDest = pacDest;
     _gPos.first = gPos.second;
     _gPos.second = gPos.first;
@@ -38,7 +40,7 @@ void Backtrack::display()
 
 bool Backtrack::checkMazePos(size_t y, size_t x)
 {
-    std::cout << " maze x: " << _maze[y].size() << " maze y:" << _maze.size() << std::endl;
+    /* std::cout << " maze x: " << _maze[y].size() << " maze y:" << _maze.size() << std::endl; */
     if (x >= _maze[y].size() || y >= _maze.size())
         return false;
     if (x <= 0 || y <= 0)
@@ -205,8 +207,8 @@ void Backtrack::ctrBacktracking()
         /* display(); */
     }
     reverseFinalPath();
-   /*  cleanFinalPath();
-    displayTmp(); */
+    cleanFinalPath();
+    displayTmp();
     convertForDisplay();
 }
 
