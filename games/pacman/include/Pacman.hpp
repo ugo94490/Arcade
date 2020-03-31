@@ -24,7 +24,7 @@ class Pacman : public IGame {
         Pacman();
         ~Pacman();
         std::list<std::shared_ptr<PacObject>> initGame(void);
-        int handleEvents(const unsigned char &c);
+        void handleEvents(const unsigned char &c);
         void updateGame(void) {}
         Rect getAppearanceRectIdx(int idx);
         char getAppearanceCharIdx(int idx);
@@ -37,8 +37,6 @@ class Pacman : public IGame {
         std::list<std::shared_ptr<PacObject>> filleObj();
         bool gameOver();
         bool isPriority(std::shared_ptr<PacObject> tmpObj);
-        int getScore();
-
         void animPacman();
 
         //GHOST
@@ -63,7 +61,6 @@ class Pacman : public IGame {
         std::list<std::shared_ptr<PacObject>> objects;
     private:
         bool _lost = false;
-        int score = 0;
         size_t _dir = 2;
         size_t idxAnimPac = 0;
         bool _pacgum = false;

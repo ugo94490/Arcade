@@ -207,7 +207,7 @@ void Backtrack::ctrBacktracking()
         /* display(); */
     }
     reverseFinalPath();
-/*     cleanFinalPath();
+    /* cleanFinalPath();
     displayTmp(); */
     convertForDisplay();
 }

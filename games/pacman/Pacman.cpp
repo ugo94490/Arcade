@@ -109,11 +109,6 @@ int randPos()
     return std::rand() % 4 + 1;
 }
 
-int Pacman::getScore()
-{
-    return (score);
-}
-
 /* void Pacman::displayGameOver(score)
 {
     //afficher game over et score
@@ -210,7 +205,7 @@ void Pacman::animPacman()
     }
 }
 
-int Pacman::handleEvents(const unsigned char &c)
+void Pacman::handleEvents(const unsigned char &c)
 {
     static size_t tmpDir = 2;
     static clock_t start = 0;
@@ -218,6 +213,7 @@ int Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
+    /* std::cout << "star : " << _star << std::endl; */
     /* if (clock() - start > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
@@ -247,7 +243,6 @@ int Pacman::handleEvents(const unsigned char &c)
             exit(84);
         /* start = 0;
     } */
-    return 0;
 }
 
 bool Pacman::gameOver()
@@ -306,13 +301,13 @@ void Pacman::checkStar(std::pair<float, float> pos)
 
 std::pair<float, float> Pacman::checkDoor(std::pair<float, float> pos)
 {
-    std::pair<float, float> doorL = std::pair<float, float>(0.0, 416.0);
-    std::pair<float, float> doorR = std::pair<float, float>(640.0, 416.0);
+    std::pair<float, float> doorL = std::pair<float, float>(0.0, 208.0);
+    std::pair<float, float> doorR = std::pair<float, float>(320.0, 208.0);
 
     if (pos == doorR)
-        return std::pair<float, float>(32.0, 416.0);
+        return std::pair<float, float>(16.0, 208.0);
     if (pos == doorL)
-        return std::pair<float, float>(608.0, 416.0);
+        return std::pair<float, float>(304.0, 208.0);
     return pos;
 }
 
