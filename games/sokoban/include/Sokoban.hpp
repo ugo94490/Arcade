@@ -18,7 +18,7 @@ class Sokoban : public IGame {
         Sokoban();
         ~Sokoban();
         std::list<std::shared_ptr<SokoObject>> initGame(void) const;
-        void handleEvents(const unsigned char &c);
+        int handleEvents(const unsigned char &c);
         void updateGame(void) {}
         Rect getAppearanceRectIdx(int idx);
         char getAppearanceCharIdx(int idx);
@@ -26,10 +26,12 @@ class Sokoban : public IGame {
         std::shared_ptr<SokoObject> createObject(float posx, float posy, char c) const;
         std::shared_ptr<SokoObject> check_free(std::pair<float, float> pos) const;
         int move_object(std::shared_ptr<SokoObject> obj, int direction);
+        int getScore();
 
     protected:
         std::list<std::shared_ptr<SokoObject>> objects;
     private:
+        int score;
 };
 
 extern "C" {

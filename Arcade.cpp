@@ -55,6 +55,7 @@ int Arcade::loop()
     char input = 0;
     clock_t timer = 0;
     std::list<std::shared_ptr<IGameObject>> objects;
+    std::pair<float, float> pos = {1000, 100};
     if (!lib)
         return(84);
     while (on) {
@@ -69,9 +70,11 @@ int Arcade::loop()
                 return (0);
             if (input == -1)
                 switchlib();
-            game->handleEvents(input);
+            if (game->handleEvents(input) == 84)
+                return (84);
             game->updateGame();
             lib->draw(game);
+            lib->draw_score(game->getScore(), pos);
         }
     }
     return (0);

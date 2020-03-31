@@ -11,7 +11,7 @@ XXXXX*XXX X XXX*XXXXX
     X*X   R   X*X
     X*X X---X X*X
 XXXXX*X X   X X*XXXXX
-     *  XBOYX  *     
+     *  XBOYX  *
 XXXXX*X XXXXX X*XXXXX
     X*X       X*X
     X*X XXXXX X*X

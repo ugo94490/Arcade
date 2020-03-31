@@ -21,9 +21,10 @@ typedef struct Rect_s {
 class IGame {
     public:
         virtual ~IGame() = default;
-        virtual void handleEvents(const unsigned char &c) = 0;
+        virtual int handleEvents(const unsigned char &c) = 0;
         virtual void updateGame(void) = 0;
         virtual std::list<std::shared_ptr<IGameObject>> getObjects(void) const = 0;
         virtual Rect getAppearanceRectIdx(int idx) = 0;
         virtual char getAppearanceCharIdx(int idx) = 0;
+        virtual int getScore() = 0;
 };

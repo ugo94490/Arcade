@@ -23,10 +23,16 @@ static const char sokoChars[5] = "PXO#";
 Sokoban::Sokoban()
 {
     objects = initGame();
+    score = 0;
 }
 
 Sokoban::~Sokoban()
 {
+}
+
+int Sokoban::getScore()
+{
+    return (score);
 }
 
 std::list<std::shared_ptr<IGameObject>> Sokoban::getObjects(void) const
@@ -60,12 +66,12 @@ std::list<std::shared_ptr<SokoObject>> Sokoban::initGame(void) const
     return list;
 }
 
-void Sokoban::handleEvents(const unsigned char &c)
+int Sokoban::handleEvents(const unsigned char &c)
 {
     std::shared_ptr<SokoObject> player = NULL;
 
     if (c < 1 || c > 4)
-        return;
+        return (0);
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         if (it->get()->getType() == SokoObject::PLAYER) {
             player = *it;
@@ -75,6 +81,7 @@ void Sokoban::handleEvents(const unsigned char &c)
     if (!player)
         throw("Player does not exist");
     move_object(player, c);
+    return (0);
 }
 
 std::shared_ptr<SokoObject> Sokoban::createObject(float posx, float posy, char c) const
