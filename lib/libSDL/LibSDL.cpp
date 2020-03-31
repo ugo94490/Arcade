@@ -61,6 +61,9 @@ char LibSDL::getEvent()
                 case SDLK_DOWN: // Flèche bas
                     return (4);
                     break;
+                case SDLK_SPACE:
+                    return (5);
+                    break;
             }
             break;
     }
@@ -84,4 +87,9 @@ void LibSDL::draw(std::shared_ptr<IGame> game)
         SDL_BlitSurface(spritesheet, &sdlrect, window, &sdlpos);
     }
     SDL_Flip(window);
+}
+
+void LibSDL::draw_score(int score, std::pair<float, float> pos)
+{
+
 }

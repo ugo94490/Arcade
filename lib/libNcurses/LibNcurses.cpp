@@ -44,6 +44,8 @@ char LibNcurses::getEvent()
         return (3);
     if (ch == KEY_DOWN)
         return (4);
+    if (ch == 32)
+        return (5);
     return (0);
 }
 
@@ -60,4 +62,9 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
             printw("%c", game->getAppearanceCharIdx(it->get()->getAppearance()));
         }
     }
+}
+
+void LibNcurses::draw_score(int score, std::pair<float, float> pos)
+{
+
 }
