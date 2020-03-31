@@ -77,6 +77,11 @@ Pacman::~Pacman()
 {
 }
 
+int Pacman::getScore()
+{
+    return (score);
+}
+
 std::list<std::shared_ptr<IGameObject>> Pacman::getObjects(void) const
 {
     std::list<std::shared_ptr<IGameObject>> list;

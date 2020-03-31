@@ -17,6 +17,7 @@ class LibNcurses : public IGraphicLib {
         char getEvent();
         void draw(std::shared_ptr<IGame> game);
         void loadGame(const std::string &path);
+        void draw_score(int score, std::pair<float, float> pos);
 
     protected:
         WINDOW *window;

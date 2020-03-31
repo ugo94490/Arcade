@@ -39,12 +39,14 @@ class Pacman : public IGame {
         bool checkColisionGhost(std::pair<float, float> pos);
         bool gameOver();
         bool isPriority(std::shared_ptr<PacObject> tmpObj);
+        int getScore();
 
         void animPacman();
     protected:
         std::list<std::shared_ptr<PacObject>> objects;
     private:
         bool _lost = false;
+        int score = 0;
         size_t _dir = 1;
         size_t idxAnimPac = 0;
 };
