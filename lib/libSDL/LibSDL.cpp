@@ -88,3 +88,8 @@ void LibSDL::draw(std::shared_ptr<IGame> game)
     }
     SDL_Flip(window);
 }
+
+void LibSDL::draw_score(int score, std::pair<float, float> pos)
+{
+
+}

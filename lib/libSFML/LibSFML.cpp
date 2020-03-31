@@ -65,3 +65,19 @@ void LibSFML::draw(std::shared_ptr<IGame> game)
     }
     window.display();
 }
+
+void LibSFML::draw_score(int score, std::pair<float, float> pos)
+{
+    sf::Text text;
+    sf::Font font;
+    sf::Vector2f pos_txt = {(float) pos.first, (float) pos.second};
+    std::string str = "Score " + std::to_string(score);
+
+    font.loadFromFile("lib/libSFML/SNES.ttf");
+    text.setString(str);
+    text.setFont(font);
+    text.setCharacterSize(55);
+    text.setPosition(pos_txt);
+    window.draw(text);
+    window.display();
+}

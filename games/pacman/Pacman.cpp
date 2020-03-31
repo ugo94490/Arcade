@@ -109,6 +109,11 @@ int randPos()
     return std::rand() % 4 + 1;
 }
 
+int Pacman::getScore()
+{
+    return (score);
+}
+
 /* void Pacman::displayGameOver(score)
 {
     //afficher game over et score

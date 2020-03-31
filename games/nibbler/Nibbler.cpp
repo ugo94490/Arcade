@@ -26,6 +26,7 @@ Nibbler::Nibbler()
 {
     objects = initGame();
     nb_fruit = 0;
+    score = 0;
 }
 
 Nibbler::~Nibbler()
@@ -179,13 +180,42 @@ std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void)
     return list;
 }
 
+int Nibbler::check_dir(int direction)
+{
+    std::shared_ptr<NibObject> player = NULL;
+    std::pair<float, float> pos;
+
+    for (auto it = objects.begin(); it != objects.end(); ++it) {
+        if (it->get()->getType() == NibObject::PLAYER) {
+            player = *it;
+            break;
+        }
+    }
+    if (direction == 1)
+        pos = std::pair<float, float>(player->getPos().first - 32.0, player->getPos().second);
+    if (direction == 2)
+        pos = std::pair<float, float>(player->getPos().first + 32.0, player->getPos().second);
+    if (direction == 3)
+        pos = std::pair<float, float>(player->getPos().first, player->getPos().second - 32.0);
+    if (direction == 4)
+        pos = std::pair<float, float>(player->getPos().first, player->getPos().second + 32.0);
+    for (auto it = objects.begin(); it != objects.end(); ++it)
+        if (it->get()->getPos() == pos && it->get()->getType() == NibObject::TAIL)
+            return (84);
+    return (0);
+}
+
+int Nibbler::getScore()
+{
+    return (score);
+}
+
 int Nibbler::handleEvents(const unsigned char &c)
 {
     static clock_t timer = 0;
     static float mult = 1;
     std::shared_ptr<NibObject> player = NULL;
 
-    printf("%f\n", mult);
     if (c == 5) {
         if (mult >= 0.2)
             mult -= 0.10;
@@ -200,13 +230,19 @@ int Nibbler::handleEvents(const unsigned char &c)
     if (!player)
         throw("Player does not exist");
     if ((clock() - timer) > (1000000 * mult)) {
+        if (!(c < 1 || c > 4))
+            if (check_dir(c) == 0) {
+                prev_dir = direction;
+                direction = c;
+            }
         timer = clock();
+        score++;
         return (move_object(player, direction));
     } else if (!(c < 1 || c > 4)) {
-        direction = c;
-        /* if (check_dir(c) == 0)
+        if (check_dir(c) == 0) {
             prev_dir = direction;
-            direction = c;*/
+            direction = c;
+        }
         return (0);
     }
     return (0);
