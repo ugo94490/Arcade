@@ -213,7 +213,6 @@ int Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    std::cout << "star : " << _star << std::endl;
     /* if (clock() - start > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
