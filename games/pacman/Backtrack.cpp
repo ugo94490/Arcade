@@ -9,8 +9,8 @@
 
 Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest, bool pacDest)
 {
-    std::cout << "pos :" << gPos.first << " ; " << gPos.second << std::endl;
-    std::cout << "pos :" << dest.first << " ; " << dest.second << std::endl;
+    /* std::cout << "pos :" << gPos.first << " ; " << gPos.second << std::endl;
+    std::cout << "pos :" << dest.first << " ; " << dest.second << std::endl; */
     _pacDest = pacDest;
     _gPos.first = gPos.second;
     _gPos.second = gPos.first;
@@ -207,8 +207,8 @@ void Backtrack::ctrBacktracking()
         /* display(); */
     }
     reverseFinalPath();
-    cleanFinalPath();
-    displayTmp();
+    /* cleanFinalPath();
+    displayTmp(); */
     convertForDisplay();
 }
 
