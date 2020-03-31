@@ -307,13 +307,13 @@ void Pacman::checkStar(std::pair<float, float> pos)
 
 std::pair<float, float> Pacman::checkDoor(std::pair<float, float> pos)
 {
-    std::pair<float, float> doorL = std::pair<float, float>(0.0, 416.0);
-    std::pair<float, float> doorR = std::pair<float, float>(640.0, 416.0);
+    std::pair<float, float> doorL = std::pair<float, float>(0.0, 208.0);
+    std::pair<float, float> doorR = std::pair<float, float>(336.0, 208.0);
 
     if (pos == doorR)
-        return std::pair<float, float>(32.0, 416.0);
+        return std::pair<float, float>(16.0, 208.0);
     if (pos == doorL)
-        return std::pair<float, float>(608.0, 416.0);
+        return std::pair<float, float>(320.0, 208.0);
     return pos;
 }
 
