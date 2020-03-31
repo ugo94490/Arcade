@@ -18,4 +18,5 @@ class IGraphicLib {
         virtual char getEvent() = 0;
         virtual void draw(std::shared_ptr<IGame> game) = 0;
         virtual void loadGame(const std::string &gamename) = 0;
+        virtual void draw_score(int score, std::pair<float, float> pos) = 0;
 };

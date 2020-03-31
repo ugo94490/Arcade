@@ -23,10 +23,16 @@ static const char sokoChars[5] = "PXO#";
 Sokoban::Sokoban()
 {
     objects = initGame();
+    score = 0;
 }
 
 Sokoban::~Sokoban()
 {
+}
+
+int Sokoban::getScore()
+{
+    return (score);
 }
 
 std::list<std::shared_ptr<IGameObject>> Sokoban::getObjects(void) const

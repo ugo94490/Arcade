@@ -6,7 +6,8 @@
 ##
 
 SRC		=	Pacman.cpp		\
-			PacObject.cpp
+			PacObject.cpp	\
+			Backtrack.cpp	\
 
 SRC_T		=
 
@@ -20,7 +21,7 @@ NAME_T	=	unit_tests
 
 CC		=	g++
 
-CPPFLAGS = -I./include -I../../include
+CPPFLAGS = -I./include -I../../include -Wall -Wextra -g3
 
 TESTS_FLAGS	=	--coverage -lcriterion
 

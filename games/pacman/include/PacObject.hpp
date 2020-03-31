@@ -23,7 +23,6 @@ class PacObject : public IGameObject {
             GOLD,
             SPACE,
         };
-        size_t star = 188;
         PacObject(float posx, float posy, char c);
         ~PacObject();
         std::pair<float, float> getPos() const;
@@ -35,7 +34,6 @@ class PacObject : public IGameObject {
         size_t getStar() const;
 
     private:
-        /* size_t star = 188; */
         std::pair<float, float> pos;
         char appearance;
         char type;

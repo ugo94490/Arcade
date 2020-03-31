@@ -63,3 +63,8 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
         }
     }
 }
+
+void LibNcurses::draw_score(int score, std::pair<float, float> pos)
+{
+
+}
