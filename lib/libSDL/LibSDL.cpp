@@ -168,3 +168,8 @@ void LibSDL::draw_score(int score, std::pair<float, float> pos)
 {
 
 }
+
+void LibSDL::gameOver(int score)
+{
+
+}
