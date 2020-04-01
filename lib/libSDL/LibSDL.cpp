@@ -166,10 +166,19 @@ void LibSDL::draw(std::shared_ptr<IGame> game)
 
 void LibSDL::draw_score(int score, std::pair<float, float> pos)
 {
-
+    TTF_Init();
+    std::string str = "Score " + std::to_string(score);
+    TTF_Font *font = TTF_OpenFont("lib/libSFML/SNES.ttf", 55);
+    SDL_Color color = {255, 255, 255};
+    SDL_Surface *surface = TTF_RenderText_Solid(font, str.c_str(), color);
+    SDL_Rect rect = {(short)pos.first, (short)pos.second, 0, 0};
+    SDL_BlitSurface(surface, NULL, window, &rect);
+    SDL_Flip(window);
+    SDL_FreeSurface(surface);
+    TTF_Quit();
 }
 
 void LibSDL::gameOver(int score)
 {
-
+    
 }

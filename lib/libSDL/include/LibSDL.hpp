@@ -9,6 +9,7 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 #include "IGraphicLib.hpp"
 
 class LibSDL : public IGraphicLib {
