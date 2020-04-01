@@ -38,6 +38,7 @@ class Pacman : public IGame {
         int checkGameOver();
         bool isPriority(std::shared_ptr<PacObject> tmpObj);
         int getScore();
+        std::pair<float, float> deblockNewPos(std::pair<float, float> pos);
 
         void animPacman();
 
@@ -72,6 +73,7 @@ class Pacman : public IGame {
         size_t _nbPacgum = 4;
 
         //GHOST
+        std::vector<bool> _canExitJail = {false, false, false, false};
         std::vector<std::vector<std::pair<float, float>>> _ghostPath;
         std::vector<std::pair<float, float>> _curPos;
         std::vector<std::string> _maze;

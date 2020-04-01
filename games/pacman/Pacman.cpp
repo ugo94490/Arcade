@@ -384,6 +384,24 @@ void Pacman::setFirstPath()
     }
 }
 
+std::pair<float, float> Pacman::deblockNewPos(std::pair<float, float> pos)
+{
+    std::pair<float, float> tmpPos;
+    int dir = randPos();
+
+    if (dir == 1)
+        tmpPos = std::pair<float, float>(pos.first - 16, pos.second);
+    if (dir == 2)
+        tmpPos = std::pair<float, float>(pos.first + 16, pos.second);
+    if (dir == 3)
+        tmpPos = std::pair<float, float>(pos.first, pos.second - 16);
+    if (dir == 4)
+        tmpPos = std::pair<float, float>(pos.first, pos.second + 16);
+    if (checkColisionJail(pos))
+        return deblockNewPos(pos);
+    return tmpPos;
+}
+
 void Pacman::setPath(int gh)
 {
     bool pacDest = false;
@@ -405,13 +423,16 @@ void Pacman::setPath(int gh)
         tmp = g.getPath();
         _curPos[gh] = tmp[0];
         _ghostPath[gh] = tmp;
+    } else if (curPos == dest && _ghostPath[gh].empty()) {
+        _curPos[gh] = deblockNewPos(curPos);
+        _ghostPath[gh][0] = _curPos[gh];
     }
 }
 
 void Pacman::isNewGhostPath()
 {
     for (size_t gh = 0; gh != 4; gh++) {
-        if (_isJail[gh] == false)
+        if (_isJail[gh] == false && inJail(gh) == false)
             setPath(gh);
     }
 }
@@ -532,9 +553,13 @@ void Pacman::jailGhost()
 void Pacman::checkTimers()
 {
     for (size_t gh = 0; gh != 4; gh++) {
-        if (_isJail[gh] == true && inJail(gh) && clock() - _timerJail[gh] >= 10000000) {
-            _isJail[gh] = false;
+        if (_isJail[gh] == true && inJail(gh) && clock() - _timerJail[gh] >= 10000000 && _canExitJail[gh] == false) {
+            _canExitJail[gh] = true;
             setFirst(gh);
+        }
+        if (_isJail[gh] == true && inJail(gh) == false && _canExitJail[gh]) {
+            _isJail[gh] = false;
+            _canExitJail[gh] = false;
         }
     }
 }
@@ -555,19 +580,14 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
         timer = clock();
     }
     for (size_t gh = 0; gh != 4; gh++) {
-        if (_ghostPath[gh].empty() && _isJail[gh] == false) {
+        if (_ghostPath[gh].empty() && inJail(gh) == false) {
             std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
             std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl;
             setPath(gh);
-        } else if (_ghostPath[gh].empty() && _isJail[gh] == false) {
-            std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
-            std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl;
-            setFirst(gh);
         }
     }
     //setFirst(int gh)
     setGhostPos(obj);           //set Path
-    jailGhost();                //behavior in jail
     isGhMeetPac();              //checkJail
     checkTimers();            //restar clock
 }
