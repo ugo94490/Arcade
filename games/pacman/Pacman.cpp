@@ -217,7 +217,6 @@ int Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    return 1;
     /* if (clock() - start > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
@@ -250,7 +249,7 @@ int Pacman::handleEvents(const unsigned char &c)
 int Pacman::checkGameOver()
 {
     if (_star == 0)
-        return -1;
+        return 1;
     return _lost;
 }
 
@@ -466,7 +465,7 @@ void Pacman::isGhMeetPac()
         if (_isJail[gh] == true)
             continue;
         if (_pacgum == false && ghColisionPac(gh)) {
-            _lost = -1;
+            _lost = 1;
             return;
         }
         else if (_pacgum == true && ghColisionPac(gh)) {
@@ -560,8 +559,13 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
             std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
             std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl;
             setPath(gh);
+        } else if (_ghostPath[gh].empty() && _isJail[gh] == false) {
+            std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
+            std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl;
+            setFirst(gh);
         }
     }
+    //setFirst(int gh)
     setGhostPos(obj);           //set Path
     jailGhost();                //behavior in jail
     isGhMeetPac();              //checkJail
