@@ -72,10 +72,9 @@ int Arcade::loop()
                 return (0);
             if (input == -1)
                 switchlib();
-            gameOver = game->handleEvents(input);
-            if (gameOver == 84)
-                return 84;
-            else if (gameOver == 1) {
+            if ((gameOver = game->handleEvents(input)) == 84)
+                return (84);
+            if (gameOver == 1) {
                 lib->gameOver(game->getScore());
                 break;
             }

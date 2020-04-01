@@ -302,7 +302,7 @@ int Nibbler::move_snake(std::shared_ptr<NibObject> obj, std::pair<float, float> 
             prev = tmp;
         }
     }
-    return (1);
+    return (0);
 }
 
 int Nibbler::moveAdd_snake(std::shared_ptr<NibObject> obj, std::pair<float, float> pos)
@@ -339,14 +339,12 @@ int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
     if (direction == 4)
         pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
     if (!obj)
-        return (84);
+        return (1);
     if (obj->getType() == NibObject::PLAYER) {
         if ((blocking = check_free(pos)) == NULL)
             return (move_snake(obj, pos));
-        else if (blocking->getType() == NibObject::TAIL) {
-            printf("ICI\n");
+        else if (blocking->getType() == NibObject::TAIL)
             return (0);
-        }
         else if (blocking->getType() == NibObject::STAR) {
             nb_fruit -= 1;
             ptr = createObject(blocking->getPos().first, blocking->getPos().second, ' ');
@@ -355,9 +353,9 @@ int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
             objects.push_front(ptr);
             return (0);
         }
-        return (84);
+        return (1);
     }
-    return (84);
+    return (1);
 }
 
 char Nibbler::getAppearanceCharIdx(int idx)
