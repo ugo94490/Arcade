@@ -57,6 +57,7 @@ int Arcade::loop()
     clock_t timer = 0;
     std::list<std::shared_ptr<IGameObject>> objects;
     std::pair<float, float> pos = {1000, 100};
+
     if (!lib)
         return(84);
     while (on) {
@@ -75,7 +76,7 @@ int Arcade::loop()
             if (gameOver == 84)
                 return 84;
             else if (gameOver == 1) {
-                Lib->gameOver(game->getScore());
+                lib->gameOver(game->getScore());
                 break;
             }
             game->updateGame();

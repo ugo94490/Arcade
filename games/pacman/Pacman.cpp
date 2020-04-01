@@ -12,6 +12,7 @@
 #include "Pacman.hpp"
 #include "Backtrack.hpp"
 
+
 static Rect pacRects[11] = {
     {95, 72, 25, 25}, //playerfront
     {30, 95, 22, 22}, //maze
@@ -216,6 +217,7 @@ int Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
+    return 1;
     /* if (clock() - start > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
