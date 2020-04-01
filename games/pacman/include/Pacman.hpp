@@ -35,7 +35,7 @@ class Pacman : public IGame {
         void checkStar(std::pair<float, float> pos);
         std::pair<float, float> checkDoor(std::pair<float, float> pos);
         std::list<std::shared_ptr<PacObject>> filleObj();
-        bool gameOver();
+        int checkGameOver();
         bool isPriority(std::shared_ptr<PacObject> tmpObj);
         int getScore();
 
@@ -62,7 +62,7 @@ class Pacman : public IGame {
     protected:
         std::list<std::shared_ptr<PacObject>> objects;
     private:
-        bool _lost = false;
+        int _lost = 0;
         int _score = 0;
         size_t _dir = 2;
         size_t idxAnimPac = 0;

@@ -12,8 +12,6 @@
 #include "Pacman.hpp"
 #include "Backtrack.hpp"
 
-using namespace std;
-
 static Rect pacRects[11] = {
     {95, 72, 25, 25}, //playerfront
     {30, 95, 22, 22}, //maze
@@ -81,7 +79,6 @@ static const Rect deadAnim[2] = {
 static const char pacFlags[12] = "PX-RBOY*G ";
 
 
-
 Pacman::Pacman()
 {
     std::srand(std::time(nullptr));
@@ -114,8 +111,9 @@ int Pacman::getScore()
     return _score;
 }
 
-/* void Pacman::displayGameOver(score)
+/* void Pacman::displayGameOver(int sore)
 {
+    getScore();
     //afficher game over et score
 } */
 
@@ -218,7 +216,6 @@ int Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    std::cout << "star : " << _star << std::endl;
     /* if (clock() - start > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
@@ -243,18 +240,15 @@ int Pacman::handleEvents(const unsigned char &c)
             move_object(player, tmpDir);
             moveGhost(obj);
         }
-        /* gameOver(); */
-        if (gameOver())
-            exit(84);
-        /* start = 0;
-    } */
-    return 0;
+        start = 0;
+    /* } */
+    return checkGameOver();
 }
 
-bool Pacman::gameOver()
+int Pacman::checkGameOver()
 {
     if (_star == 0)
-        return true;
+        return -1;
     return _lost;
 }
 
@@ -470,7 +464,7 @@ void Pacman::isGhMeetPac()
         if (_isJail[gh] == true)
             continue;
         if (_pacgum == false && ghColisionPac(gh)) {
-            _lost = true;
+            _lost = -1;
             return;
         }
         else if (_pacgum == true && ghColisionPac(gh)) {
@@ -549,6 +543,8 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
     static clock_t timer = 0;
     static bool first = true;
 
+    if (!first)
+        isGhMeetPac();
     if (first) {
         setFirstPath();
         first = false;
@@ -558,8 +554,11 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
         timer = clock();
     }
     for (size_t gh = 0; gh != 4; gh++) {
-        if (_ghostPath[gh].empty())
+        if (_ghostPath[gh].empty() && _isJail[gh] == false) {
+            std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
+            std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl;
             setPath(gh);
+        }
     }
     setGhostPos(obj);           //set Path
     jailGhost();                //behavior in jail

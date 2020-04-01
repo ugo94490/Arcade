@@ -9,7 +9,7 @@ SRC		=	Pacman.cpp		\
 			PacObject.cpp	\
 			Backtrack.cpp	\
 
-SRC_T		=
+SRC_T		= Backtrack.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
 
@@ -23,7 +23,7 @@ CC		=	g++
 
 CPPFLAGS = -I./include -I../../include -Wall -Wextra -g3
 
-TESTS_FLAGS	=	--coverage -lcriterion
+TESTS_FLAGS	= -I./include -I../../include --coverage -lcriterion
 
 RM		=	rm -f
 
@@ -32,6 +32,12 @@ $(NAME) 	: 	$(OBJ)
 			$(CC) $(CPPFLAGS) -shared -o $(NAME) $(OBJ)
 
 all		:	$(NAME)
+
+tests_run:
+	g++ -o $(NAME_T) $(SRC_T) $(TESTS_FLAGS) tests/test_A*.cpp
+	./unit_tests
+	@echo "GCC_unit_tests: [OK]"
+
 
 clean 		:
 			$(RM) $(OBJ) $(OBJ_T) *.gcno *.gcda
