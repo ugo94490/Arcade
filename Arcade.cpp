@@ -55,7 +55,7 @@ int Arcade::loop()
     char input = 0;
     clock_t timer = 0;
     std::list<std::shared_ptr<IGameObject>> objects;
-    std::pair<float, float> pos = {1000, 100};
+    std::pair<float, float> pos = {600, 100};
     if (!lib)
         return(84);
     while (on) {
