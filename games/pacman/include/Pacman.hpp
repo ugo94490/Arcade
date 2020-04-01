@@ -63,7 +63,7 @@ class Pacman : public IGame {
         std::list<std::shared_ptr<PacObject>> objects;
     private:
         bool _lost = false;
-        int score = 0;
+        int _score = 0;
         size_t _dir = 2;
         size_t idxAnimPac = 0;
         bool _pacgum = false;

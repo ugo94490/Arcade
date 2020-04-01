@@ -111,7 +111,7 @@ int randPos()
 
 int Pacman::getScore()
 {
-    return (score);
+    return _score;
 }
 
 /* void Pacman::displayGameOver(score)
@@ -292,6 +292,7 @@ void Pacman::checkStar(std::pair<float, float> pos)
             if (type == PacObject::STAR) {
                 *it = createObject(pos.first, pos.second, ' ');
                 _star--;
+                _score += 10;
                 break;
             }
             if (type == PacObject::GOLD) {
