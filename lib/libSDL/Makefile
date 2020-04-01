@@ -11,7 +11,7 @@ NAME	=	../lib_arcade_sdl.so
 
 CC		=	g++
 
-CPPFLAGS = -I./include -I../../include `sdl-config --libs --cflags` -lSDL_image 
+CPPFLAGS = -I./include -I../../include `sdl-config --libs --cflags` -lSDL_image -lSDL_ttf
 
 RM		=	rm -f
 
