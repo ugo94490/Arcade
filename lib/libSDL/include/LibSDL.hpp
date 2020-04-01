@@ -20,6 +20,7 @@ class LibSDL : public IGraphicLib {
         void draw(std::shared_ptr<IGame> game);
         void loadGame(const std::string &path);
         void draw_score(int score, std::pair<float, float> pos);
+        void gameOver(int score);
 
         Uint32 getpixel(SDL_Surface *surface, int x, int y);
         void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);

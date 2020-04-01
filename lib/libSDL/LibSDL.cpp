@@ -177,3 +177,8 @@ void LibSDL::draw_score(int score, std::pair<float, float> pos)
     SDL_FreeSurface(surface);
     TTF_Quit();
 }
+
+void LibSDL::gameOver(int score)
+{
+    
+}

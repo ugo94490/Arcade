@@ -51,12 +51,13 @@ void Arcade::loadgame(const std::string &gamestr)
 
 int Arcade::loop()
 {
+    int gameOver = 0;
     int on = 1;
     char input = 0;
     clock_t timer = 0;
-    int score = 0;
     std::list<std::shared_ptr<IGameObject>> objects;
-    std::pair<float, float> pos = {600, 100};
+    std::pair<float, float> pos = {1000, 100};
+
     if (!lib)
         return(84);
     while (on) {
@@ -71,8 +72,13 @@ int Arcade::loop()
                 return (0);
             if (input == -1)
                 switchlib();
-            if (game->handleEvents(input) == 84)
-                return (84);
+            gameOver = game->handleEvents(input);
+            if (gameOver == 84)
+                return 84;
+            else if (gameOver == 1) {
+                lib->gameOver(game->getScore());
+                break;
+            }
             game->updateGame();
             lib->draw(game);
             lib->draw_score(game->getScore(), pos);

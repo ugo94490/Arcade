@@ -81,3 +81,24 @@ void LibSFML::draw_score(int score, std::pair<float, float> pos)
     window.draw(text);
     window.display();
 }
+
+void LibSFML::gameOver(int score)
+{
+    static clock_t timer = 0;
+    sf::Text text;
+    sf::Font font;
+    std::pair<float, float> posScore = std::pair<float, float>(250, 300);
+    sf::Vector2f pos_txt = {(float) 150, (float) 100};
+    std::string str = "GAME OVER";
+
+    while (clock() - timer <= 6000000) {
+        font.loadFromFile("lib/libSFML/SNES.ttf");
+        text.setString(str);
+        text.setFont(font);
+        text.setCharacterSize(155);
+        text.setPosition(pos_txt);
+        draw_score(score, posScore);
+        window.draw(text);
+        window.display();
+    }
+}
