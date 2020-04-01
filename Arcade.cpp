@@ -51,6 +51,7 @@ void Arcade::loadgame(const std::string &gamestr)
 
 int Arcade::loop()
 {
+    int gameOver = 0;
     int on = 1;
     char input = 0;
     clock_t timer = 0;
@@ -70,8 +71,13 @@ int Arcade::loop()
                 return (0);
             if (input == -1)
                 switchlib();
-            if (game->handleEvents(input) == 84)
-                return (84);
+            gameOver = game->handleEvents(input);
+            if (gameOver == 84)
+                return 84;
+            else if (gameOver == 1) {
+                Lib->gameOver(game->getScore());
+                break;
+            }
             game->updateGame();
             lib->draw(game);
             lib->draw_score(game->getScore(), pos);
