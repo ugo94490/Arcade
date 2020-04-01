@@ -339,7 +339,7 @@ int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
     if (direction == 4)
         pos = std::pair<float, float>(obj->getPos().first, obj->getPos().second + 32.0);
     if (!obj)
-        return (84);
+        return (1);
     if (obj->getType() == NibObject::PLAYER) {
         if ((blocking = check_free(pos)) == NULL)
             return (move_snake(obj, pos));
@@ -353,9 +353,9 @@ int Nibbler::move_object(std::shared_ptr<NibObject> obj, int direction)
             objects.push_front(ptr);
             return (0);
         }
-        return (84);
+        return (1);
     }
-    return (84);
+    return (1);
 }
 
 char Nibbler::getAppearanceCharIdx(int idx)
