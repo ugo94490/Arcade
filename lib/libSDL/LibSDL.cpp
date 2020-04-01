@@ -8,6 +8,9 @@
 #include <iostream>
 #include "LibSDL.hpp"
 
+static const double factor_x = 0.5;
+static const double factor_y = 0.5;
+
 LibSDL::LibSDL()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
@@ -24,12 +27,84 @@ LibSDL::~LibSDL()
     SDL_Quit();
 }
 
+Uint32 LibSDL::getpixel(SDL_Surface *surface, int x, int y)
+{
+    int bpp = surface->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        return *p;
+        break;
+    case 2:
+        return *(Uint16 *)p;
+        break;
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+        break;
+    case 4:
+        return *(Uint32 *)p;
+        break;
+    default:
+        return 0;
+    }
+}
+
+void LibSDL::putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+{
+    int bpp = surface->format->BytesPerPixel;
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        *p = pixel;
+        break;
+    case 2:
+        *(Uint16 *)p = pixel;
+        break;
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+            p[0] = (pixel >> 16) & 0xff;
+            p[1] = (pixel >> 8) & 0xff;
+            p[2] = pixel & 0xff;
+        } else {
+            p[0] = pixel & 0xff;
+            p[1] = (pixel >> 8) & 0xff;
+            p[2] = (pixel >> 16) & 0xff;
+        }
+        break;
+
+    case 4:
+        *(Uint32 *)p = pixel;
+        break;
+    }
+}
+
+SDL_Surface *LibSDL::ScaleSurface(SDL_Surface *Surface, double _stretch_factor_x, double _stretch_factor_y)
+{
+    if(!Surface)
+        return 0;
+    SDL_Surface *_ret = SDL_CreateRGBSurface(Surface->flags, Surface->w * _stretch_factor_x, Surface->h * _stretch_factor_y, Surface->format->BitsPerPixel,
+        Surface->format->Rmask, Surface->format->Gmask, Surface->format->Bmask, Surface->format->Amask);
+    for(Sint32 y = 0; y < Surface->h; y++)
+        for(Sint32 x = 0; x < Surface->w; x++)
+            for(Sint32 o_y = 0; o_y < _stretch_factor_y; ++o_y)
+                for(Sint32 o_x = 0; o_x < _stretch_factor_x; ++o_x)
+                    putpixel(_ret, static_cast<Sint32>(_stretch_factor_x * x) + o_x, 
+                        static_cast<Sint32>(_stretch_factor_y * y) + o_y, getpixel(Surface, x, y));
+    return _ret;
+}
+
 void LibSDL::loadGame(const std::string &gamename)
 {
     std::string spritesheetname = "games/" + gamename + "/spritesheet.png";
 
     SDL_WM_SetCaption((gamename + " SDL").c_str(), NULL);
     spritesheet = IMG_Load(spritesheetname.c_str());
+    spritesheet = ScaleSurface(spritesheet, factor_x, factor_y);
 }
 
 char LibSDL::getEvent()
@@ -80,8 +155,8 @@ void LibSDL::draw(std::shared_ptr<IGame> game)
     SDL_FillRect(window, NULL, SDL_MapRGB(window->format, 0, 0, 0));
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         rect = game->getAppearanceRectIdx(it->get()->getAppearance());
-        sdlrect = {(short int)rect.left, (short int)rect.top,
-        (Uint16)rect.width, (Uint16)rect.height};
+        sdlrect = {(short int)rect.left * factor_x, (short int)rect.top * factor_y,
+        (Uint16)rect.width * factor_x, (Uint16)rect.height * factor_y};
         sdlpos.x = it->get()->getPos().first;
         sdlpos.y = it->get()->getPos().second;
         SDL_BlitSurface(spritesheet, &sdlrect, window, &sdlpos);

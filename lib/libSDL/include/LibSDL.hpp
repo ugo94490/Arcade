@@ -21,6 +21,10 @@ class LibSDL : public IGraphicLib {
         void loadGame(const std::string &path);
         void draw_score(int score, std::pair<float, float> pos);
 
+        Uint32 getpixel(SDL_Surface *surface, int x, int y);
+        void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+        SDL_Surface *ScaleSurface(SDL_Surface *Surface, double _stretch_factor_x, double _stretch_factor_y);
+
     protected:
         SDL_Surface *window;
         SDL_Surface *spritesheet;
