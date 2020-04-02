@@ -68,20 +68,24 @@ class Pacman : public IGame {
         size_t _dir = 2;
         size_t idxAnimPac = 0;
         bool _pacgum = false;
-        clock_t _timerGum = 0;
+        clock_t _timerGum = clock();
         size_t _star = 188;
         size_t _nbPacgum = 4;
+        int oldDir = 0;
 
         //GHOST
         std::vector<bool> _canExitJail = {false, false, false, false};
         std::vector<std::vector<std::pair<float, float>>> _ghostPath;
         std::vector<std::pair<float, float>> _curPos;
         std::vector<std::string> _maze;
-        size_t _timerPath = 0;
         std::vector<bool> _isJail = {false, false, false, false};
-        std::vector<clock_t> _timerJail = {0, 0, 0, 0};
+        std::vector<clock_t> _timerJail = {clock(), clock(), clock(), clock()};
         std::pair<float, float> _pacPos;
         std::pair<float, float> _jailPos;
+        bool _firstPath = true;
+        clock_t _moveGhosts = clock();
+        clock_t _startGame = clock();
+        clock_t _movePacGh = clock();
 };
 
 extern "C" {

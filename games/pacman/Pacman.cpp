@@ -99,7 +99,6 @@ Pacman::Pacman()
 
 Pacman::~Pacman()
 {
-
 }
 
 int randPos()
@@ -212,12 +211,11 @@ void Pacman::animPacman()
 int Pacman::handleEvents(const unsigned char &c)
 {
     static size_t tmpDir = 2;
-    static clock_t start = 0;
-    static clock_t timer = 0;
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    /* if (clock() - start > 10000000) { */
+    /* std::cout << "clock :" << clock() << std::endl; */
+    /* if (clock() - _startGame > 10000000) { */
         if (_pacgum)
             if (clock() - _timerGum > 10000000)
                 _pacgum = false;
@@ -236,12 +234,12 @@ int Pacman::handleEvents(const unsigned char &c)
             if (tmpDir != _dir)
                 move_object(player, tmpDir);
         }
-        if (clock() - timer > 165000) {
-            timer = clock();
+        if (clock() - _movePacGh > 165000) {
+            _movePacGh = clock();
             move_object(player, tmpDir);
             moveGhost(obj);
         }
-        start = 0;
+        _startGame = clock();
     /* } */
     return checkGameOver();
 }
@@ -315,7 +313,6 @@ std::pair<float, float> Pacman::checkDoor(std::pair<float, float> pos)
 
 int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
 {
-    static int oldDir = 0;
     std::pair<float, float> pos;
 
     if (direction == 1) {
@@ -352,6 +349,7 @@ int Pacman::move_object(std::shared_ptr<PacObject> obj, int direction)
     _pacPos = pos;
     return (0);
 }
+
 
 
 
@@ -566,18 +564,15 @@ void Pacman::checkTimers()
 
 void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
 {
-    static clock_t timer = 0;
-    static bool first = true;
-
-    if (!first)
+    if (!_firstPath)
         isGhMeetPac();
-    if (first) {
+    if (_firstPath) {
         setFirstPath();
-        first = false;
+        _firstPath = false;
     }
-    if (clock() - timer >= 2000000) {
+    if (clock() - _moveGhosts >= 2000000) {
         isNewGhostPath();
-        timer = clock();
+        _moveGhosts = clock();
     }
     for (size_t gh = 0; gh != 4; gh++) {
         if (_ghostPath[gh].empty() && inJail(gh) == false) {
@@ -594,6 +589,7 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
 
 
 //FIN GHOST
+
 
 
 
