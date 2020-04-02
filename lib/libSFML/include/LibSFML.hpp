@@ -20,11 +20,14 @@ class LibSFML : public IGraphicLib {
         void loadGame(const std::string &path);
         void draw_score(int score, std::pair<float, float> pos);
         void gameOver(int score);
+        void init_score(int score, std::pair<float, float> pos);
 
     protected:
         sf::RenderWindow window;
         sf::Texture texture;
         sf::Sprite sprite;
+        sf::Text text;
+        sf::Font font;
     private:
 };
 

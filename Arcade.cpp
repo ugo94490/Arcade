@@ -55,11 +55,13 @@ int Arcade::loop()
     int on = 1;
     char input = 0;
     clock_t timer = 0;
+    int score = 0;
     std::list<std::shared_ptr<IGameObject>> objects;
     std::pair<float, float> pos = {1000, 100};
 
     if (!lib)
         return(84);
+    lib->init_score(score, pos);
     while (on) {
         if ((clock() - timer) > (1000000 / 60)) {
             timer = clock();
@@ -70,8 +72,10 @@ int Arcade::loop()
             }
             if (input == -2)
                 return (0);
-            if (input == -1)
+            if (input == -1) {
                 switchlib();
+                lib->init_score(score, pos);
+            }
             if ((gameOver = game->handleEvents(input)) == 84)
                 return (84);
             if (gameOver == 1) {

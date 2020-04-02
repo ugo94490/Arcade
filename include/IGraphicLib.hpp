@@ -20,4 +20,5 @@ class IGraphicLib {
         virtual void loadGame(const std::string &gamename) = 0;
         virtual void draw_score(int score, std::pair<float, float> pos) = 0;
         virtual void gameOver(int score) = 0;
+        virtual void init_score(int score, std::pair<float, float> pos) = 0;
 };

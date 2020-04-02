@@ -66,39 +66,45 @@ void LibSFML::draw(std::shared_ptr<IGame> game)
     window.display();
 }
 
-void LibSFML::draw_score(int score, std::pair<float, float> pos)
+void LibSFML::init_score(int score, std::pair<float, float> pos)
 {
-    sf::Text text;
-    sf::Font font;
     sf::Vector2f pos_txt = {(float) pos.first, (float) pos.second};
-    std::string str = "Score " + std::to_string(score);
 
     font.loadFromFile("lib/libSFML/SNES.ttf");
-    text.setString(str);
     text.setFont(font);
     text.setCharacterSize(55);
     text.setPosition(pos_txt);
+}
+
+void LibSFML::draw_score(int score, std::pair<float, float> pos)
+{
+    std::string str = "Score " + std::to_string(score);
+    sf::Vector2f pos_txt = {(float) pos.first, (float) pos.second};
+
+    text.setPosition(pos_txt);
+    text.setString(str);
     window.draw(text);
     window.display();
 }
 
 void LibSFML::gameOver(int score)
 {
-    static clock_t timer = 0;
+    static clock_t timer = clock();
     sf::Text text;
     sf::Font font;
-    std::pair<float, float> posScore = std::pair<float, float>(250, 300);
-    sf::Vector2f pos_txt = {(float) 150, (float) 100};
+    std::pair<float, float> posScore = std::pair<float, float>(535, 300);
+    sf::Vector2f pos_txt = {(float) 400, (float) 150};
     std::string str = "GAME OVER";
 
+    font.loadFromFile("lib/libSFML/SNES.ttf");
+    text.setString(str);
+    text.setFont(font);
+    text.setCharacterSize(155);
+    text.setPosition(pos_txt);
+    window.clear(sf::Color::Black);
+    draw_score(score, posScore);
+    window.draw(text);
+    window.display();
     while (clock() - timer <= 6000000) {
-        font.loadFromFile("lib/libSFML/SNES.ttf");
-        text.setString(str);
-        text.setFont(font);
-        text.setCharacterSize(155);
-        text.setPosition(pos_txt);
-        draw_score(score, posScore);
-        window.draw(text);
-        window.display();
     }
 }

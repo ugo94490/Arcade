@@ -73,3 +73,8 @@ void LibNcurses::gameOver(int score)
 {
 
 }
+
+void LibNcurses::init_score(int score, std::pair<float, float> pos)
+{
+
+}

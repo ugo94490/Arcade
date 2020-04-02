@@ -182,3 +182,8 @@ void LibSDL::gameOver(int score)
 {
     
 }
+
+void LibSDL::init_score(int score, std::pair<float, float> pos)
+{
+
+}
