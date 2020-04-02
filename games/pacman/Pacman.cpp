@@ -71,8 +71,9 @@ static const Rect downAnim[5] = {
     {264, 192, 25, 25} //4down
 };
 
-static const Rect deadAnim[2] = {
-    {144, 96, 25, 25}
+static const Rect deadAnim[3] = {
+    {144, 96, 25, 25},
+    {192, 96, 25, 25}
 };
 
 
@@ -216,9 +217,6 @@ int Pacman::handleEvents(const unsigned char &c)
 
     /* std::cout << "clock :" << clock() << std::endl; */
     /* if (clock() - _startGame > 10000000) { */
-        if (_pacgum)
-            if (clock() - _timerGum > 10000000)
-                _pacgum = false;
         for (auto it = objects.begin(); it != objects.end(); ++it) {
             if (it->get()->getType() == PacObject::PLAYER) {
                 player = *it;
@@ -437,7 +435,7 @@ void Pacman::isNewGhostPath()
 
 void Pacman::setGhostAnim(int gh)
 {
-    if (_isJail[gh])
+    if (_isJail[gh] || _pacgum)
         return;
     if (_curPos[gh].first < _ghostPath[gh][0].first)
         pacRects[gh+3] = leftAnim[gh];
@@ -492,6 +490,9 @@ void Pacman::isGhMeetPac()
             pacRects[gh+3] = deadAnim[0];
             _timerJail[gh] = clock();
             setPath(gh);
+        }
+        if (_pacgum == true && _isJail[gh] != true) {
+            pacRects[gh+3] = deadAnim[1];
         }
     }
 }
@@ -559,6 +560,10 @@ void Pacman::checkTimers()
             _isJail[gh] = false;
             _canExitJail[gh] = false;
         }
+    }
+    if (_pacgum) {
+        if (clock() - _timerGum > 10000000)
+            _pacgum = false;
     }
 }
 
