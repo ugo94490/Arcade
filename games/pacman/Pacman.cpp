@@ -459,7 +459,7 @@ void Pacman::setGhostPos(std::list<std::shared_ptr<PacObject>> obj)
 
     for (auto it = obj.begin(); gh != 4; ++it) {
         tmp = *it;
-        if (_isJail[gh] == true && inJail(gh))
+        if (_isJail[gh] == true && inJail(gh) && _canExitJail[gh] == false)
             newPos = randMoveJail(*it);
         else {
             setGhostAnim(gh);
@@ -581,8 +581,8 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
     }
     for (size_t gh = 0; gh != 4; gh++) {
         if (_ghostPath[gh].empty() && inJail(gh) == false) {
-            std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
-            std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl;
+            /* std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
+            std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl; */
             setPath(gh);
         }
     }
