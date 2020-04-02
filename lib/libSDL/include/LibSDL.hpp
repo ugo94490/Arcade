@@ -30,6 +30,8 @@ class LibSDL : public IGraphicLib {
     protected:
         SDL_Surface *window;
         SDL_Surface *spritesheet;
+        TTF_Font *font;
+        SDL_Surface *surface;
     private:
 };
 
