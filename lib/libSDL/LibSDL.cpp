@@ -179,7 +179,22 @@ void LibSDL::draw_score(int score, std::pair<float, float> pos)
 
 void LibSDL::gameOver(int score)
 {
-    
+    static clock_t timer = clock();
+    std::pair<float, float> pos = {400, 150};
+    std::pair<float, float> pos_score = {535, 300};
+    TTF_Font *game = TTF_OpenFont("lib/libSFML/SNES.ttf", 155);
+    SDL_Surface *surface;
+    std::string str = "GameOver";
+    SDL_Color color = {255, 255, 255};
+    SDL_FillRect(window, NULL, SDL_MapRGB(window->format, 0, 0, 0));
+    surface = TTF_RenderText_Solid(game, str.c_str(), color);
+    SDL_Rect rect = {(short)pos.first, (short)pos.second, 0, 0};
+    SDL_BlitSurface(surface, NULL, window, &rect);
+    draw_score(score, pos_score);
+    SDL_Flip(window);
+    while (clock() - timer <= 6000000) {
+    }
+    SDL_FreeSurface(surface);
 }
 
 void LibSDL::init_score(int score, std::pair<float, float> pos)
