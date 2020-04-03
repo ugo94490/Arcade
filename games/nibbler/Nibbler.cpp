@@ -205,7 +205,7 @@ int Nibbler::check_dir(int direction)
     return (0);
 }
 
-int Nibbler::getScore()
+int Nibbler::getScore() const
 {
     return (score);
 }
@@ -376,4 +376,9 @@ void Nibbler::updateGame()
 {
     if (nb_fruit < 2)
         SetRandItems();
+}
+
+int Nibbler::getBlockSize() const
+{
+    return 32;
 }

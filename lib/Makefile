@@ -6,14 +6,14 @@
 ##
 
 all:
-	make -C libNcurses
-	make -C libSFML
-	make -C libSDL
+	-make -C libNcurses
+	-make -C libSFML
+	-make -C libSDL
 
 $(NAME):
-	make -C libNcurses
-	make -C libSFML
-	make -C libSDL
+	-make -C libNcurses
+	-make -C libSFML
+	-make -C libSDL
 
 clean:
 	make -C libNcurses clean

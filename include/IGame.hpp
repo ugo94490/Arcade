@@ -26,5 +26,6 @@ class IGame {
         virtual std::list<std::shared_ptr<IGameObject>> getObjects(void) const = 0;
         virtual Rect getAppearanceRectIdx(int idx) = 0;
         virtual char getAppearanceCharIdx(int idx) = 0;
-        virtual int getScore() = 0;
+        virtual int getScore() const = 0;
+        virtual int getBlockSize() const = 0;
 };

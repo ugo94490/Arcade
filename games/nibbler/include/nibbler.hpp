@@ -35,7 +35,8 @@ class Nibbler : public IGame {
         int moveAdd_snake(std::shared_ptr<NibObject> obj, std::pair<float, float> pos);
         int getDir(std::shared_ptr<NibObject> player, std::list<std::shared_ptr<NibObject>> obj) const;
         int check_dir(int direction);
-        int getScore();
+        int getScore() const;
+        int getBlockSize() const;
     protected:
         std::list<std::shared_ptr<NibObject>> objects;
     private:

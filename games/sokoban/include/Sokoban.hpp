@@ -26,7 +26,8 @@ class Sokoban : public IGame {
         std::shared_ptr<SokoObject> createObject(float posx, float posy, char c) const;
         std::shared_ptr<SokoObject> check_free(std::pair<float, float> pos) const;
         int move_object(std::shared_ptr<SokoObject> obj, int direction);
-        int getScore();
+        int getScore() const;
+        int getBlockSize() const;
 
     protected:
         std::list<std::shared_ptr<SokoObject>> objects;

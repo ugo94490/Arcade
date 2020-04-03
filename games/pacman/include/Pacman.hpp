@@ -37,7 +37,8 @@ class Pacman : public IGame {
         std::list<std::shared_ptr<PacObject>> filleObj();
         int checkGameOver();
         bool isPriority(std::shared_ptr<PacObject> tmpObj);
-        int getScore();
+        int getScore() const;
+        int getBlockSize() const;
         std::pair<float, float> deblockNewPos(std::pair<float, float> pos);
 
         void animPacman();
