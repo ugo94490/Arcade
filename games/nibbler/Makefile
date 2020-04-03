@@ -14,7 +14,7 @@ OBJ		=	$(SRC:.cpp=.o)
 
 OBJ_T	=	$(SRC_T:.cpp=.o)
 
-NAME	=	../game_nibbler.so
+NAME	=	../lib_arcade_nibbler.so
 
 NAME_T	=	unit_tests
 

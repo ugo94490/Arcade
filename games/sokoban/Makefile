@@ -14,7 +14,7 @@ OBJ		=	$(SRC:.cpp=.o)
 
 OBJ_T	=	$(SRC_T:.cpp=.o)
 
-NAME	=	../game_sokoban.so
+NAME	=	../lib_arcade_sokoban.so
 
 NAME_T	=	unit_tests
 

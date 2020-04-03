@@ -6,15 +6,42 @@
 */
 
 #include <iostream>
+#include <sys/types.h>
+#include <dirent.h>
+#include <cstring>
 #include "Exception.hpp"
 #include "Arcade.hpp"
 
-Arcade::Arcade(const std::string &baselib)
+Arcade::Arcade(std::string &baselib)
 {
+    DIR *games_dir = opendir("./games");
+    DIR *lib_dir = opendir("./lib");
+    struct dirent *file;
+    std::string str;
+
+    idx_lib = 0;
+    idx_game = 0;
+    gamelib = NULL;
+    liblib = NULL;
+    if (lib_dir == NULL || games_dir == NULL)
+        throw(Exception ("Can't open lib or games directory"));
+    while ((file = readdir(games_dir)) != NULL) {
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0)
+            list_game.push_back(file->d_name);
+    }
+    while ((file = readdir(lib_dir)) != NULL) {
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0)
+            list_lib.push_back(file->d_name);
+    }
     std::srand(std::time(nullptr));
+    if (list_game.size() < 1)
+        throw(Exception ("No game found"));
+    if (list_lib.size() < 1)
+        throw(Exception ("No lib found"));
     gamename = "Arcade";
-    loadlib(baselib);
-    loadgame("pacman");
+    loadlib(baselib.erase(0, 4));
+    //loadgame("menu");
+    loadgame(list_game[0]);
 }
 
 Arcade::~Arcade()
@@ -24,8 +51,13 @@ Arcade::~Arcade()
 void Arcade::loadlib(const std::string &libstr)
 {
     libname = libstr;
-    std::string to_open = "./lib/lib_arcade_" + libstr + ".so";
-    void *liblib = dlopen(to_open.c_str(), RTLD_LAZY);
+    lib = 0;
+    libname.erase(0, 11);
+    libname.erase(libname.size() - 3, 3);
+    std::string to_open = "lib/" + libstr;
+    if (liblib)
+        dlclose(liblib);
+    liblib = dlopen(to_open.c_str(), RTLD_LAZY);
     if (!liblib)
         throw(Exception ("Lib " + libname + " not found"));
     IGraphicLib *(*mkr)() = (IGraphicLib *(*)())dlsym(liblib, "maker");
@@ -39,8 +71,13 @@ void Arcade::loadlib(const std::string &libstr)
 void Arcade::loadgame(const std::string &gamestr)
 {
     gamename = gamestr;
-    std::string to_open = "./games/game_" + gamestr + ".so";
-    void *gamelib = dlopen(to_open.c_str(), RTLD_LAZY);
+    game = 0;
+    gamename.erase(0, 11);
+    gamename.erase(gamename.size() - 3, 3);
+    std::string to_open = "games/" + gamestr;
+    if (gamelib)
+        dlclose(gamelib);
+    gamelib = dlopen(to_open.c_str(), RTLD_LAZY);
     if (!gamelib)
         throw(Exception ("Game " + gamename + " not found"));
     IGame *(*mkr)() = (IGame *(*)())dlsym(gamelib, "maker");
@@ -93,35 +130,33 @@ int Arcade::loop()
 
 void Arcade::switchgame()
 {
-    if (gamename == "nibbler") {
-        gamename = "sokoban";
-        loadgame(gamename);
-    } else if (gamename == "sokoban") {
-        gamename = "pacman";
-        loadgame(gamename);
-    } else if (gamename == "pacman") {
-        gamename = "nibbler";
-        loadgame(gamename);
-    }
+    if (idx_game + 1 >= list_game.size())
+        idx_game = 0;
+    else
+        idx_game++;
+    loadgame(list_game[idx_game]);
 }
 
 void Arcade::switchlib()
 {
-    if (libname == "ncurses")
-        loadlib("sfml");
-    else if (libname == "sfml")
-        loadlib("sdl");
-    else if (libname == "sdl")
-        loadlib("ncurses");
+    if (idx_lib + 1 >= list_lib.size())
+        idx_lib = 0;
+    else
+        idx_lib++;
+    loadlib(list_lib[idx_lib]);
 }
 
-int main()
+int main(int ac, char **av)
 {
+    std::string str;
     try {
-        Arcade arcade("sfml");
-        return arcade.loop();
-    } catch (std::string err) {
-        std::cerr << err << std::endl;
+        if (ac != 2)
+            throw(Exception("Only one argument required"));
+        str = av[1];
+        Arcade arcade(str);
+        return (arcade.loop());
+    } catch (Exception& err) {
+        std::cerr << err.what() << std::endl;
         return (84);
     }
 }

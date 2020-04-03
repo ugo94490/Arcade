@@ -13,7 +13,7 @@ NAME	=	arcade
 
 LDFLAGS		=	-ldl
 
-CPPFLAGS	=	-I./include
+CPPFLAGS	=	-I./include -g3
 
 $(NAME):	games graphicals core
 
