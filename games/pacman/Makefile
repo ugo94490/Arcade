@@ -15,7 +15,7 @@ OBJ		=	$(SRC:.cpp=.o)
 
 OBJ_T	=	$(SRC_T:.cpp=.o)
 
-NAME	=	../game_pacman.so
+NAME	=	../lib_arcade_pacman.so
 
 NAME_T	=	unit_tests
 

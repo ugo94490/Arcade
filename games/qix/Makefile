@@ -12,7 +12,7 @@ SRC		=	Qix.cpp			\
 
 OBJ		=	$(SRC:.cpp=.o)
 
-NAME	=	../game_qix.so
+NAME	=	../lib_arcade_qix.so
 
 CC		=	g++
 
