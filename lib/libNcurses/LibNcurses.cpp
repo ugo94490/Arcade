@@ -53,19 +53,12 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
 {
     std::list<std::shared_ptr<IGameObject>> objects = game->getObjects();
     std::pair<float, float> pos;
-    float scale = 32;
+    int block_size = game->getBlockSize();
     erase();
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         pos = it->get()->getPos();
-        if ((int)pos.first % 32 != 0 || (int)pos.second % 32 != 0) {
-            scale = 16;
-            break;
-        }
-    }
-    for (auto it = objects.begin(); it != objects.end(); ++it) {
-        pos = it->get()->getPos();
-        if (int(pos.first/scale) < COLS && int(pos.second/scale) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
-            move(int(pos.second/scale), int(pos.first/scale));
+        if (int(pos.first/block_size) < COLS && int(pos.second/block_size) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
+            move(int(pos.second/block_size), int(pos.first/block_size));
             printw("%c", game->getAppearanceCharIdx(it->get()->getAppearance()));
         }
     }

@@ -108,9 +108,14 @@ int randPos()
     return std::rand() % 4 + 1;
 }
 
-int Pacman::getScore()
+int Pacman::getScore() const
 {
     return _score;
+}
+
+int Pacman::getBlockSize() const
+{
+    return 32;
 }
 
 /* void Pacman::displayGameOver(int sore)

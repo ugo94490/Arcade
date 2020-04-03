@@ -59,10 +59,10 @@ void Arcade::loadlib(const std::string &libstr)
         dlclose(liblib);
     liblib = dlopen(to_open.c_str(), RTLD_LAZY);
     if (!liblib)
-        throw(Exception ("Lib " + libname + " not found"));
+        throw(std::string("Lib " + libname + " not found"));
     IGraphicLib *(*mkr)() = (IGraphicLib *(*)())dlsym(liblib, "maker");
     if (!mkr)
-        throw(Exception ("Lib " + libname + " constructor not found"));
+        throw(std::string("Lib " + libname + " constructor not found"));
     lib = std::shared_ptr<IGraphicLib>((mkr)());
     if (gamename != "Arcade")
         lib->loadGame(gamename);
@@ -79,10 +79,10 @@ void Arcade::loadgame(const std::string &gamestr)
         dlclose(gamelib);
     gamelib = dlopen(to_open.c_str(), RTLD_LAZY);
     if (!gamelib)
-        throw(Exception ("Game " + gamename + " not found"));
+        throw(std::string("Game " + gamename + " not found"));
     IGame *(*mkr)() = (IGame *(*)())dlsym(gamelib, "maker");
     if (!mkr)
-        throw(Exception ("Game " + gamename + " constructor not found"));
+        throw(std::string("Game " + gamename + " constructor not found"));
     game = std::shared_ptr<IGame>((mkr)());
     lib->loadGame(gamename);
 }

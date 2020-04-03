@@ -9,6 +9,8 @@ SRC		=	LibSDL.cpp
 
 NAME	=	../lib_arcade_sdl.so
 
+OBJ		=	$(SRC:.cpp=.o)
+
 CC		=	g++
 
 CPPFLAGS = -I./include -I../../include `sdl-config --libs --cflags` -lSDL_image -lSDL_ttf
@@ -17,7 +19,7 @@ RM		=	rm -f
 
 $(NAME) 	:
 			-$(CC) $(CPPFLAGS) -c -fpic $(SRC)
-			-$(CC) $(CPPFLAGS) -shared -o $(NAME) *.o
+			-$(CC) $(CPPFLAGS) -shared -o $(NAME) $(OBJ)
 
 all		:	$(NAME)
 

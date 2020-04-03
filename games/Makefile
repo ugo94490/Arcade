@@ -9,21 +9,25 @@ all:
 	make -C sokoban
 	make -C nibbler
 	make -C pacman
+	make -C qix
 
 $(NAME):
 	make -C sokoban
 	make -C nibbler
 	make -C pacman
+	make -C qix
 
 clean:
 	make -C sokoban clean
 	make -C nibbler clean
-	make -C pacman  clean
+	make -C pacman clean
+	make -C qix clean
 
-fclean: clean
+fclean:
 	make -C sokoban fclean
 	make -C nibbler fclean
-	make -C pacman  fclean
+	make -C pacman fclean
+	make -C qix fclean
 
 re:	fclean all
 
