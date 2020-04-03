@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include "Exception.hpp"
 #include "LibSDL.hpp"
 
 static const double factor_x = 0.5;
@@ -14,7 +15,7 @@ static const double factor_y = 0.5;
 LibSDL::LibSDL()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
-        throw (std::string("SDL_initialisation failed"));
+        throw (Exception ("SDL_initialisation failed"));
     window = SDL_SetVideoMode(1280, 720, 32, SDL_HWSURFACE);
     SDL_WM_SetCaption("Arcade SDL", NULL);
     SDL_EnableKeyRepeat(10, 100);

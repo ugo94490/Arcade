@@ -9,6 +9,7 @@
 #include <string>
 #include <ctime>
 #include <unistd.h>
+#include "Exception.hpp"
 #include "Pacman.hpp"
 #include "Backtrack.hpp"
 
@@ -146,7 +147,7 @@ std::list<std::shared_ptr<PacObject>> Pacman::initGame(void)
     std::ifstream myfile ("./games/pacman/map.txt");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open Pacman map"));
+        throw(Exception ("Could not open Pacman map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
@@ -224,7 +225,7 @@ int Pacman::handleEvents(const unsigned char &c)
             }
         }
         if (!player)
-            throw("Player does not exist");
+            throw(Exception ("Player does not exist"));
         if (c < 1 || c > 4)
             tmpDir = _dir;
         else {

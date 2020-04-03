@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Exception.hpp"
 #include "nibbler.hpp"
 
 using namespace std;
@@ -94,7 +95,7 @@ std::list<std::shared_ptr<NibObject>> Nibbler::new_body(std::shared_ptr<NibObjec
     int idx = 0;
 
     if (dispo.size() == 0)
-        throw("Pas assez de place pour créer le serpent");
+        throw(Exception ("Pas assez de place pour créer le serpent"));
     if (dispo.size() != 1)
         idx = rand() % (dispo.size() - 1);
     else
@@ -114,7 +115,7 @@ int Nibbler::getDir(std::shared_ptr<NibObject> player, std::list<std::shared_ptr
     int tab[4] = {0, 0, 0, 0};
 
     if (!player)
-        throw("Player does not exist");
+        throw(Exception ("Player does not exist"));
     pos = fill_pair(player);
     for (auto i = obj.begin(); i != obj.end(); i++, j++) {
         if (i->get()->getPos() == pos[0] && (i->get()->getType() == NibObject::FLOOR || i->get()->getType() == NibObject::TAIL))
@@ -164,7 +165,7 @@ std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void)
     std::pair<float, float> pos;
 
     if (!myfile.is_open())
-        throw(std::string("Could not open Nibbler map"));
+        throw(Exception ("Could not open Nibbler map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
@@ -174,7 +175,7 @@ std::list<std::shared_ptr<NibObject>> Nibbler::initGame(void)
         }
     }
     if (list.size() == 0)
-        throw(std::string("Map is empty"));
+        throw(Exception ("Map is empty"));
     list = generatePlayer(list);
     myfile.close();
     return list;
@@ -228,7 +229,7 @@ int Nibbler::handleEvents(const unsigned char &c)
         }
     }
     if (!player)
-        throw("Player does not exist");
+        throw(Exception ("Player does not exist"));
     if ((clock() - timer) > (1000000 * mult)) {
         if (!(c < 1 || c > 4))
             if (check_dir(c) == 0) {
