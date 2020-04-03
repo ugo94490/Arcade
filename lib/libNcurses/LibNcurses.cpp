@@ -55,7 +55,6 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
     std::pair<float, float> pos;
     int block_size = game->getBlockSize();
     erase();
-
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         pos = it->get()->getPos();
         if (int(pos.first/block_size) < COLS && int(pos.second/block_size) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
@@ -67,12 +66,21 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
 
 void LibNcurses::draw_score(int score, std::pair<float, float> pos)
 {
-
+    (void)pos;
+    move((LINES / 2), (COLS / 4) * 3);
+    printw("%s\n", ("Score : " + std::to_string(score)).c_str());
 }
 
 void LibNcurses::gameOver(int score)
 {
-
+    static clock_t timer = clock();
+    erase();
+    move((LINES / 2) - 1, (COLS / 2) - 4);
+    printw("%s\n", "GameOver");
+    move((LINES / 2), (COLS / 2) - (std::to_string(score).size() / 2));
+    printw("%s\n", ("Score : " + std::to_string(score)).c_str());
+    while (clock() - timer <= 6000000) {
+    }
 }
 
 void LibNcurses::init_score(int score, std::pair<float, float> pos)

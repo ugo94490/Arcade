@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include "Exception.hpp"
 #include "Arcade.hpp"
 
 Arcade::Arcade(const std::string &baselib)
@@ -26,10 +27,10 @@ void Arcade::loadlib(const std::string &libstr)
     std::string to_open = "./lib/lib_arcade_" + libstr + ".so";
     void *liblib = dlopen(to_open.c_str(), RTLD_LAZY);
     if (!liblib)
-        throw(std::string("Lib " + libname + " not found"));
+        throw(Exception ("Lib " + libname + " not found"));
     IGraphicLib *(*mkr)() = (IGraphicLib *(*)())dlsym(liblib, "maker");
     if (!mkr)
-        throw(std::string("Lib " + libname + " constructor not found"));
+        throw(Exception ("Lib " + libname + " constructor not found"));
     lib = std::shared_ptr<IGraphicLib>((mkr)());
     if (gamename != "Arcade")
         lib->loadGame(gamename);
@@ -41,10 +42,10 @@ void Arcade::loadgame(const std::string &gamestr)
     std::string to_open = "./games/game_" + gamestr + ".so";
     void *gamelib = dlopen(to_open.c_str(), RTLD_LAZY);
     if (!gamelib)
-        throw(std::string("Game " + gamename + " not found"));
+        throw(Exception ("Game " + gamename + " not found"));
     IGame *(*mkr)() = (IGame *(*)())dlsym(gamelib, "maker");
     if (!mkr)
-        throw(std::string("Game " + gamename + " constructor not found"));
+        throw(Exception ("Game " + gamename + " constructor not found"));
     game = std::shared_ptr<IGame>((mkr)());
     lib->loadGame(gamename);
 }

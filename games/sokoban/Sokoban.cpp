@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <string>
+#include "Exception.hpp"
 #include "Sokoban.hpp"
 
 using namespace std;
@@ -58,7 +59,7 @@ std::list<std::shared_ptr<SokoObject>> Sokoban::initGame(void) const
     ifstream myfile ("./games/sokoban/map");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open sokoban map"));
+        throw(Exception ("Could not open sokoban map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {
@@ -84,7 +85,7 @@ int Sokoban::handleEvents(const unsigned char &c)
         }
     }
     if (!player)
-        throw("Player does not exist");
+        throw(Exception ("Player does not exist"));
     move_object(player, c);
     return (0);
 }
