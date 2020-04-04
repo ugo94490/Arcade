@@ -30,6 +30,10 @@ char LibNcurses::getEvent()
 {
     int ch = getch();
 
+    if (ch == 'p')
+        return (-5);
+    if (ch == 'm')
+        return (-4);
     if (ch == 110)
         return (-3);
     if (ch == 27)
@@ -53,12 +57,19 @@ void LibNcurses::draw(std::shared_ptr<IGame> game)
 {
     std::list<std::shared_ptr<IGameObject>> objects = game->getObjects();
     std::pair<float, float> pos;
-    int block_size = game->getBlockSize();
+    float scale = 32;
     erase();
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         pos = it->get()->getPos();
-        if (int(pos.first/block_size) < COLS && int(pos.second/block_size) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
-            move(int(pos.second/block_size), int(pos.first/block_size));
+        if ((int)pos.first % 32 != 0 || (int)pos.second % 32 != 0) {
+            scale = 16;
+            break;
+        }
+    }
+    for (auto it = objects.begin(); it != objects.end(); ++it) {
+        pos = it->get()->getPos();
+        if (int(pos.first/scale) < COLS && int(pos.second/scale) < LINES && pos.first >= 0.0 && pos.second >= 0.0) {
+            move(int(pos.second/scale), int(pos.first/scale));
             printw("%c", game->getAppearanceCharIdx(it->get()->getAppearance()));
         }
     }

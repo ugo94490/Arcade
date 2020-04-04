@@ -14,7 +14,7 @@
 using namespace std;
 
 static const Rect NibRects[5] = {
-    {192, 0, 64, 64},
+    {320, 0, 64, 64},
     {64, 0, 64, 64},
     {256, 0, 64, 64},
     {0, 0, 64, 64},

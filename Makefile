@@ -5,7 +5,8 @@
 ## Makefile
 ##
 
-SRC	=	Arcade.cpp
+SRC	=	Arcade.cpp	\
+		Encapsulation.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
