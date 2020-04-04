@@ -30,6 +30,8 @@ char LibNcurses::getEvent()
 {
     int ch = getch();
 
+    if (ch == 'r')
+        return (-6);
     if (ch == 'p')
         return (-5);
     if (ch == 'm')

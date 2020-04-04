@@ -218,8 +218,9 @@ int Nibbler::handleEvents(const unsigned char &c)
     std::shared_ptr<NibObject> player = NULL;
 
     if (c == 5 || score % 20 == 0) {
-        if (mult >= 0.1)
-            mult -= 0.10;
+        if (mult >= 0.10)
+            mult -= 0.05;
+        score++;
         return (0);
     }
     for (auto it = objects.begin(); it != objects.end(); ++it) {
