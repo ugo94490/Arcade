@@ -118,12 +118,6 @@ int Pacman::getBlockSize() const
     return 32;
 }
 
-/* void Pacman::displayGameOver(int sore)
-{
-    getScore();
-    //afficher game over et score
-} */
-
 std::list<std::shared_ptr<IGameObject>> Pacman::getObjects(void) const
 {
     std::list<std::shared_ptr<IGameObject>> list;
@@ -132,15 +126,6 @@ std::list<std::shared_ptr<IGameObject>> Pacman::getObjects(void) const
         list.push_back(*it);
     }
     return (list);
-}
-
-bool Pacman::isPriority(std::shared_ptr<PacObject> ptr)
-{
-    if (ptr->getType() == PacObject::PLAYER || ptr->getType() == PacObject::RED ||
-    ptr->getType() == PacObject::BLUE || ptr->getType() == PacObject::ORANGE ||
-    ptr->getType() == PacObject::YELLOW)
-        return true;
-    return false;
 }
 
 std::list<std::shared_ptr<PacObject>> Pacman::initGame(void)
@@ -221,8 +206,7 @@ int Pacman::handleEvents(const unsigned char &c)
     std::list<std::shared_ptr<PacObject>> obj = filleObj();
     std::shared_ptr<PacObject> player;
 
-    /* std::cout << "clock :" << clock() << std::endl; */
-    /* if (clock() - _startGame > 10000000) { */
+    if (clock() - _startGame > 10000000) {
         for (auto it = objects.begin(); it != objects.end(); ++it) {
             if (it->get()->getType() == PacObject::PLAYER) {
                 player = *it;
@@ -243,8 +227,8 @@ int Pacman::handleEvents(const unsigned char &c)
             move_object(player, tmpDir);
             moveGhost(obj);
         }
-        _startGame = clock();
-    /* } */
+        _startGame = 0;
+    }
     return checkGameOver();
 }
 
@@ -503,11 +487,6 @@ void Pacman::isGhMeetPac()
     }
 }
 
-/* void jailPath()
-{
-
-} */
-//x 9 et 12 y 12 et 13
 bool Pacman::inJail(int gh)
 {
     if (_curPos[gh].second >= 12 * 16 && _curPos[gh].second <= 13 * 16
@@ -550,11 +529,6 @@ std::pair<float, float> Pacman::randMoveJail(std::shared_ptr<PacObject> obj)
         return pos;
 }
 
-void Pacman::jailGhost()
-{
-
-}
-
 void Pacman::checkTimers()
 {
     for (size_t gh = 0; gh != 4; gh++) {
@@ -586,13 +560,9 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
         _moveGhosts = clock();
     }
     for (size_t gh = 0; gh != 4; gh++) {
-        if (_ghostPath[gh].empty() && inJail(gh) == false) {
-            /* std::cout << "gh :" << gh << " " << _curPos[gh].first  / 16 << ";" << _curPos[gh].second / 16 << std::endl;
-            std::cout << "emptypac " << _pacPos.first  / 16 << ";" << _pacPos.second / 16 << std::endl; */
+        if (_ghostPath[gh].empty() && inJail(gh) == false)
             setPath(gh);
-        }
     }
-    //setFirst(int gh)
     setGhostPos(obj);           //set Path
     isGhMeetPac();              //checkJail
     checkTimers();            //restar clock
@@ -600,8 +570,6 @@ void Pacman::moveGhost(std::list<std::shared_ptr<PacObject>> obj)
 
 
 //FIN GHOST
-
-
 
 
 char Pacman::getAppearanceCharIdx(int idx)

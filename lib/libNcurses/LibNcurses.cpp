@@ -30,6 +30,10 @@ char LibNcurses::getEvent()
 {
     int ch = getch();
 
+    if (ch == 'b')
+        return (-7);
+    if (ch == 'r')
+        return (-6);
     if (ch == 'p')
         return (-5);
     if (ch == 'm')
@@ -88,8 +92,9 @@ void LibNcurses::gameOver(int score)
     erase();
     move((LINES / 2) - 1, (COLS / 2) - 4);
     printw("%s\n", "GameOver");
-    move((LINES / 2), (COLS / 2) - (std::to_string(score).size() / 2));
+    move((LINES / 2), (COLS / 2) - 5);
     printw("%s\n", ("Score : " + std::to_string(score)).c_str());
+    refresh();
     while (clock() - timer <= 6000000) {
     }
 }

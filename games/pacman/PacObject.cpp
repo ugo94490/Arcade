@@ -43,11 +43,6 @@ std::pair<float, float> PacObject::getPos(void) const
     return pos;
 }
 
-void PacObject::setType()
-{
-    this->type = ' ';
-}
-
 void PacObject::setPos(std::pair<float, float> pos)
 {
     this->pos = pos;

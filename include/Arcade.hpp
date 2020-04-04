@@ -33,10 +33,12 @@ class Arcade {
         std::list<std::shared_ptr<IGameObject>> objects;
         std::string libname;
         std::string gamename;
+        std::string menu;
         std::vector<std::string> list_game;
         std::vector<std::string> list_lib;
         void *liblib;
         void *gamelib;
         int idx_lib;
         int idx_game;
+        int idx_menu;
 };

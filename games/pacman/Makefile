@@ -21,7 +21,7 @@ NAME_T	=	unit_tests
 
 CC		=	g++
 
-CPPFLAGS = -I./include -I../../include -Wall -Wextra -g3
+CPPFLAGS = -I./include -I../../include -Wall -Wextra
 
 TESTS_FLAGS	= -I./include -I../../include --coverage -lcriterion
 
