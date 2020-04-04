@@ -29,9 +29,6 @@ class PacObject : public IGameObject {
         void setPos(std::pair<float, float> pos);
         char getAppearance() const;
         char getType() const;
-        void setType();
-        void setStar();
-        size_t getStar() const;
 
     private:
         std::pair<float, float> pos;

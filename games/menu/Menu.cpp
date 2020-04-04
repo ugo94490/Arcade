@@ -93,6 +93,7 @@ std::list<std::shared_ptr<MenuObject>> Menu::initGame(void)
 
 int Menu::handleEvents(const unsigned char &c)
 {
+    (void) c;
    return 0;
 }
 

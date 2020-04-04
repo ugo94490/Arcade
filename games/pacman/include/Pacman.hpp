@@ -36,7 +36,6 @@ class Pacman : public IGame {
         std::pair<float, float> checkDoor(std::pair<float, float> pos);
         std::list<std::shared_ptr<PacObject>> filleObj();
         int checkGameOver();
-        bool isPriority(std::shared_ptr<PacObject> tmpObj);
         int getScore() const;
         int getBlockSize() const;
         std::pair<float, float> deblockNewPos(std::pair<float, float> pos);
@@ -48,7 +47,6 @@ class Pacman : public IGame {
         void setPath(int gh);
         void setGhostPos(std::list<std::shared_ptr<PacObject>> obj);
         bool ghColisionPac(int gh);
-        void jailGhost();
         void checkTimers();
         void setGhostAnim(int gh);
         void isGhMeetPac();

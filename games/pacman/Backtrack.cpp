@@ -9,8 +9,6 @@
 
 Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze, std::pair<float, float> dest, bool pacDest)
 {
-/*     std::cout << "gPos :" << gPos.first << " ; " << gPos.second << std::endl;
-    std::cout << "dest :" << dest.first << " ; " << dest.second << std::endl; */
     _pacDest = pacDest;
     _cPos.first = gPos.second;
     _cPos.second = gPos.first;
@@ -21,7 +19,6 @@ Backtrack::Backtrack(std::pair<float, float> gPos, std::vector<std::string> maze
     _maze[_dest.first][_dest.second] = 'T';
     _maze[_cPos.first][_cPos.second] = 'W';
     _tmpMaze = maze;
-/*     display(); */
     ctrBacktracking();
 }
 
@@ -35,12 +32,9 @@ void Backtrack::display()
     std::cout << "\n";
 }
 
-//0 = egal ; 1 = toLow ; 2 = toHigh
-//0 = egal ; 1 = toRight ; 2 = toLeft
 
 bool Backtrack::checkMazePos(size_t y, size_t x)
 {
-    /* std::cout << " maze x: " << _maze[y].size() << " maze y:" << _maze.size() << std::endl; */
     if (x >= _maze[y].size() || y >= _maze.size())
         return false;
     if (x <= 0 || y <= 0)
@@ -100,10 +94,9 @@ void Backtrack::deblock()
 void Backtrack::recBacktracking()
 {
     int nbWay = 0;
-    /* usleep(10000); */
+
     if (!stopLoop())
         return;
-    /* display(); */
     nbWay = checkOtherWay(_cPos.first, _cPos.second);
     if (_cPos.first < _dest.first && checkMazePos(_cPos.first + 1, _cPos.second)) {
             assignPath(_cPos.first + 1, _cPos.second);
@@ -201,14 +194,10 @@ void Backtrack::convertForDisplay()
 void Backtrack::ctrBacktracking()
 {
     while (stopLoop()) {
-        /* usleep(1000000); */
         newWay();
         recBacktracking();
-        /* display(); */
     }
     reverseFinalPath();
-/*     cleanFinalPath();
-    displayTmp(); */
     convertForDisplay();
 }
 
