@@ -44,6 +44,7 @@ static const char menuFlags[23] = "MENUIBLRPACQXSOKT-|FD ";
 Menu::Menu()
 {
     objects = initGame();
+    _score = 0;
 }
 
 Menu::~Menu()
