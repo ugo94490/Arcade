@@ -8,11 +8,8 @@
 #pragma once
 
 #include <iostream>
-#include <list>
-#include <memory>
-#include "QixPlayer.hpp"
-#include "QixGround.hpp"
 #include "IGame.hpp"
+#include "QixPlayer.hpp"
 
 class Qix : public IGame {
     public:
@@ -25,6 +22,7 @@ class Qix : public IGame {
         std::list<std::shared_ptr<IGameObject>> getObjects(void) const;
         int getScore() const;
         int getBlockSize() const;
+        void initGame(void);
 
         std::list<std::shared_ptr<QixGround>> initMap(void) const;
         std::shared_ptr<QixPlayer> initPlayer(void) const;
@@ -32,6 +30,7 @@ class Qix : public IGame {
 
     protected:
         std::shared_ptr<QixPlayer> player;
+        std::shared_ptr<QixQix> qix;
         std::list<std::shared_ptr<QixGround>> tiles;
         int score;
         int timer_move;

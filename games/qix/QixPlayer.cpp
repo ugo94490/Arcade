@@ -172,3 +172,21 @@ std::list<std::shared_ptr<QixTrail>> QixPlayer::getTrail() const
 {
     return trail;
 }
+
+void QixPlayer::check_collision_qix(std::shared_ptr<QixQix> qix)
+{
+    std::list<std::shared_ptr<QixQixNode>> qixnodes = qix->getNodes();
+    std::pair<float, float> trailPos;
+    std::pair<float, float> nodePos;
+
+    for (auto it = trail.begin(); it != trail.end(); ++it) {
+        trailPos = (*it)->getPos();
+        for (auto it2 = qixnodes.begin(); it2 != qixnodes.end(); ++it2) {
+            nodePos = (*it2)->getPos();
+            if (trailPos == nodePos || pos == nodePos) {
+                alive = 0;
+                return;
+            }
+        }
+    }
+}

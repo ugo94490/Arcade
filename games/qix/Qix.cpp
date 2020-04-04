@@ -24,8 +24,14 @@ static std::string qixChars = " .XO*=";
 
 Qix::Qix()
 {
+    initGame();
+}
+
+void Qix::initGame(void)
+{
     tiles = initMap();
     player = initPlayer();
+    qix = std::shared_ptr<QixQix>(new QixQix(320, 320));
     score = 0;
 }
 
@@ -42,11 +48,14 @@ std::list<std::shared_ptr<IGameObject>> Qix::getObjects(void) const
 {
     std::list<std::shared_ptr<IGameObject>> list;
     std::list<std::shared_ptr<QixTrail>> playerTrail = player->getTrail();
+    std::list<std::shared_ptr<QixQixNode>> qixnodes = qix->getNodes();
 
     for (auto it = tiles.begin(); it != tiles.end(); ++it) {
         list.push_back(*it);
     }
     for (auto it = playerTrail.begin(); it != playerTrail.end(); ++it)
+        list.push_back(*it);
+    for (auto it = qixnodes.begin(); it != qixnodes.end(); ++it)
         list.push_back(*it);
     list.push_back(player);
     return (list);
@@ -65,6 +74,11 @@ void Qix::updateGame(void)
 {
     player->check_can_move(tiles);
     player->move_direction(tiles);
+    qix->move(tiles);
+    player->check_collision_qix(qix);
+    if (player->getAlive() == 0)
+        initGame();
+    score += 2;
 }
 
 char Qix::getAppearanceCharIdx(int idx)
