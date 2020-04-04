@@ -24,11 +24,11 @@ Arcade::Arcade(std::string &baselib)
     gamelib = NULL;
     liblib = NULL;
     while ((file = Encapsulation::fct_readdir(games_dir)) != NULL) {
-        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0)
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0 || std::strncmp(file->d_name, "./lib_arcade_", 13) == 0)
             list_game.push_back(file->d_name);
     }
     while ((file = Encapsulation::fct_readdir(lib_dir)) != NULL) {
-        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0)
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0 || std::strncmp(file->d_name, "./lib_arcade_", 13) == 0)
             list_lib.push_back(file->d_name);
     }
     Encapsulation::fct_closedir(games_dir);
