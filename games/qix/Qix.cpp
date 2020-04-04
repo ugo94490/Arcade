@@ -24,15 +24,19 @@ static std::string qixChars = " .XO*=";
 
 Qix::Qix()
 {
+    score = 0;
     initGame();
 }
 
 void Qix::initGame(void)
 {
+    sparks.clear();
+    tiles.clear();
     tiles = initMap();
     player = initPlayer();
     qix = std::shared_ptr<QixQix>(new QixQix(320, 320));
-    score = 0;
+    sparks.push_back(std::shared_ptr<QixSpark>(new QixSpark(304, 0, 1)));
+    sparks.push_back(std::shared_ptr<QixSpark>(new QixSpark(336, 0, 2)));
 }
 
 Qix::~Qix()
@@ -57,6 +61,8 @@ std::list<std::shared_ptr<IGameObject>> Qix::getObjects(void) const
         list.push_back(*it);
     for (auto it = qixnodes.begin(); it != qixnodes.end(); ++it)
         list.push_back(*it);
+    for (auto it = sparks.begin(); it != sparks.end(); ++it)
+        list.push_back(*it);
     list.push_back(player);
     return (list);
 }
@@ -65,7 +71,7 @@ int Qix::handleEvents(const unsigned char &c)
 {
     if (!player)
         throw("Player does not exist");
-    if (c >= 0 && c <= 4)
+    if (c <= 4)
         player->setDirection(c);
     return (0);
 }
@@ -74,23 +80,29 @@ void Qix::updateGame(void)
 {
     player->check_can_move(tiles);
     player->move_direction(tiles);
+    player->try_close_trail(tiles);
     qix->move(tiles);
+    for (auto it = sparks.begin(); it != sparks.end(); ++it)
+        (*it)->move(tiles);
     player->check_collision_qix(qix);
-    if (player->getAlive() == 0)
+    player->check_collision_sparks(sparks);
+    if (player->getAlive() == 0) {
+        score = 0;
         initGame();
+    }
     score += 2;
 }
 
 char Qix::getAppearanceCharIdx(int idx)
 {
-    if (idx > qixChars.length() || idx < 0)
+    if ((std::size_t)(idx) > qixChars.length() || idx < 0)
         return ' ';
     return qixChars[idx];
 }
 
 Rect Qix::getAppearanceRectIdx(int idx)
 {
-    if (idx > qixChars.length() || idx < 0)
+    if ((std::size_t)(idx) > qixChars.length() || idx < 0)
         return {0, 0, 0, 0};
     return qixRects[idx];
 }

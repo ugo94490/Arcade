@@ -10,7 +10,8 @@ SRC		=	Qix.cpp			\
 			QixPlayer.cpp	\
 			QixTrail.cpp	\
 			QixQix.cpp		\
-			QixQixNode.cpp
+			QixQixNode.cpp	\
+			QixSpark.cpp
 
 OBJ		=	$(SRC:.cpp=.o)
 

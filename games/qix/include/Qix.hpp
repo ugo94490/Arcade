@@ -31,6 +31,7 @@ class Qix : public IGame {
     protected:
         std::shared_ptr<QixPlayer> player;
         std::shared_ptr<QixQix> qix;
+        std::list<std::shared_ptr<QixSpark>> sparks;
         std::list<std::shared_ptr<QixGround>> tiles;
         int score;
         int timer_move;
