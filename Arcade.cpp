@@ -115,6 +115,11 @@ int Arcade::loop()
         if ((clock() - timer) > (1000000 / 60)) {
             timer = clock();
             input = lib->getEvent();
+            if (input == -7) {
+                idx_game = idx_menu;
+                loadgame(list_game[idx_game]);
+                input = 0;
+            }
             if (input == -6) {
                 loadgame(list_game[idx_game]);
                 input = 0;
