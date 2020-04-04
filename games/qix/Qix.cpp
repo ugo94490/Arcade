@@ -13,11 +13,13 @@ using namespace std;
 
 static const int BLOCK_SIZE = 16;
 
-static const Rect qixRects[4] = {
+static const Rect qixRects[6] = {
     {0, 0, 16, 16},
     {16, 0, 16, 16},
     {32, 0, 16, 16},
-    {48, 0, 16, 16}
+    {48, 0, 16, 16},
+    {64, 0, 16, 16},
+    {80, 0, 16, 16}
 };
 
 static std::string qixChars = " .XO*=";

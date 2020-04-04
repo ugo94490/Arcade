@@ -202,4 +202,13 @@ void QixPlayer::check_collision_sparks(std::list<std::shared_ptr<QixSpark>> cons
 
 void QixPlayer::try_close_trail(std::list<std::shared_ptr<QixGround>> &tiles)
 {
+    auto it = trail.end();
+
+    if (trail.begin() == trail.end())
+        return;
+    --it;
+    if (it == trail.begin())
+        return;
+    if (check_type_on_pos((*it)->getPos(), tiles) == QixGround::BORDER)
+        return;
 }
