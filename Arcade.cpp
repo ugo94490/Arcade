@@ -6,14 +6,42 @@
 */
 
 #include <iostream>
+#include <sys/types.h>
+#include <cstring>
+#include "Exception.hpp"
+#include "Encapsulation.hpp"
 #include "Arcade.hpp"
 
-Arcade::Arcade(const std::string &baselib)
+Arcade::Arcade(std::string &baselib)
 {
+    DIR *games_dir = Encapsulation::fct_opendir("./games");
+    DIR *lib_dir = Encapsulation::fct_opendir("./lib");
+    struct dirent *file;
+    std::string str;
+
+    idx_lib = 0;
+    idx_game = 0;
+    gamelib = NULL;
+    liblib = NULL;
+    while ((file = Encapsulation::fct_readdir(games_dir)) != NULL) {
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0 || std::strncmp(file->d_name, "./lib_arcade_", 13) == 0)
+            list_game.push_back(file->d_name);
+    }
+    while ((file = Encapsulation::fct_readdir(lib_dir)) != NULL) {
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0 || std::strncmp(file->d_name, "./lib_arcade_", 13) == 0)
+            list_lib.push_back(file->d_name);
+    }
+    Encapsulation::fct_closedir(games_dir);
+    Encapsulation::fct_closedir(lib_dir);
     std::srand(std::time(nullptr));
+    if (list_game.size() < 1)
+        throw(Exception ("No game found"));
+    if (list_lib.size() < 1)
+        throw(Exception ("No lib found"));
     gamename = "Arcade";
-    loadlib(baselib);
-    loadgame("pacman");
+    loadlib(baselib.erase(0, 4));
+    //loadgame("menu");
+    loadgame(list_game[0]);
 }
 
 Arcade::~Arcade()
@@ -23,11 +51,16 @@ Arcade::~Arcade()
 void Arcade::loadlib(const std::string &libstr)
 {
     libname = libstr;
-    std::string to_open = "./lib/lib_arcade_" + libstr + ".so";
-    void *liblib = dlopen(to_open.c_str(), RTLD_LAZY);
+    lib = 0;
+    libname.erase(0, 11);
+    libname.erase(libname.size() - 3, 3);
+    std::string to_open = "lib/" + libstr;
+    if (liblib)
+        Encapsulation::fct_dlclose(liblib);
+    liblib = Encapsulation::fct_dlopen(to_open.c_str(), RTLD_LAZY);
     if (!liblib)
         throw(std::string("Lib " + libname + " not found"));
-    IGraphicLib *(*mkr)() = (IGraphicLib *(*)())dlsym(liblib, "maker");
+    IGraphicLib *(*mkr)() = (IGraphicLib *(*)())Encapsulation::fct_dlsym(liblib, "maker");
     if (!mkr)
         throw(std::string("Lib " + libname + " constructor not found"));
     lib = std::shared_ptr<IGraphicLib>((mkr)());
@@ -38,11 +71,16 @@ void Arcade::loadlib(const std::string &libstr)
 void Arcade::loadgame(const std::string &gamestr)
 {
     gamename = gamestr;
-    std::string to_open = "./games/lib_arcade_" + gamestr + ".so";
-    void *gamelib = dlopen(to_open.c_str(), RTLD_LAZY);
+    game = 0;
+    gamename.erase(0, 11);
+    gamename.erase(gamename.size() - 3, 3);
+    std::string to_open = "games/" + gamestr;
+    if (gamelib)
+        Encapsulation::fct_dlclose(gamelib);
+    gamelib = Encapsulation::fct_dlopen(to_open.c_str(), RTLD_LAZY);
     if (!gamelib)
         throw(std::string("Game " + gamename + " not found"));
-    IGame *(*mkr)() = (IGame *(*)())dlsym(gamelib, "maker");
+    IGame *(*mkr)() = (IGame *(*)())Encapsulation::fct_dlsym(gamelib, "maker");
     if (!mkr)
         throw(std::string("Game " + gamename + " constructor not found"));
     game = std::shared_ptr<IGame>((mkr)());
@@ -67,13 +105,21 @@ int Arcade::loop()
             timer = clock();
             input = lib->getEvent();
             if (input == -3) {
-                switchgame();
+                nextGame();
+                input = 0;
+            }
+            if (input == -5) {
+                prevGame();
                 input = 0;
             }
             if (input == -2)
                 return (0);
             if (input == -1) {
-                switchlib();
+                nextLib();
+                lib->init_score(score, pos);
+            }
+            if (input == -4) {
+                prevLib();
                 lib->init_score(score, pos);
             }
             if ((gameOver = game->handleEvents(input)) == 84)
@@ -90,37 +136,53 @@ int Arcade::loop()
     return (0);
 }
 
-void Arcade::switchgame()
+void Arcade::nextGame()
 {
-    if (gamename == "nibbler") {
-        gamename = "sokoban";
-        loadgame(gamename);
-    } else if (gamename == "sokoban") {
-        gamename = "pacman";
-        loadgame(gamename);
-    } else if (gamename == "pacman") {
-        gamename = "nibbler";
-        loadgame(gamename);
-    }
+    if (idx_game + 1 >= list_game.size())
+        idx_game = 0;
+    else
+        idx_game++;
+    loadgame(list_game[idx_game]);
 }
 
-void Arcade::switchlib()
+void Arcade::prevGame()
 {
-    if (libname == "ncurses")
-        loadlib("sfml");
-    else if (libname == "sfml")
-        loadlib("sdl");
-    else if (libname == "sdl")
-        loadlib("ncurses");
+    if (idx_game == 0)
+        idx_game = list_game.size() - 1;
+    else
+        idx_game--;
+    loadgame(list_game[idx_game]);  
 }
 
-int main()
+void Arcade::nextLib()
 {
+    if (idx_lib + 1 >= list_lib.size())
+        idx_lib = 0;
+    else
+        idx_lib++;
+    loadlib(list_lib[idx_lib]);
+}
+
+void Arcade::prevLib()
+{
+    if (idx_lib == 0)
+        idx_lib = list_lib.size() - 1;
+    else
+        idx_lib--;
+    loadlib(list_lib[idx_lib]);
+}
+
+int main(int ac, char **av)
+{
+    std::string str;
     try {
-        Arcade arcade("sfml");
-        return arcade.loop();
-    } catch (std::string err) {
-        std::cerr << err << std::endl;
+        if (ac != 2)
+            throw(Exception("Only one argument required"));
+        str = av[1];
+        Arcade arcade(str);
+        return (arcade.loop());
+    } catch (Exception& err) {
+        std::cerr << err.what() << std::endl;
         return (84);
     }
 }

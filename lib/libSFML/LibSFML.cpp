@@ -34,6 +34,8 @@ char LibSFML::getEvent()
             if (event.type == sf::Event::Closed)
                 return (-2);
             if (event.type == sf::Event::KeyPressed) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) return (-5);
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) return (-4);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) return (-3);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) return (-2);
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) return (-1);

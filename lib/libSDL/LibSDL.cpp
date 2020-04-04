@@ -119,6 +119,12 @@ char LibSDL::getEvent()
             return (-2);
         if (event.type == SDL_KEYDOWN)
             switch(event.key.keysym.sym) {
+                case SDLK_p:
+                    return (-5);
+                    break;
+                case SDLK_m:
+                    return (-4);
+                    break;
                 case SDLK_n:
                     return (-3);
                     break;

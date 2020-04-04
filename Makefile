@@ -5,7 +5,8 @@
 ## Makefile
 ##
 
-SRC	=	Arcade.cpp
+SRC	=	Arcade.cpp	\
+		Encapsulation.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
@@ -13,7 +14,7 @@ NAME	=	arcade
 
 LDFLAGS		=	-ldl
 
-CPPFLAGS	=	-I./include
+CPPFLAGS	=	-I./include -g3
 
 $(NAME):	games graphicals core
 
