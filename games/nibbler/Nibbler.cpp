@@ -217,8 +217,8 @@ int Nibbler::handleEvents(const unsigned char &c)
     static float mult = 1;
     std::shared_ptr<NibObject> player = NULL;
 
-    if (c == 5) {
-        if (mult >= 0.2)
+    if (c == 5 || score % 20 == 0) {
+        if (mult >= 0.1)
             mult -= 0.10;
         return (0);
     }
@@ -375,7 +375,7 @@ Rect Nibbler::getAppearanceRectIdx(int idx)
 
 void Nibbler::updateGame()
 {
-    if (nb_fruit < 2)
+    if (nb_fruit < 3)
         SetRandItems();
 }
 
