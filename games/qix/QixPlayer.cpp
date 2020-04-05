@@ -200,13 +200,99 @@ void QixPlayer::check_collision_sparks(std::list<std::shared_ptr<QixSpark>> cons
     }
 }
 
-int QixPlayer::isBlockTransformed(std::list<std::shared_ptr<QixGround>> tiles, std::shared_ptr<QixQix> const &qix, std::pair<float, float> blockpos)
+
+std::pair<float, float> QixPlayer::getPosDirection(std::pair<float, float> basepos, int direction)
 {
+    if (direction == 1)
+        return {basepos.first - 16, basepos.second};
+    if (direction == 2)
+        return {basepos.first + 16, basepos.second};
+    if (direction == 3)
+        return {basepos.first, basepos.second - 16};
+    if (direction == 4)
+        return {basepos.first, basepos.second + 16};
+    return basepos;
+}
+
+std::shared_ptr<QixGround> QixPlayer::getGroundOnPos(std::pair<float, float> pos, std::list<std::shared_ptr<QixGround>> tiles)
+{
+    for (auto it = tiles.begin(); it != tiles.end(); ++it) {
+        if ((*it)->getPos() == pos)
+            return (*it);
+    }
+    return NULL;
+}
+
+std::list<std::shared_ptr<QixGround>> QixPlayer::getzone(std::list<std::shared_ptr<QixGround>> tiles)
+{
+    std::list<std::shared_ptr<QixGround>> zone;
+    std::shared_ptr<QixGround> tempground;
+    int found = 1;
+    int direction = 0;
+    std::pair<float, float> tempObjective;
+
+    for (auto it = tiles.begin(); it != tiles.end(); ++it) {
+        if ((*it)->getType() == QixGround::EMPTY) {
+            (*it)->changeType(QixGround::FULL);
+            zone.push_back(*it);
+            break;
+        }
+    }
+    while (found == 1)
+    {
+        found = 0;
+        for (auto it = zone.begin(); it != zone.end(); ++it) {
+            direction = 1;
+            tempground = getGroundOnPos(getPosDirection((*it)->getPos(), direction), tiles);
+            if (tempground->getType() == QixGround::EMPTY) {
+                tempground->changeType(QixGround::FULL);
+                zone.push_back(tempground);
+                found = 1;
+            }
+            direction = 2;
+            tempground = getGroundOnPos(getPosDirection((*it)->getPos(), direction), tiles);
+            if (tempground->getType() == QixGround::EMPTY) {
+                tempground->changeType(QixGround::FULL);
+                zone.push_back(tempground);
+                found = 1;
+            }
+            direction = 3;
+            tempground = getGroundOnPos(getPosDirection((*it)->getPos(), direction), tiles);
+            if (tempground->getType() == QixGround::EMPTY) {
+                tempground->changeType(QixGround::FULL);
+                zone.push_back(tempground);
+                found = 1;
+            }
+            direction = 4;
+            tempground = getGroundOnPos(getPosDirection((*it)->getPos(), direction), tiles);
+            if (tempground->getType() == QixGround::EMPTY) {
+                tempground->changeType(QixGround::FULL);
+                zone.push_back(tempground);
+                found = 1;
+            }
+        }
+    }
+    return zone;
+}
+
+int QixPlayer::check_qix_here(std::list<std::shared_ptr<QixGround>> const &zone, std::shared_ptr<QixQix> const &qix)
+{
+    std::list<std::shared_ptr<QixQixNode>> qixnodes = qix->getNodes();
+    std::pair<float, float> tilePos;
+
+    for (auto it = zone.begin(); it != zone.end(); ++it) {
+        tilePos = (*it)->getPos();
+        for (auto it2 = qixnodes.begin(); it2 != qixnodes.end(); ++it2) {
+            if ((*it2)->getPos() == tilePos)
+                return (1);
+        }
+    }
     return (0);
 }
 
 int QixPlayer::close_trail(std::list<std::shared_ptr<QixGround>> &tiles, std::shared_ptr<QixQix> const &qix)
 {
+    std::list<std::shared_ptr<QixGround>> zone;
     std::pair<float, float> trailPos;
     int score_ret = 0;
     
@@ -219,12 +305,20 @@ int QixPlayer::close_trail(std::list<std::shared_ptr<QixGround>> &tiles, std::sh
             }
         }
     }
-    for (auto it = tiles.begin(); it != tiles.end(); ++it) {
-        if ((*it)->getType() == QixGround::EMPTY && isBlockTransformed(tiles, qix, (*it)->getPos())) {
-            (*it)->changeType(QixGround::FULL);
-            score_ret += 2000;
+    zone = getzone(tiles);
+    if (check_qix_here(zone, qix) == 1) {
+        for (auto it = tiles.begin(); it != tiles.end(); ++it) {
+            if ((*it)->getType() == QixGround::EMPTY) {
+                (*it)->changeType(QixGround::FULL);
+                score_ret += 2000;
+            }
         }
+        for (auto it = zone.begin(); it != zone.end(); ++it)
+            (*it)->changeType(QixGround::EMPTY);
     }
+    else
+        for (auto it = zone.begin(); it != zone.end(); ++it)
+            score_ret += 2000;
     return score_ret;
 }
 
