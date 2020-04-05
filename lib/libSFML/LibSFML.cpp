@@ -100,6 +100,7 @@ void LibSFML::gameOver(int score)
     sf::Vector2f pos_txt = {(float) 400, (float) 150};
     std::string str = "GAME OVER";
 
+    timer = clock();
     font.loadFromFile("lib/libSFML/SNES.ttf");
     text.setString(str);
     text.setFont(font);

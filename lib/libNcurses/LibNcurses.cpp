@@ -89,6 +89,8 @@ void LibNcurses::draw_score(int score, std::pair<float, float> pos)
 void LibNcurses::gameOver(int score)
 {
     static clock_t timer = clock();
+
+    timer = clock();
     erase();
     move((LINES / 2) - 1, (COLS / 2) - 4);
     printw("%s\n", "GameOver");

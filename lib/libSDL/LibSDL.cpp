@@ -199,6 +199,8 @@ void LibSDL::gameOver(int score)
     SDL_Surface *surface;
     std::string str = "GameOver";
     SDL_Color color = {255, 255, 255};
+
+    timer = clock();
     SDL_FillRect(window, NULL, SDL_MapRGB(window->format, 0, 0, 0));
     surface = TTF_RenderText_Solid(game, str.c_str(), color);
     SDL_Rect rect = {(short)pos.first, (short)pos.second, 0, 0};
