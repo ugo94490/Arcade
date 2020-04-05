@@ -22,6 +22,7 @@ Arcade::Arcade(std::string &baselib)
 
     idx_lib = 0;
     idx_game = 0;
+    idx_menu = 0;
     gamelib = NULL;
     liblib = NULL;
     menu = "LOL";
