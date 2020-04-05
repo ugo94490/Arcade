@@ -143,10 +143,11 @@ int Arcade::loop()
                 lib->init_score(score, pos);
             }
             if ((gameOver = game->handleEvents(input)) == 84)
-                return (84);
+                throw(Exception ("Error during runtime"));
             if (gameOver == 1) {
                 lib->gameOver(game->getScore());
-                break;
+                idx_game = idx_menu;
+                loadgame(list_game[idx_menu]);
             }
             game->updateGame();
             lib->draw(game);
