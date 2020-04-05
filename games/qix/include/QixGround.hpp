@@ -21,6 +21,7 @@ class QixGround : public IGameObject {
         std::pair<float, float> getPos() const;
         char getAppearance() const;
         char getType() const;
+        void changeType(char newtype);
 
     private:
         std::pair<float, float> pos;
