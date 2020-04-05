@@ -231,10 +231,8 @@ int main(int ac, char **av)
 {
     std::string str;
     try {
-        if (ac == 2 && std::strcmp(av[1], "-h") == 0)
-            return (Arcade::help(av[0]));
         if (ac != 2)
-            throw(Exception("Only one argument required"));
+            return (Arcade::help(av[0]));
         str = av[1];
         Arcade arcade(str);
         return (arcade.loop());
