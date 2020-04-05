@@ -67,7 +67,7 @@ void Menu::highScore()
     std::fstream myfile ("./games/score.txt");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open score.txt"));
+        throw(Exception ("Could not open score.txt"));
     getline(myfile, line);
     for (size_t idx = 0; idx != line.size(); idx++) {
         if (std::isdigit(line[idx]) == false) {

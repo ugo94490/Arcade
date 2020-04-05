@@ -72,7 +72,7 @@ std::list<std::shared_ptr<IGameObject>> Qix::getObjects(void) const
 int Qix::handleEvents(const unsigned char &c)
 {
     if (!player)
-        throw("Player does not exist");
+        throw(Exception ("Player does not exist"));
     if (c <= 4)
         player->setDirection(c);
     if (checkWin() == 1)
@@ -120,7 +120,7 @@ std::list<std::shared_ptr<QixGround>> Qix::initMap(void) const
     ifstream myfile ("./games/qix/map.txt");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open Qix map"));
+        throw(Exception ("Could not open Qix map"));
     for (int i = 0; !myfile.eof(); i++) {
         getline (myfile, line);
         for (int j = 0; line[j]; j++) {

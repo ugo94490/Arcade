@@ -10,6 +10,7 @@
 #include <iostream>
 #include "IGame.hpp"
 #include "QixPlayer.hpp"
+#include "Exception.hpp"
 
 class Qix : public IGame {
     public:

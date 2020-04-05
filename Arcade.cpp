@@ -104,12 +104,12 @@ void Arcade::highScore(int score)
     std::fstream myfile ("./games/score.txt");
 
     if (!myfile.is_open())
-        throw(std::string("Could not open score.txt"));
+        throw(Exception ("Could not open score.txt"));
     getline(myfile, line);
     myfile.close();
     std::ofstream myfile2("./games/score.txt");
     if (!myfile2.is_open())
-        throw(std::string("Could not open score.txt"));
+        throw(Exception ("Could not open score.txt"));
     for (size_t idx = 0; idx != line.size(); idx++) {
         if (std::isdigit(line[idx]) == false) {
             isnum = false;
