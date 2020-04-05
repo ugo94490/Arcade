@@ -10,7 +10,10 @@
 #include <ctime>
 #include <dlfcn.h>
 #include <string>
+#include <fstream>
 #include <vector>
+#include <ios>
+#include <iostream>
 #include "IGame.hpp"
 #include "IGraphicLib.hpp"
 
@@ -25,6 +28,7 @@ class Arcade {
         void prevGame();
         void nextLib();
         void prevLib();
+        void highScore(int score);
         static int help(char *av);
 
     protected:

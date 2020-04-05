@@ -31,7 +31,7 @@ class Menu : public IGame {
         std::shared_ptr<MenuObject> createObject(float posx, float posy, char c) const;
         int getScore() const;
         int getBlockSize() const;
-        //FIN GHOST
+        void highScore();
 
     protected:
         std::list<std::shared_ptr<MenuObject>> objects;

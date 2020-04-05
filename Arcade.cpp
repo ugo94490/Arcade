@@ -97,6 +97,23 @@ void Arcade::loadgame(const std::string &gamestr)
     lib->loadGame(gamename);
 }
 
+void Arcade::highScore(int score)
+{
+    std::string line;
+    std::fstream myfile ("./games/score.txt");
+
+    if (!myfile.is_open())
+        throw(std::string("Could not open score.txt"));
+    getline(myfile, line);
+    myfile.close();
+    std::ofstream myfile2("./games/score.txt");
+    if (!myfile2.is_open())
+        throw(std::string("Could not open score.txt"));
+    if (std::stoi(line) < score)
+        myfile2 << score;
+    myfile2.close();
+}
+
 int Arcade::loop()
 {
     int gameOver = 0;
@@ -145,6 +162,7 @@ int Arcade::loop()
                 throw(Exception ("Error during runtime"));
             if (gameOver == 1) {
                 lib->gameOver(game->getScore());
+                highScore(game->getScore());
                 idx_game = idx_menu;
                 loadgame(list_game[idx_menu]);
             }

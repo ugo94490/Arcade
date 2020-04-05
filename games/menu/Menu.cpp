@@ -44,7 +44,6 @@ static const char menuFlags[23] = "MENUIBLRPACQXSOKT-|FD ";
 Menu::Menu()
 {
     objects = initGame();
-    _score = 0;
 }
 
 Menu::~Menu()
@@ -59,6 +58,18 @@ int Menu::getScore() const
 int Menu::getBlockSize() const
 {
     return 32;
+}
+
+void Menu::highScore()
+{
+    std::string line;
+    std::fstream myfile ("./games/score.txt");
+
+    if (!myfile.is_open())
+        throw(std::string("Could not open score.txt"));
+    getline(myfile, line);
+    _score = std::stoi(line);
+    myfile.close();
 }
 
 std::list<std::shared_ptr<IGameObject>> Menu::getObjects(void) const
@@ -78,6 +89,7 @@ std::list<std::shared_ptr<MenuObject>> Menu::initGame(void)
     std::string line;
     std::ifstream myfile ("./games/menu/map.txt");
 
+    highScore();
     if (!myfile.is_open())
         throw(Exception ("Could not open menu map"));
     for (int i = 0; !myfile.eof(); i++) {
