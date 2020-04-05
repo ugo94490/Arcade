@@ -75,6 +75,10 @@ int Qix::handleEvents(const unsigned char &c)
         throw("Player does not exist");
     if (c <= 4)
         player->setDirection(c);
+    if (checkWin() == 1)
+        return 1;
+    if (player->getAlive() == 0)
+        return 1;
     return (0);
 }
 
@@ -86,17 +90,11 @@ void Qix::updateGame(void)
     player->move_direction(tiles);
     scoreadded = player->try_close_trail(tiles, qix);
     score += scoreadded;
-    if (scoreadded > 0 && checkWin() == 1)
-        initGame();
     qix->move(tiles);
     for (auto it = sparks.begin(); it != sparks.end(); ++it)
         (*it)->move(tiles);
     player->check_collision_qix(qix);
     player->check_collision_sparks(sparks);
-    if (player->getAlive() == 0) {
-        score = 0;
-        initGame();
-    }
     score += 2;
 }
 
