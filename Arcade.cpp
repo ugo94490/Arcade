@@ -99,6 +99,7 @@ void Arcade::loadgame(const std::string &gamestr)
 
 void Arcade::highScore(int score)
 {
+    bool isnum = true;
     std::string line;
     std::fstream myfile ("./games/score.txt");
 
@@ -109,9 +110,17 @@ void Arcade::highScore(int score)
     std::ofstream myfile2("./games/score.txt");
     if (!myfile2.is_open())
         throw(std::string("Could not open score.txt"));
-    if (line.size() < 9) {
+    for (size_t idx = 0; idx != line.size(); idx++) {
+        if (std::isdigit(line[idx]) == false) {
+            isnum = false;
+            break;
+        }
+    }
+    if (line.size() < 9 && isnum == true) {
         if (std::stoi(line) < score)
             myfile2 << score;
+    } else if (isnum == false) {
+        myfile2 << 0;
     }
     myfile2.close();
 }
