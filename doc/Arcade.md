@@ -1,4 +1,5 @@
-﻿# Documenation Arcade
+﻿
+# Documenation Arcade
 
 Cette documentation à pour but d'expliquer comment implémenter de nouvelles bibliotheques graphique ainsi que de nouveaux jeux.
 
@@ -51,6 +52,16 @@ class  IGameObject {
 Ces méthodes sont communes à tous les jeux, car elles sont appelés dans la boucle principale du Core.
 Libre à vous de rajouter ensuite vos méthodes dans la classe de votre jeu qui modifieront ensuite votre liste d'objets.
 
+N'oubliez pas d'exporter votre lib comme ci-dessous.
+
+```cpp
+extern  "C" {
+    IGame *makergame() {
+        return  new Sokoban();
+        }
+}
+```
+
 
 ## Comment créer une bibliotheque graphique
 
@@ -73,6 +84,15 @@ class  IGraphicLib {
 
 Ces méthodes sont communes à toutes les bibliotheques graphiques car elles sont appelés dans la boucle principale du Core.
 
+N'oubliez pas d'exporter votre lib comme ci-dessous.
+```cpp
+extern  "C" {
+    IGraphicLib *makerlib() {
+        return  new LibSFML();
+    }
+}
+```
+
 ## Gestion d'erreur
 
 Une classe pour gérer les erreurs a été mise en place **Exception.hpp**, pour l'utiliser il suffit d'utilise le code si dessous.
@@ -91,3 +111,4 @@ class  Exception : public  std::exception {
 	std::string message;
 };
 ```
+
