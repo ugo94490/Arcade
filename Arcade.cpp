@@ -37,8 +37,10 @@ Arcade::Arcade(std::string &baselib)
         }
     }
     while ((file = Encapsulation::fct_readdir(lib_dir)) != NULL) {
-        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0 || std::strncmp(file->d_name, "./lib_arcade_", 13) == 0)
-            list_lib.push_back(file->d_name);
+        if (std::strncmp(file->d_name, "lib_arcade_", 11) == 0 || std::strncmp(file->d_name, "./lib_arcade_", 13) == 0) {
+            str = file->d_name;
+            list_lib.push_back("lib/" + str);
+        }
     }
     Encapsulation::fct_closedir(games_dir);
     Encapsulation::fct_closedir(lib_dir);
@@ -48,7 +50,7 @@ Arcade::Arcade(std::string &baselib)
     if (list_lib.size() < 1)
         throw(Exception ("No lib found"));
     gamename = "Arcade";
-    loadlib(baselib.erase(0, 4));
+    loadlib(baselib);
     if (menu != "LOL") {
         idx_game = idx_menu;
         loadgame(list_game[idx_game]);
@@ -62,19 +64,15 @@ Arcade::~Arcade()
 
 void Arcade::loadlib(const std::string &libstr)
 {
-    libname = libstr;
     lib = 0;
-    libname.erase(0, 11);
-    libname.erase(libname.size() - 3, 3);
-    std::string to_open = "lib/" + libstr;
     if (liblib)
         Encapsulation::fct_dlclose(liblib);
-    liblib = Encapsulation::fct_dlopen(to_open.c_str(), RTLD_LAZY);
+    liblib = Encapsulation::fct_dlopen(libstr.c_str(), RTLD_LAZY);
     if (!liblib)
-        throw(Exception ("Lib " + libname + " not found"));
+        throw(Exception ("Lib " + libstr + " not found"));
     IGraphicLib *(*mkr)() = (IGraphicLib *(*)())Encapsulation::fct_dlsym(liblib, "maker");
     if (!mkr)
-        throw(Exception ("Lib " + libname + " constructor not found"));
+        throw(Exception ("Lib " + libstr + " constructor not found"));
     lib = std::shared_ptr<IGraphicLib>((mkr)());
     if (gamename != "Arcade")
         lib->loadGame(gamename);
