@@ -109,8 +109,10 @@ void Arcade::highScore(int score)
     std::ofstream myfile2("./games/score.txt");
     if (!myfile2.is_open())
         throw(std::string("Could not open score.txt"));
-    if (std::stoi(line) < score)
-        myfile2 << score;
+    if (line.size() < 9) {
+        if (std::stoi(line) < score)
+            myfile2 << score;
+    }
     myfile2.close();
 }
 

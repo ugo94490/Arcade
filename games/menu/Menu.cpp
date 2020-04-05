@@ -68,7 +68,10 @@ void Menu::highScore()
     if (!myfile.is_open())
         throw(std::string("Could not open score.txt"));
     getline(myfile, line);
-    _score = std::stoi(line);
+    if (line.size() < 9)
+        _score = std::stoi(line);
+    else
+        _score = 99999999;
     myfile.close();
 }
 
