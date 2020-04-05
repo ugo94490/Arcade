@@ -240,10 +240,12 @@ int Arcade::help(char *str)
     return (0);
 }
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **env)
 {
     std::string str;
     try {
+        if (*env == NULL)
+            throw(Exception ("Environnement not found"));
         if (ac != 2)
             return (Arcade::help(av[0]));
         str = av[1];
