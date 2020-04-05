@@ -88,7 +88,7 @@ class Pacman : public IGame {
 };
 
 extern "C" {
-    IGame *maker() {
+    IGame *makergame() {
         return new Pacman();
     }
 }

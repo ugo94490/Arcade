@@ -47,7 +47,7 @@ class Nibbler : public IGame {
 };
 
 extern "C" {
-    IGame *maker() {
+    IGame *makergame() {
         return new Nibbler();
     }
 }

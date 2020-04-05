@@ -35,7 +35,7 @@ class Sokoban : public IGame {
 };
 
 extern "C" {
-    IGame *maker() {
+    IGame *makergame() {
         return new Sokoban();
     }
 }

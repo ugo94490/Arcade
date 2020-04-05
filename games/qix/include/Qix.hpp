@@ -39,7 +39,7 @@ class Qix : public IGame {
 };
 
 extern "C" {
-    IGame *maker() {
+    IGame *makergame() {
         return new Qix();
     }
 }

@@ -32,7 +32,7 @@ class LibSFML : public IGraphicLib {
 };
 
 extern "C" {
-    IGraphicLib *maker() {
+    IGraphicLib *makerlib() {
         return new LibSFML();
     }
 }

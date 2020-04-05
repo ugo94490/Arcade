@@ -27,7 +27,7 @@ class LibNcurses : public IGraphicLib {
 };
 
 extern "C" {
-    IGraphicLib *maker() {
+    IGraphicLib *makerlib() {
         return new LibNcurses();
     }
 }

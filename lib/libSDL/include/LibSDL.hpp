@@ -36,7 +36,7 @@ class LibSDL : public IGraphicLib {
 };
 
 extern "C" {
-    IGraphicLib *maker() {
+    IGraphicLib *makerlib() {
         return new LibSDL();
     }
 }
