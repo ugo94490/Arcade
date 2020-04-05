@@ -62,13 +62,28 @@ int Menu::getBlockSize() const
 
 void Menu::highScore()
 {
+    bool isnum = true;
     std::string line;
     std::fstream myfile ("./games/score.txt");
 
     if (!myfile.is_open())
         throw(std::string("Could not open score.txt"));
     getline(myfile, line);
-    _score = std::stoi(line);
+    for (size_t idx = 0; idx != line.size(); idx++) {
+        if (std::isdigit(line[idx]) == false) {
+            isnum = false;
+            break;
+        }
+    }
+    if (line.size() < 9 && isnum == true) {
+        _score = std::stoi(line);
+    }
+    else if (line.size() >= 9 && isnum == true) {
+        _score = 99999999;
+    }
+    else if (isnum == false) {
+        _score = 0;
+    }
     myfile.close();
 }
 
