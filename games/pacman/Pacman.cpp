@@ -113,11 +113,6 @@ int Pacman::getScore() const
     return _score;
 }
 
-int Pacman::getBlockSize() const
-{
-    return 32;
-}
-
 std::list<std::shared_ptr<IGameObject>> Pacman::getObjects(void) const
 {
     std::list<std::shared_ptr<IGameObject>> list;

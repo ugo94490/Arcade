@@ -64,16 +64,13 @@ std::pair<float, float> QixPlayer::getObjectivePos() const
     return pos;
 }
 
-void QixPlayer::check_can_move_border(std::list<std::shared_ptr<QixGround>> tiles, std::pair<float, float> objectivePos)
+void QixPlayer::check_can_move_border(std::list<std::shared_ptr<QixGround>> const &tiles,
+std::pair<float, float> const &objectivePos)
 {
     std::pair<float, float> tilePos;
 
     for (auto it = tiles.begin(); it != tiles.end(); ++it) {
         tilePos = (*it)->getPos();
-        if ((*it)->getType() == QixGround::EMPTY && tilePos.first == objectivePos.first && tilePos.second == (objectivePos.second + 16)) {
-            objective = objectivePos;
-            return;
-        }
         if ((*it)->getType() == QixGround::EMPTY &&
         ((tilePos.first == objectivePos.first && tilePos.second == (objectivePos.second + 16))
         || (tilePos.first == objectivePos.first && tilePos.second == (objectivePos.second - 16))
@@ -92,7 +89,7 @@ void QixPlayer::check_can_move_border(std::list<std::shared_ptr<QixGround>> tile
     return;
 }
 
-void QixPlayer::check_can_move(std::list<std::shared_ptr<QixGround>> tiles)
+void QixPlayer::check_can_move(std::list<std::shared_ptr<QixGround>> const &tiles)
 {
     std::pair<float, float> objectivePos = getObjectivePos();
     std::pair<float, float> tilePos;
@@ -124,7 +121,7 @@ void QixPlayer::check_can_move(std::list<std::shared_ptr<QixGround>> tiles)
     }
 }
 
-char QixPlayer::check_type_on_pos(std::pair<float, float> poscheck, std::list<std::shared_ptr<QixGround>> tiles)
+char QixPlayer::check_type_on_pos(std::pair<float, float> const &poscheck, std::list<std::shared_ptr<QixGround>> const &tiles)
 {
     for (auto it = tiles.begin(); it != tiles.end(); ++it) {
         if ((*it)->getPos() == poscheck)
@@ -133,7 +130,7 @@ char QixPlayer::check_type_on_pos(std::pair<float, float> poscheck, std::list<st
     return -1;
 }
 
-void QixPlayer::move_direction(std::list<std::shared_ptr<QixGround>> tiles)
+void QixPlayer::move_direction(std::list<std::shared_ptr<QixGround>> const &tiles)
 {
     timer_move++;
     if (direction == 0 && timer_move > 20)
@@ -142,6 +139,8 @@ void QixPlayer::move_direction(std::list<std::shared_ptr<QixGround>> tiles)
         return;
     if (check_type_on_pos(objective, tiles) == QixGround::EMPTY || check_type_on_pos(pos, tiles) == QixGround::EMPTY)
         trail.push_back(std::shared_ptr<QixTrail>(new QixTrail(pos.first, pos.second)));
+    if (check_type_on_pos(objective, tiles) == QixGround::BORDER && check_type_on_pos(pos, tiles) == QixGround::EMPTY)
+        trail.push_back(std::shared_ptr<QixTrail>(new QixTrail(objective.first, objective.second)));
     pos = objective;
     timer_move = 0;
 }
@@ -171,4 +170,45 @@ int QixPlayer::getAlive(void) const
 std::list<std::shared_ptr<QixTrail>> QixPlayer::getTrail() const
 {
     return trail;
+}
+
+void QixPlayer::check_collision_qix(std::shared_ptr<QixQix> const &qix)
+{
+    std::list<std::shared_ptr<QixQixNode>> qixnodes = qix->getNodes();
+    std::pair<float, float> trailPos;
+    std::pair<float, float> nodePos;
+
+    for (auto it = trail.begin(); it != trail.end(); ++it) {
+        trailPos = (*it)->getPos();
+        for (auto it2 = qixnodes.begin(); it2 != qixnodes.end(); ++it2) {
+            nodePos = (*it2)->getPos();
+            if (trailPos == nodePos || pos == nodePos) {
+                alive = 0;
+                return;
+            }
+        }
+    }
+}
+
+void QixPlayer::check_collision_sparks(std::list<std::shared_ptr<QixSpark>> const &sparks)
+{
+    for (auto it = sparks.begin(); it != sparks.end(); ++it) {
+        if (pos == (*it)->getPos()) {
+            alive = 0;
+            return;
+        }
+    }
+}
+
+void QixPlayer::try_close_trail(std::list<std::shared_ptr<QixGround>> &tiles)
+{
+    auto it = trail.end();
+
+    if (trail.begin() == trail.end())
+        return;
+    --it;
+    if (it == trail.begin())
+        return;
+    if (check_type_on_pos((*it)->getPos(), tiles) == QixGround::BORDER)
+        return;
 }

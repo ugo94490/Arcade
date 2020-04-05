@@ -36,11 +36,6 @@ int Sokoban::getScore() const
     return (score);
 }
 
-int Sokoban::getBlockSize() const
-{
-    return 32;
-}
-
 std::list<std::shared_ptr<IGameObject>> Sokoban::getObjects(void) const
 {
     std::list<std::shared_ptr<IGameObject>> list;
