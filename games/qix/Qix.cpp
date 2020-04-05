@@ -14,12 +14,12 @@ using namespace std;
 static const int BLOCK_SIZE = 16;
 
 static const Rect qixRects[6] = {
-    {0, 0, 16, 16},
-    {16, 0, 16, 16},
-    {32, 0, 16, 16},
-    {48, 0, 16, 16},
-    {64, 0, 16, 16},
-    {80, 0, 16, 16}
+    {0, 0, 32, 32},
+    {32, 0, 32, 32},
+    {64, 0, 32, 32},
+    {96, 0, 32, 32},
+    {128, 0, 32, 32},
+    {160, 0, 32, 32}
 };
 
 static std::string qixChars = " .XO*=";
@@ -142,9 +142,4 @@ std::shared_ptr<QixGround> Qix::createTile(float posx, float posy, char c) const
         return NULL;
     std::shared_ptr<QixGround> ptr(new QixGround(posx, posy, c));
     return (ptr);
-}
-
-int Qix::getBlockSize() const
-{
-    return BLOCK_SIZE;
 }

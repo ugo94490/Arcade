@@ -379,8 +379,3 @@ void Nibbler::updateGame()
     if (nb_fruit < 3)
         SetRandItems();
 }
-
-int Nibbler::getBlockSize() const
-{
-    return 32;
-}

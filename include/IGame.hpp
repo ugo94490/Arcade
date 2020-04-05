@@ -27,5 +27,4 @@ class IGame {
         virtual Rect getAppearanceRectIdx(int idx) = 0;
         virtual char getAppearanceCharIdx(int idx) = 0;
         virtual int getScore() const = 0;
-        virtual int getBlockSize() const = 0;
 };

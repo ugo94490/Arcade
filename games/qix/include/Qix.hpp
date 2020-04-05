@@ -21,7 +21,6 @@ class Qix : public IGame {
         char getAppearanceCharIdx(int idx);
         std::list<std::shared_ptr<IGameObject>> getObjects(void) const;
         int getScore() const;
-        int getBlockSize() const;
         void initGame(void);
 
         std::list<std::shared_ptr<QixGround>> initMap(void) const;
