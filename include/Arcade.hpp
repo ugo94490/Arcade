@@ -25,6 +25,7 @@ class Arcade {
         void prevGame();
         void nextLib();
         void prevLib();
+        static int help(char *av);
 
     protected:
     private:

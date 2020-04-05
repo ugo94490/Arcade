@@ -192,10 +192,29 @@ void Arcade::prevLib()
     loadlib(list_lib[idx_lib]);
 }
 
+int Arcade::help(char *str)
+{
+    std::cout << "\nTo launch the game do the command " << str << " [GRAPHICAL LIB]" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Keys :" << std::endl;
+    std::cout << '\t' << "B to go back to menu" << std::endl;
+    std::cout << '\t' << "R to restart the game" << std::endl;
+    std::cout << '\t' << "P to go to previous Game" << std::endl;
+    std::cout << '\t' << "N to go to next Game" << std::endl;
+    std::cout << '\t' << "M to go to previous Graphical Lib" << std::endl;
+    std::cout << '\t' << "Enter to go to next Graphical Lib" << std::endl;
+    std::cout << '\t' << "Escape to quit " << str << std::endl;
+    std::cout << '\t' << "Arrow Keys to move in each game" << std::endl;
+    std::cout << '\t' << "In nibbler game only, press space to go faster\n" << std::endl;
+    return (0);
+}
+
 int main(int ac, char **av)
 {
     std::string str;
     try {
+        if (ac == 2 && std::strcmp(av[1], "-h") == 0)
+            return (Arcade::help(av[0]));
         if (ac != 2)
             throw(Exception("Only one argument required"));
         str = av[1];
