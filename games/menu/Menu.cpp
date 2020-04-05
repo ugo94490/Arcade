@@ -75,7 +75,7 @@ void Menu::highScore()
             break;
         }
     }
-    if (line.size() < 9 && isnum == true) {
+    if (line.size() > 0 && line.size() < 9 && isnum == true) {
         _score = std::stoi(line);
     }
     else if (line.size() >= 9 && isnum == true) {

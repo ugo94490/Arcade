@@ -116,13 +116,13 @@ void Arcade::highScore(int score)
             break;
         }
     }
-    if (line.size() < 9 && isnum == true) {
+    if (line.size() > 0 && line.size() < 9 && isnum == true) {
         if (std::stoi(line) < score)
             myfile2 << score;
         else
             myfile2 << line;
-    } else if (isnum == false) {
-        myfile2 << 0;
+    } else {
+        myfile2 << score;
     }
     myfile2.close();
 }
