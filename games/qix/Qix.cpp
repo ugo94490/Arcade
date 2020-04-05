@@ -82,7 +82,10 @@ void Qix::updateGame(void)
 {
     player->check_can_move(tiles);
     player->move_direction(tiles);
-    player->try_close_trail(tiles);
+    score += player->try_close_trail(tiles, qix);
+    if (checkWin() == 1) {
+        initGame();
+    }
     qix->move(tiles);
     for (auto it = sparks.begin(); it != sparks.end(); ++it)
         (*it)->move(tiles);
@@ -142,4 +145,18 @@ std::shared_ptr<QixGround> Qix::createTile(float posx, float posy, char c) const
         return NULL;
     std::shared_ptr<QixGround> ptr(new QixGround(posx, posy, c));
     return (ptr);
+}
+
+int Qix::checkWin(void) const
+{
+    int nb_to_win = 1344;
+    int nb_ok = 0;
+
+    for (auto it = tiles.begin(); it != tiles.end(); ++it) {
+        if ((*it)->getType() == QixGround::BORDER || (*it)->getType() == QixGround::FULL)
+            nb_ok++;
+    }
+    if (nb_ok >= nb_to_win)
+        return (1);
+    return (0);
 }

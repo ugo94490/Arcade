@@ -35,3 +35,8 @@ char QixGround::getType() const
 {
     return type;
 }
+
+void QixGround::changeType(char newtype)
+{
+    type = appearance = newtype;
+}

@@ -133,9 +133,9 @@ char QixPlayer::check_type_on_pos(std::pair<float, float> const &poscheck, std::
 void QixPlayer::move_direction(std::list<std::shared_ptr<QixGround>> const &tiles)
 {
     timer_move++;
-    if (direction == 0 && timer_move > 20)
+    if (direction == 0 && timer_move > 15)
         burnTrail();
-    if (direction == 0 || timer_move < 20)
+    if (direction == 0 || timer_move < 15)
         return;
     if (check_type_on_pos(objective, tiles) == QixGround::EMPTY || check_type_on_pos(pos, tiles) == QixGround::EMPTY)
         trail.push_back(std::shared_ptr<QixTrail>(new QixTrail(pos.first, pos.second)));
@@ -200,15 +200,47 @@ void QixPlayer::check_collision_sparks(std::list<std::shared_ptr<QixSpark>> cons
     }
 }
 
-void QixPlayer::try_close_trail(std::list<std::shared_ptr<QixGround>> &tiles)
+int QixPlayer::isBlockTransformed(std::list<std::shared_ptr<QixGround>> tiles, std::shared_ptr<QixQix> const &qix, std::pair<float, float> blockpos)
+{
+    return (0);
+}
+
+int QixPlayer::close_trail(std::list<std::shared_ptr<QixGround>> &tiles, std::shared_ptr<QixQix> const &qix)
+{
+    std::pair<float, float> trailPos;
+    int score_ret = 0;
+    
+    for (auto it = trail.begin(); it != trail.end(); ++it) {
+        trailPos = (*it)->getPos();
+        for (auto it2 = tiles.begin(); it2 != tiles.end(); ++it2) {
+            if ((*it2)->getPos() == trailPos && (*it2)->getType() == QixGround::EMPTY) {
+                (*it2)->changeType(QixGround::BORDER);
+                score_ret += 2000;
+            }
+        }
+    }
+    for (auto it = tiles.begin(); it != tiles.end(); ++it) {
+        if ((*it)->getType() == QixGround::EMPTY && isBlockTransformed(tiles, qix, (*it)->getPos())) {
+            (*it)->changeType(QixGround::FULL);
+            score_ret += 2000;
+        }
+    }
+    return score_ret;
+}
+
+int QixPlayer::try_close_trail(std::list<std::shared_ptr<QixGround>> &tiles, std::shared_ptr<QixQix> const &qix)
 {
     auto it = trail.end();
+    int score_ret = 0;
 
     if (trail.begin() == trail.end())
-        return;
+        return 0;
     --it;
     if (it == trail.begin())
-        return;
-    if (check_type_on_pos((*it)->getPos(), tiles) == QixGround::BORDER)
-        return;
+        return 0;
+    if (check_type_on_pos((*it)->getPos(), tiles) == QixGround::BORDER) {
+        score_ret = close_trail(tiles, qix);
+        trail.clear();
+    }
+    return score_ret;
 }

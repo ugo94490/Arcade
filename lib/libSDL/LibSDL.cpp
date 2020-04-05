@@ -171,8 +171,8 @@ void LibSDL::draw(std::shared_ptr<IGame> game)
     SDL_FillRect(window, NULL, SDL_MapRGB(window->format, 0, 0, 0));
     for (auto it = objects.begin(); it != objects.end(); ++it) {
         rect = game->getAppearanceRectIdx(it->get()->getAppearance());
-        sdlrect = {(short int)rect.left * factor_x, (short int)rect.top * factor_y,
-        (Uint16)rect.width * factor_x, (Uint16)rect.height * factor_y};
+        sdlrect = {(short int)rect.left * (Uint16)factor_x, (short int)rect.top * (Uint16)factor_y,
+        (Uint16)rect.width * (Uint16)factor_x, (Uint16)rect.height * (Uint16)factor_y};
         sdlpos.x = it->get()->getPos().first;
         sdlpos.y = it->get()->getPos().second;
         SDL_BlitSurface(spritesheet, &sdlrect, window, &sdlpos);

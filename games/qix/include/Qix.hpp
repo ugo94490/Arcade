@@ -22,10 +22,10 @@ class Qix : public IGame {
         std::list<std::shared_ptr<IGameObject>> getObjects(void) const;
         int getScore() const;
         void initGame(void);
-
         std::list<std::shared_ptr<QixGround>> initMap(void) const;
         std::shared_ptr<QixPlayer> initPlayer(void) const;
         std::shared_ptr<QixGround> createTile(float posx, float posy, char c) const;
+        int checkWin(void) const;
 
     protected:
         std::shared_ptr<QixPlayer> player;

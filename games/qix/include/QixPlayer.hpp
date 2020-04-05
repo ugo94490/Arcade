@@ -35,7 +35,9 @@ class QixPlayer : public IGameObject {
         std::list<std::shared_ptr<QixTrail>> getTrail() const;
         void check_collision_qix(std::shared_ptr<QixQix> const &qix);
         void check_collision_sparks(std::list<std::shared_ptr<QixSpark>> const &sparks);
-        void try_close_trail(std::list<std::shared_ptr<QixGround>> &tiles);
+        int try_close_trail(std::list<std::shared_ptr<QixGround>> &tiles, std::shared_ptr<QixQix> const &qix);
+        int close_trail(std::list<std::shared_ptr<QixGround>> &tiles, std::shared_ptr<QixQix> const &qix);
+        int isBlockTransformed(std::list<std::shared_ptr<QixGround>> tiles, std::shared_ptr<QixQix> const &qix, std::pair<float, float> blockpos);
 
     private:
         std::list<std::shared_ptr<QixTrail>> trail;
