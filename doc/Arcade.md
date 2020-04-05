@@ -1,20 +1,21 @@
 ﻿# Documenation Arcade
 
-Cette documentation à pour but de savoir comment implémenter des nouvelles lib graphique ainsi que des nouveaux jeux.
+Cette documentation à pour but d'expliquer comment implémenter de nouvelles bibliotheques graphique ainsi que de nouveaux jeux.
 
 
-## Comment implémenter les libs
+## Comment implémenter les bibliotheques
 
-Chaque libs graphiques utilisent des méthodes communes hérité d'une interface (IGraphicLib). 
-Ce qui leur permet d'être indépendante des jeux et donc d'ajouter ou enlever autant de jeux que l'on veut sans éditer les libs graphiques
+Chaque bibliotheques graphiques utilisent des méthodes communes hérité d'une interface : **IGraphicLib**.
+Cela permet de rendre le jeu indépendant de la bibliotheque graphique mais également de rendre le jeu compatible
+avec d'autres bibliotheques graphiques.
 
-Pour créer un nouveau jeu ou une nouvelle lib graphique la compiler en .so et la mettre dans le dossier **lib** ou **games** a la racine du repository.
+Pour créer un nouveau jeu ou une nouvelle bibliotheque graphique, il faut le ou la compiler pour en faire une bibliotheque partagée et la mettre dans le dossier **lib** ou **games** à la racine du repository.
 
-Le core se chargera de récupérer les .so se trouvant dans les dossiers **games/**, **lib/** et d'ainsi les charger.
+Le coreProgram se chargera de récupérer les .so se trouvant dans les dossiers **games/**, **lib/** et d'ainsi les charger.
 
 ## Comment créer un jeu
 
-Pour créer un jeu, il vous faudra créer un fichier **[Nom_du_jeu].hpp** contenant une class qui hérite des méthodes de l'interface **IGame.hpp**, pour vos objets il vous faudra hériter de la class **IGameObject.hpp**
+Pour créer un jeu, il vous faudra créer un fichier **[Nom_du_jeu].hpp** contenant une classe qui hérite des méthodes de l'interface **IGame.hpp**. Pour vos objets il vous faudra hériter de la classe **IGameObject.hpp**
 
 ### IGame.hpp
 
@@ -47,13 +48,13 @@ class  IGameObject {
 };
 ```
 
-Ces méthodes sont communes à tous les jeux car elles sont appelés dans la boucle principale du Core
-Libre à vous ensuite de rajouté vos méthodes dans la class de votre jeu qui modifieront votre liste d'objets.
+Ces méthodes sont communes à tous les jeux, car elles sont appelés dans la boucle principale du Core.
+Libre à vous de rajouter ensuite vos méthodes dans la classe de votre jeu qui modifieront ensuite votre liste d'objets.
 
 
-## Comment créer une lib graphique
+## Comment créer une bibliotheque graphique
 
-Pour créer une lib graphique, il vous faudra créer un fichier **[Nom_de_la_lib].hpp** contenant une class qui hérite des méthodes de l'interface **IGraphicLib.hpp**.
+Pour créer une bibliotheque graphique, il vous faudra créer un fichier **[Nom_de_la_lib].hpp** contenant une classe qui hérite des méthodes de l'interface **IGraphicLib.hpp**.
 
 
 ### IGraphicLib.hpp
@@ -70,11 +71,11 @@ class  IGraphicLib {
 };
 ```
 
-Ces méthodes sont communes à toutes les libs graphiques car elles sont appelés dans la boucle principale du Core
+Ces méthodes sont communes à toutes les bibliotheques graphiques car elles sont appelés dans la boucle principale du Core.
 
 ## Gestion d'erreur
 
-Une class pour gérer les erreurs a été mise en place **Exception.hpp**, pour l'utiliser il suffit d'utilise le code si dessous.
+Une classe pour gérer les erreurs a été mise en place **Exception.hpp**, pour l'utiliser il suffit d'utilise le code si dessous.
 ```cpp
 if (...)
     throw(Exception ("Message d'erreur"));
