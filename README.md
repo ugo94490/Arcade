@@ -94,8 +94,8 @@ Ugo Levi--Cescutti - [Linkedin](https://www.linkedin.com/in/ugo-levi-cescutti/) 
 
 Project Link: [https://github.com/ugo94490/Arcade/](https://github.com/ugo94490/Arcade/)
 
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=flat-square
+[stars-shield]: https://img.shields.io/github/stars/ugo94490/Arcade/.svg?style=flat-square
 [stars-url]: https://github.com/ugo94490/Arcade/stargazers
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://github.com/ugo94490/Arcade/
+[linkedin-url]: https://www.linkedin.com/in/ugo-levi-cescutti/
 
