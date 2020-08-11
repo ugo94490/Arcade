@@ -1,4 +1,4 @@
-[![Stargazers][stars-shield]][stars-url]
+<!--[![Stargazers][stars-shield]][stars-url]-->
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
@@ -7,7 +7,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/ugo94490/Arcade/">
-    <img src="logo.png" alt="Logo" width="80" height="80">
+    <img src="logo.png" alt="Logo" width="974" height="263">
   </a>
 
   <h3 align="center">Arcade</h3>
@@ -21,14 +21,10 @@
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
 * [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
 * [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
+* [Contributor](#contributor)
 * [License](#license)
 * [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
 
 
 
